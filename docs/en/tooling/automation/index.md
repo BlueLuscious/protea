@@ -1,6 +1,6 @@
 # Repository Automation
 
-Status: **Workflow source configured; hosted execution and notification receipt unverified**
+Status: **Workflow source configured; execution evidence is revision-specific**
 
 This guide owns Protea's CI and Discord automation. [Repository tooling](../index.md) owns the
 contributor environment, commands and their actual coverage. Workflow files own exact triggers,
@@ -50,8 +50,8 @@ notification source. The event filters, lifecycle handling and payload logic rem
 ## Configuration and availability
 
 Discord expects the repository Actions secret `PROTEA_DISCORD_WEBHOOK`, exposed to the job as
-`DISCORD_WEBHOOK`. Keep its value outside repository content and logs. Its configuration and
-availability have not been inspected or established by adding these source files.
+`DISCORD_WEBHOOK`. Keep its value outside repository content and logs. Adding these source files
+does not configure the secret or establish its availability for a run.
 
 Every sending step checks for an empty webhook value and exits successfully with a skip message
 when it is unavailable. A successful notification workflow can therefore mean that nothing was
@@ -81,5 +81,5 @@ another revision or platform does not supply that evidence.
 Before reporting live notification delivery, identify the triggering event and workflow revision,
 confirm that its sending step executed without the missing-secret skip and verify receipt
 independently. Source review, hosted CI, operational configuration and receipt are separate facts.
-Webhook setup and live transmission remain outside the current source-setup work; no hosted run
-or delivery success is claimed here.
+Retain each result against its exact revision; later source edits need their own checks. Webhook
+configuration and live transmission require their own explicitly authorised operational work.
