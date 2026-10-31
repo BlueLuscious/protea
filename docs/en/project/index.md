@@ -44,10 +44,12 @@ A Protea decision cannot silently change another product's public contract or a 
 ### Actual enforcement
 
 The current `verify` command runs focused lint and formatting checks over the files identified by
-[repository tooling](../tooling/index.md#current-verification). There is no product compiler suite,
-runtime test suite or CI gate yet. Documentary links, fragments and authority claims still receive
-manual review. Adopting a rule does not create its enforcement: semantic design, naming, complete
-JSDoc/comment coverage, British English and prose accuracy remain review subjects.
+[repository tooling](../tooling/index.md#current-verification). There is no product compiler or
+runtime test suite yet. [CI orchestration](../tooling/automation/index.md) runs the same gate
+independently on Ubuntu and Windows; hosted results require evidence for the exact revision.
+Documentary links, fragments and authority claims still receive manual review. Adopting a rule
+does not create its enforcement: semantic design, naming, complete JSDoc/comment coverage,
+British English and prose accuracy remain review subjects.
 
 ## Contributing
 

@@ -1,8 +1,8 @@
 # Repository Tooling
 
-Status: **Contributor baseline configured; product suites and hosted automation not implemented**
+Status: **Contributor baseline and workflow sources configured; product suites not implemented**
 
-This guide owns Protea's contributor toolchain, checking boundaries and repository automation.
+This guide owns Protea's contributor toolchain and checking boundaries.
 The [project guide](../project/index.md) owns product responsibility and shared-rule adoption;
 the [documentation index](../index.md) identifies the current authorities.
 
@@ -14,8 +14,9 @@ fragments, product behaviour or complete shared-rule conformance.
 
 Documentary review still covers links and fragments, terminology, authority boundaries, present
 versus proposed behaviour, whitespace and the complete retained change. There are no product
-sources, type/runtime suites, build commands or CI workflows. Successful local checks establish
-neither hosted CI evidence nor notification delivery or publication.
+sources, type/runtime suites or build commands. [Repository automation](automation/index.md)
+orchestrates the same gate in CI and owns notification configuration. Successful local checks
+establish neither hosted CI evidence nor notification delivery or publication.
 
 ## Selected toolchain
 
@@ -83,10 +84,10 @@ braced control flow, strict equality and selected unsafe constructs. Parser conf
 not establish current TypeScript inputs.
 
 Formatting and its read-only check use the same explicit scope: `README.md`, authored Markdown
-under `docs/en/`, `package.json`, `tsconfig.base.json`, `eslint.config.mjs` and `.prettierrc.json`.
-Actual `.github/workflows/*.yaml` files will join that scope when implemented. The explicit targets
-and [.prettierignore](../../../.prettierignore) keep dependency installations, contributor-local
-records, the manager-owned lockfile and legal notice bytes outside formatting. Review unsupported
+under `docs/en/`, `package.json`, `tsconfig.base.json`, `eslint.config.mjs`, `.prettierrc.json` and
+`.github/workflows/*.yaml`. The explicit targets and [.prettierignore](../../../.prettierignore)
+keep dependency installations, contributor-local records, the manager-owned lockfile and legal
+notice bytes outside formatting. Review unsupported
 plain-text hygiene files separately; generated output needs its own boundary if introduced.
 
 Architecture, link, build, type and test commands require real responsibilities and inputs.
@@ -105,16 +106,9 @@ are needed yet.
 [.prettierrc.json](../../../.prettierrc.json) sets `semi: true`, `singleQuote: false`, `tabWidth: 2`,
 `trailingComma: "all"` and `endOfLine: "lf"`.
 
-## Planned automation
+## Repository automation
 
-CI will run a frozen installation and the real root gate independently on Ubuntu and Windows,
-under the name `Continuous Integration`. It is not implemented or verified yet.
-
-Discord is also pending. Reuse changes only Aster's display name to
-`Protea Discord Notifications` and its secret identifier to `PROTEA_DISCORD_WEBHOOK`. Preserve
-the event and branch filters, deletion notices, CI-completion trigger, payloads and existing
-`Production`, `Development` and `Local` presentation labels. Those labels provide no independent
-deployment evidence.
-
-Source verification, operational configuration and live receipt remain separate. A skipped send
-proves no receipt; live activation is outside the current source setup.
+The [automation guide](automation/index.md) owns CI orchestration, Discord configuration and
+execution/readback boundaries. Workflow files own exact event filters, action references and
+payloads. Source verification, hosted CI, operational configuration and live receipt remain
+separate evidence; a skipped notification send proves no receipt.

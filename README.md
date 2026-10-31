@@ -27,6 +27,7 @@ The [tooling guide](docs/en/tooling/index.md) owns commands, prerequisites and v
 - [Documentation home](docs/en/index.md): canonical guides and subject ownership.
 - [Project](docs/en/project/index.md): current scope, shared-rule adoption and contribution.
 - [Repository tooling](docs/en/tooling/index.md): contributor infrastructure, current checks and limits.
+- [Repository automation](docs/en/tooling/automation/index.md): CI, Discord configuration and execution evidence.
 - [Garden product direction](https://github.com/BlueLuscious/garden/blob/master/docs/en/products/protea/index.md): ecosystem responsibility and optional integrations.
 - [Shared engineering rules](https://github.com/BlueLuscious/garden/blob/master/docs/en/project-rules.md): applicable Garden conventions.
 
