@@ -5,9 +5,9 @@ the same relative structure.
 
 ## Guides and ownership
 
-| Guide | Responsibility |
-| --- | --- |
-| [Project](project/index.md) | Current product scope, shared-rule adoption, contribution and ownership. |
+| Guide                                  | Responsibility                                                                      |
+| -------------------------------------- | ----------------------------------------------------------------------------------- |
+| [Project](project/index.md)            | Current product scope, shared-rule adoption, contribution and ownership.            |
 | [Repository tooling](tooling/index.md) | Contributor infrastructure, selected baseline, current verification and its limits. |
 
 The [repository introduction](../../README.md) summarises the current state. The project guide links

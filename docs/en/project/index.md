@@ -16,10 +16,11 @@ tooling and releases it introduces; ecosystem summaries do not establish impleme
 
 ## Current scope
 
-The current source contains documentation, an ISC licence and repository text hygiene configuration.
+The current source contains private contributor infrastructure, documentation, an ISC licence and
+repository text hygiene configuration.
 There are no component contracts, runtime implementations, product package manifests or functional
-adapters. The [repository tooling guide](../tooling/index.md) distinguishes the selected contributor
-baseline from configured tools, available commands and current verification.
+adapters. The [repository tooling guide](../tooling/index.md) owns the configured contributor
+baseline, available commands and current verification.
 
 Future contract design will define a bounded set of responsibilities and their semantics before
 runtime implementation. Component names, managers, capabilities and class hierarchies remain design
@@ -30,9 +31,9 @@ are optional product directions, not current dependencies or compatibility guara
 
 Protea follows the applicable
 [Garden shared project rules](https://github.com/BlueLuscious/garden/blob/master/docs/en/project-rules.md),
-including their TypeScript/JavaScript profile when those languages are introduced. General policy
+including their applicable TypeScript/JavaScript profile. General policy
 remains with Garden; compatible Protea-specific decisions stay at their narrowest product owner.
-The [tooling guide](../tooling/index.md) owns the selected contributor baseline and concrete hygiene
+The [tooling guide](../tooling/index.md) owns the contributor baseline and concrete hygiene
 and verification boundaries.
 
 No shared-rule exception is approved by this adoption. A future exception requires the explicit
@@ -42,11 +43,11 @@ A Protea decision cannot silently change another product's public contract or a 
 
 ### Actual enforcement
 
-There is no retained automated repository checker, lint/format command, compiler suite or CI gate
-in the current source. Documentary changes receive the scoped manual review described under
-[current verification](../tooling/index.md#current-verification). Adopting a rule does not create
-its enforcement: semantic design, naming, JSDoc, language and prose accuracy remain review subjects.
-Selected future tooling must describe its actual scope and exclusions when implemented.
+The current `verify` command runs focused lint and formatting checks over the files identified by
+[repository tooling](../tooling/index.md#current-verification). There is no product compiler suite,
+runtime test suite or CI gate yet. Documentary links, fragments and authority claims still receive
+manual review. Adopting a rule does not create its enforcement: semantic design, naming, complete
+JSDoc/comment coverage, British English and prose accuracy remain review subjects.
 
 ## Contributing
 
