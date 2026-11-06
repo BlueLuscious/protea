@@ -1,6 +1,6 @@
 # Foundation Design
 
-Status: **Scope and terminology selected; component declarations and runtime not implemented**
+Status: **Private component foundation prototype specified; runtime not implemented**
 
 This guide owns the current foundation-design scope and representative cases. The
 [vocabulary](vocabulary.md) defines its concepts; the [responsibility map](responsibilities.md)
@@ -15,14 +15,15 @@ accepted product relationships. This design introduces no exception to those bou
 
 ## Purpose and current evidence
 
-The design will define a small set of component responsibilities and what their public operations
-promise before implementing behaviour. Its eventual evidence will combine semantic specifications,
-declaration prototypes and non-executed consumption examples checked by TypeScript.
+The design defines a small set of component responsibilities and what their public operations
+promise before implementing behaviour. The [component foundation](component-foundation.md) now
+specifies reference identity, logical lifetime and disposal. Its private type prototype and
+non-executed consumption examples are checked by TypeScript.
 
-Currently, only scope, vocabulary, responsibilities and authoring ownership are selected. There
-are no component signatures, declaration prototypes, type examples, type-check command or
-implemented components. Repository lint and formatting inspect contributor configuration and
-authored prose; they demonstrate no component behaviour or API conformance.
+Scope, vocabulary, responsibilities and the minimum lifetime contract are selected for this
+experimental design. Repository verification checks actual type relationships, contributor
+configuration and formatting. It demonstrates no component behaviour, resource cleanup or runtime
+implementation conformance.
 
 ## Representative cases
 
@@ -65,10 +66,11 @@ case does not itself require a manager, stack algorithm or singleton.
 
 ### Questions shared by the cases
 
-For each retained operation, the later contract design must identify inputs, preconditions,
+For each retained capability operation, its later contract design must identify inputs, preconditions,
 request authority, effective state, result and notification meaning, repeated or rejected requests,
-and use after finalisation where relevant. These outcomes remain unresolved; a type name or method
-signature alone will not settle them.
+and use after finalisation where relevant. Those capability outcomes remain unresolved; a type
+name or method signature alone will not settle them. Common lifetime and finalisation semantics
+are selected in the component foundation.
 
 Ownership must distinguish retained values, borrowed collaborators and resources requiring cleanup.
 Model identity and lifetime must remain distinct from future representation identifiers and DOM
@@ -96,17 +98,18 @@ real specialisation that preserves its consumer contract.
 | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | Scope and representative cases            | This guide; they constrain the design without declaring a component API.                                            |
 | Concept definitions                       | The vocabulary; names identify responsibilities rather than mandatory types or classes.                             |
-| Responsibilities and dependency direction | The responsibility map; concrete collaboration and public signatures remain to be designed.                         |
-| Future signatures                         | Private declaration prototypes in the design workspace; they will describe an intended API without implementing it. |
-| Future operation semantics                | Canonical documentation under this design guide, linked from the declarations at the narrowest actual owner.        |
+| Responsibilities and dependency direction | The responsibility map; further concrete collaboration remains to be designed within those boundaries.              |
+| Prototype signatures                      | Private type declarations in the design workspace; they describe an intended API without implementing it.           |
+| Component foundation semantics            | The component foundation guide, linked from its declarations; future capabilities retain their own semantic owners. |
 | Private workspace and checks              | The repository tooling guide owns paths, configuration, commands and actual coverage.                               |
 
-The private [design workspace](../../../design/README.md) currently contains its introduction only.
-[Design authoring](../tooling/index.md#design-authoring) records the selected future source layout
-and the work required before a real type check can be introduced. No public package, workspace
-member, export map, build output or ambient host dependency is created by choosing that space.
+The private [design workspace](../../../design/README.md) contains the component contracts, a
+type-only entrypoint, non-executed examples and their compiler configuration.
+[Design authoring](../tooling/index.md#design-authoring) records the real inputs, commands and
+coverage. No public package, workspace member, export map, build output or ambient host dependency
+is created by this prototype.
 
-Declarations will own signatures; prose will own semantic explanations and restrictions. Do not
+Declarations own signatures; prose owns semantic explanations and restrictions. Do not
 copy complete signatures across several guides. When implementation later generates declarations,
 compare them with the reviewed design and retire or re-scope the prototypes so there is one
 current signature authority.
@@ -114,9 +117,11 @@ current signature authority.
 ## Decision status and naming
 
 Treat the cases, vocabulary, responsibility boundaries and private workspace as the selected
-design basis. Treat API names, identity/lifecycle surfaces, state-control models, concrete types,
-class relationships and module exports as provisional until their actual contract design resolves
-them. A deferred decision must identify its owner and the case needed to resolve it; it must not
+design basis. The component foundation selects its minimum lifetime surface and reference identity
+for this private prototype. Further API names, capability state-control models, concrete types,
+class relationships and module exports remain provisional until their contract design resolves
+them. These prototype choices are not a versioned public API promise. A deferred decision must
+identify its owner and the case needed to resolve it; it must not
 be hidden by a placeholder implementation or presented as a product guarantee.
 
 Apply Garden's [TypeScript/JavaScript profile](https://github.com/BlueLuscious/garden/blob/master/docs/en/project-rules.md#typescript-and-javascript-profile)
@@ -125,7 +130,8 @@ candidate public API; workspace privacy does not make every consumer-facing inte
 implementation interface. Concrete filenames and declaration forms follow the responsibility of
 the real symbol, not a catalogue of names invented in advance.
 
-No opening, activation, identity, lifecycle or manager contract is accepted by this scope alone.
+No opening, activation or manager contract is accepted by this scope alone; the separate component
+foundation owns the selected identity and lifetime rules.
 There is no framework/browser compatibility, accessible-interaction or publication claim. Static
 evidence will cover type relationships; transitions, actual instance isolation, notification
 ordering, cleanup, accessibility and host integration will require their own later evidence.

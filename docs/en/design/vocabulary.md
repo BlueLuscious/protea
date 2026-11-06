@@ -1,6 +1,6 @@
 # Design Vocabulary
 
-Status: **Conceptual design baseline; API signatures and runtime behaviour not implemented**
+Status: **Vocabulary baseline; component prototype specified separately; runtime not implemented**
 
 This vocabulary distinguishes the responsibilities used in Protea's [design](index.md).
 The [responsibility map](responsibilities.md) assigns their boundaries and permitted dependency
@@ -10,7 +10,7 @@ directions. Terms describe concepts; they do not establish exported symbols, cla
 
 | Term          | Meaning                                                                                                                                                                                                                             |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Component     | An individual UI model with a defined purpose and observable contract. Its required identity, lifecycle and owned resources remain subjects of contract design.                                                                     |
+| Component     | An individual UI model with a defined purpose and observable contract. The [component foundation](component-foundation.md) selects its reference identity, logical lifetime and disposal obligations.                               |
 | Family        | A set of related component purposes and constraints, such as a sidebar family. A family relationship does not prescribe an implementation class or inheritance relationship.                                                        |
 | Variant       | A behavioural or structural distinction within a family. The distinction must explain a real difference in obligations or composition; visual treatment alone does not establish one.                                               |
 | Capability    | A narrow reusable behavioural contract used where an instance needs it. Sharing the contract does not require a common base class or shared mutable state.                                                                          |
@@ -44,14 +44,15 @@ These distinctions let later contracts state who requests an operation, who auth
 what changes and what may be observed. They do not select a request method, control model,
 notification sequence, synchronous or asynchronous result, or rejection mechanism.
 
-Semantic documentation will own the meaning of accepted contracts; declaration prototypes will
-own their signatures when introduced. Static type checking will establish only its checked type
+Semantic documentation owns the meaning of selected contracts; declaration prototypes own their
+signatures. Static type checking establishes only its checked type
 relationships. Actual transitions, ordering, resource cleanup and accessible interaction require
 separate runtime and host evidence.
 
 ## Decision boundary
 
-The conceptual distinctions above are the vocabulary baseline. Public symbol names, a shared
-component abstraction, retained capabilities, class relationships, state authority, part ownership
-and cleanup protocols remain for their owning contract work. No API or implementation is created
-by using these terms.
+The conceptual distinctions above are the vocabulary baseline. The component foundation owns the
+selected minimum component prototype; this glossary introduces no competing signature authority.
+Retained capabilities, class relationships, capability state authority, part ownership and their
+cleanup protocols remain for their owning contract work. No implementation is created by using
+these terms.

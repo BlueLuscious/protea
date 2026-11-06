@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+  "files": [
+    "component/types/component-lifecycle.type.ts",
+    "component/contracts/component.contract.ts",
+    "component/api/index.ts",
+    "examples/component-foundation.test.ts"
+  ],
+  "include": []
+}

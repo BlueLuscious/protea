@@ -23,8 +23,9 @@ job to 15 minutes. Its concurrency group combines the workflow and ref; a newer 
 cancels the superseded run. Action references currently use version 6 tags, which are mutable
 references rather than immutable commit pins.
 
-These jobs check contributor configuration and formatting. They do not establish component
-behaviour, browser support, product compilation or runtime test coverage.
+These jobs check contributor configuration, private design types and formatting. They do not
+execute the consumption examples or establish component behaviour, browser support, a product
+build or runtime test coverage. Hosted results remain specific to the revision actually checked.
 
 ## Discord notifications
 

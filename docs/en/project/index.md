@@ -1,6 +1,6 @@
 # Protea Project
 
-Status: **Foundation design scoped; component contracts and runtime not implemented**
+Status: **Component foundation prototype specified; component runtime not implemented**
 
 ## Purpose and authority
 
@@ -17,15 +17,16 @@ tooling and releases it introduces; ecosystem summaries do not establish impleme
 ## Current scope
 
 The current source contains private contributor infrastructure, documentation, an ISC licence,
-repository text hygiene configuration and a private design workspace introduction.
-There are no component contracts, runtime implementations, product package manifests or functional
-adapters. The [repository tooling guide](../tooling/index.md) owns the configured contributor
+repository text hygiene configuration and a private component contract prototype with checked,
+non-executed consumption examples. There are no runtime implementations, product package manifests
+or functional adapters. The [repository tooling guide](../tooling/index.md) owns the configured contributor
 baseline, available commands and current verification.
 
 The [foundation design guide](../design/index.md) owns the selected cases, vocabulary and
-responsibility boundaries. Future contract design will define their public surfaces and operation
-semantics before runtime implementation. Component names, managers, capabilities and class hierarchies remain design
-questions rather than established public contracts. Integrations with Lilium, Aster and other hosts
+responsibility boundaries. The [component foundation](../design/component-foundation.md) owns
+reference identity, logical lifetime and disposal semantics for the current prototype. Capabilities,
+families, managers and concrete class relationships remain for their owning design work.
+Integrations with Lilium, Aster and other hosts
 are optional product directions, not current dependencies or compatibility guarantees.
 
 ## Shared rules adoption
@@ -44,9 +45,10 @@ A Protea decision cannot silently change another product's public contract or a 
 
 ### Actual enforcement
 
-The current `verify` command runs focused lint and formatting checks over the files identified by
-[repository tooling](../tooling/index.md#current-verification). There is no product compiler or
-runtime test suite yet. [CI orchestration](../tooling/automation/index.md) runs the same gate
+The current `verify` command runs focused lint, strict private-design type checking and formatting
+over the files identified by [repository tooling](../tooling/index.md#current-verification).
+Consumption examples are not executed; there is no runtime test suite or product build yet.
+[CI orchestration](../tooling/automation/index.md) runs the same gate
 independently on Ubuntu and Windows; hosted results require evidence for the exact revision.
 Documentary links, fragments and authority claims still receive manual review. Adopting a rule
 does not create its enforcement: semantic design, naming, complete JSDoc/comment coverage,

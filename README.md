@@ -7,9 +7,11 @@ behaviour, accessibility and composition with optional presentation and framewor
 
 The repository provides a private contributor toolchain, project documentation, shared-rule
 adoption, an ISC licence and text hygiene configuration. Foundation scope, vocabulary and
-responsibilities are documented in the [design guide](docs/en/design/index.md). Component contracts, runtime code and
-product packages have not been introduced. Repository verification checks its current configuration
-and documentation; there is no product build or runtime test suite yet.
+responsibilities are documented in the [design guide](docs/en/design/index.md). A private
+[component foundation prototype](docs/en/design/component-foundation.md) specifies reference identity
+and logical lifetime, with non-executed consumption examples checked statically. Repository
+verification checks contributor configuration, design types and formatting. There is no component
+runtime implementation, product package, product build or runtime test suite yet.
 
 ## Development
 
@@ -27,7 +29,7 @@ The [tooling guide](docs/en/tooling/index.md) owns commands, prerequisites and v
 
 - [Documentation home](docs/en/index.md): canonical guides and subject ownership.
 - [Project](docs/en/project/index.md): current scope, shared-rule adoption and contribution.
-- [Foundation design](docs/en/design/index.md): selected cases, vocabulary, responsibilities and private design ownership.
+- [Foundation design](docs/en/design/index.md): selected cases, vocabulary, responsibilities and the private component prototype.
 - [Repository tooling](docs/en/tooling/index.md): contributor infrastructure, current checks and limits.
 - [Repository automation](docs/en/tooling/automation/index.md): CI, Discord configuration and execution evidence.
 - [Garden product direction](https://github.com/BlueLuscious/garden/blob/master/docs/en/products/protea/index.md): ecosystem responsibility and optional integrations.
