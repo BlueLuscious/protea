@@ -68,13 +68,41 @@ and `lib`, `module: "ESNext"`, `moduleResolution: "Bundler"`, `moduleDetection: 
 unchecked-index protection, consistent casing, unused-local and parameter rejection, switch
 fallthrough rejection, explicit overrides, native class fields and verbatim module syntax.
 
-This environment checks private authoring; ES2022 ESM here is not a product distribution promise.
+This is the selected private-authoring baseline; ES2022 ESM here is not a product distribution promise.
 Declaration prototypes and positive/negative examples must exist before a type gate is advertised;
 their declarations remain checked. Empty compiler inputs provide no product conformance evidence.
 
 Node-specific tooling receives separate configuration and ambient types when its inputs exist.
 An explicit library list and `types: []` avoid automatic host-global inclusion; they do not forbid
 explicit host imports or prove host independence. Those imports retain their own review boundary.
+
+## Design authoring
+
+The private [design workspace](../../../design/README.md) currently contains only its introduction.
+The [foundation design guide](../design/index.md) owns scope and semantics. It introduces no
+component declarations, consumer examples, compiler input suite or public package yet.
+
+The selected authoring root is `design/`. Introduce feature-local `contracts/`, `types/` or `api/`
+directories under `design/<feature>/` only when real symbols justify those responsibilities.
+Keep non-executed consumption examples under `design/examples/`. These future paths reserve
+ownership, not package/module boundaries; no empty source directories are created now.
+
+When the first real declarations and examples exist, add `design/tsconfig.json` extending the
+root compiler baseline with explicit inputs. Retain `noEmit: true`, `skipLibCheck: false`,
+`types: []` and the explicit ES2022 library for portable authoring, reviewing explicit host
+imports independently. This does not choose a product distribution or browser-support target.
+Concrete filenames and declaration forms follow the shared profile and each actual symbol.
+
+At that point introduce the planned `typecheck:design` command using
+`tsc --project design/tsconfig.json`, and include it in `verify` so both CI platforms check real
+design inputs. Expand lint and formatting to those actual files with a reviewed baseline and
+document their coverage. Do not advertise that command or add a successful empty compiler gate
+before its inputs exist. There is no current type-check command or compiler configuration in
+`design/`; the root lint target remains the real ESLint configuration.
+
+The current formatter includes `design/README.md` as a real authored input. Declaration checking,
+positive/negative consumption evidence and reconciliation with implementation-generated
+declarations remain future responsibilities; formatting that README proves none of them.
 
 ## Quality coverage
 
@@ -84,7 +112,7 @@ braced control flow, strict equality and selected unsafe constructs. Parser conf
 not establish current TypeScript inputs.
 
 Formatting and its read-only check use the same explicit scope: `README.md`, authored Markdown
-under `docs/en/`, `package.json`, `tsconfig.base.json`, `eslint.config.mjs`, `.prettierrc.json` and
+under `docs/en/`, `design/README.md`, `package.json`, `tsconfig.base.json`, `eslint.config.mjs`, `.prettierrc.json` and
 `.github/workflows/*.yaml`. The explicit targets and [.prettierignore](../../../.prettierignore)
 keep dependency installations, contributor-local records, the manager-owned lockfile and legal
 notice bytes outside formatting. Review unsupported

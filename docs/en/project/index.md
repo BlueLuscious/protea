@@ -1,6 +1,6 @@
 # Protea Project
 
-Status: **Repository foundation; component contracts and runtime not implemented**
+Status: **Foundation design scoped; component contracts and runtime not implemented**
 
 ## Purpose and authority
 
@@ -16,14 +16,15 @@ tooling and releases it introduces; ecosystem summaries do not establish impleme
 
 ## Current scope
 
-The current source contains private contributor infrastructure, documentation, an ISC licence and
-repository text hygiene configuration.
+The current source contains private contributor infrastructure, documentation, an ISC licence,
+repository text hygiene configuration and a private design workspace introduction.
 There are no component contracts, runtime implementations, product package manifests or functional
 adapters. The [repository tooling guide](../tooling/index.md) owns the configured contributor
 baseline, available commands and current verification.
 
-Future contract design will define a bounded set of responsibilities and their semantics before
-runtime implementation. Component names, managers, capabilities and class hierarchies remain design
+The [foundation design guide](../design/index.md) owns the selected cases, vocabulary and
+responsibility boundaries. Future contract design will define their public surfaces and operation
+semantics before runtime implementation. Component names, managers, capabilities and class hierarchies remain design
 questions rather than established public contracts. Integrations with Lilium, Aster and other hosts
 are optional product directions, not current dependencies or compatibility guarantees.
 
