@@ -1,6 +1,6 @@
 # Design Responsibilities
 
-Status: **Responsibility baseline with a private component foundation contract; runtime pending**
+Status: **Responsibility baseline with private component and capability contracts; runtime pending**
 
 This guide maps the responsibilities named in the [vocabulary](vocabulary.md) within Protea's
 bounded [design](index.md). It follows Garden's [Protea direction](https://github.com/BlueLuscious/garden/blob/master/docs/en/products/protea/index.md)
@@ -9,26 +9,27 @@ The map describes conceptual ownership and permitted consumption, not an impleme
 
 ## Responsibility map
 
-| Responsibility                         | Boundary                                                                                                                                                                                                                 |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Shared component foundation            | Owns reference identity, logical lifetime and finalisation in the [component foundation](component-foundation.md). It requires no universal configuration, event mechanism, opening, activation or manager registration. |
-| Capability                             | Owns the meaning of one instance's supported behaviour and observations. Reuse must allow independent instances; concrete state authority, storage and implementation mechanisms are decided by its later contract.      |
-| Family and variant                     | Own purpose-specific constraints, the meaningful differences between variants and required composition roles. They select suitable capabilities without making every related component support identical operations.     |
-| Part composition                       | Identifies the participating roles and their relationships. Exact creation, borrowing, retention, replacement and cleanup responsibilities must be assigned by the owning component or family contract.                  |
-| Optional manager                       | Owns justified scoped membership or lookup. That responsibility does not confer authority over component behaviour, state or resource lifetime; no global manager is required for basic component use.                   |
-| Coordination policy                    | Belongs to the family or an explicit collaborator whose responsibility requires it. Generic membership does not acquire family policy; coordination consumes reviewed public requests and observations.                  |
-| Future host adapter                    | Maps Protea's public contracts to the public contracts of a concrete host. Host-specific representation and effects stay at that integration boundary without redefining portable component semantics.                   |
-| Optional presentation and integrations | Supply supported visual, icon or motion capabilities through explicit boundaries. Their absence must not make basic component behaviour depend on a mandatory style, icon system, animation system or framework.         |
+| Responsibility                         | Boundary                                                                                                                                                                                                                         |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Shared component foundation            | Owns reference identity, logical lifetime and finalisation in the [component foundation](component-foundation.md). It requires no universal configuration, event mechanism, opening, activation or manager registration.         |
+| Capability                             | Owns one instance's supported behaviour and observations. [Reusable capabilities](reusable-capabilities.md) select opening/activation and their state authority; concrete storage and implementation mechanisms remain internal. |
+| Family and variant                     | Own purpose-specific constraints, the meaningful differences between variants and required composition roles. They select suitable capabilities without making every related component support identical operations.             |
+| Part composition                       | Identifies the participating roles and their relationships. Exact creation, borrowing, retention, replacement and cleanup responsibilities must be assigned by the owning component or family contract.                          |
+| Optional manager                       | Owns justified scoped membership or lookup. That responsibility does not confer authority over component behaviour, state or resource lifetime; no global manager is required for basic component use.                           |
+| Coordination policy                    | Belongs to the family or an explicit collaborator whose responsibility requires it. Generic membership does not acquire family policy; coordination consumes reviewed public requests and observations.                          |
+| Future host adapter                    | Maps Protea's public contracts to the public contracts of a concrete host. Host-specific representation and effects stay at that integration boundary without redefining portable component semantics.                           |
+| Optional presentation and integrations | Supply supported visual, icon or motion capabilities through explicit boundaries. Their absence must not make basic component behaviour depend on a mandatory style, icon system, animation system or framework.                 |
 
 A foundation is justified by actual common obligations rather than a desire for one universal
 component shape. A permanently visible sidebar can challenge that shape without acquiring an
 opening capability simply to belong to the same family as a floating sidebar. This is a design
 constraint on abstraction, not an accepted component class or operation surface.
 
-The capability owner defines behaviour for an instance; this does not preselect whether its
-authoritative capability state belongs to the component or its application. A trigger, observer, manager
-or coordinator must not create a second authority merely by interacting with that instance.
-The supported control model and exact request/change relationship remain to be specified.
+The capability contract defines behaviour for an instance. Opening selects either internal state
+or an explicitly borrowed synchronous application authority; its consumer surface exposes no
+second writer. A trigger, observer, manager or coordinator must not create a second authority by
+interacting with that instance. The reusable-capability guide owns that request/change relationship;
+future capabilities must justify their own authority model.
 
 ## Permitted dependency directions
 
@@ -73,8 +74,9 @@ lifecycle are separate responsibilities; their exact ownership transfers and cle
 cannot be inferred from a family name, registration concept or implementation class.
 
 This baseline settles the separation of responsibilities and dependency direction. The component
-foundation selects common lifetime and disposal responsibilities. Later design must select actual
-capabilities and family constraints, decide whether management is needed, and specify their state
-authority, parts and cleanup relationships within that lifetime boundary. Further public names,
+foundation selects common lifetime and disposal responsibilities; reusable capabilities specify
+opening, activation and their observations within that lifetime. Later design must select family
+constraints, decide whether management is needed, and specify parts and their cleanup relationships.
+Further public names,
 signatures, representation, inheritance and package boundaries remain provisional.
 No runtime state store, registry, listener, transition or host effect is implemented here.

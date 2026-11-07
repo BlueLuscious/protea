@@ -4,7 +4,25 @@
     "component/types/component-lifecycle.type.ts",
     "component/contracts/component.contract.ts",
     "component/api/index.ts",
-    "examples/component-foundation.test.ts"
+    "examples/component-foundation.test.ts",
+    "capabilities/types/capability-rejection-reason.type.ts",
+    "capabilities/types/capability-unsubscribe.type.ts",
+    "capabilities/api/index.ts",
+    "openable/types/openable-change.type.ts",
+    "openable/types/openable-result.type.ts",
+    "openable/constants/openable-result-statuses.constant.d.ts",
+    "openable/types/openable-result-status.type.ts",
+    "openable/types/openable-options.type.ts",
+    "openable/contracts/open-state-authority.contract.ts",
+    "openable/contracts/openable.contract.ts",
+    "openable/api/index.ts",
+    "activatable/types/activatable-result.type.ts",
+    "activatable/constants/activatable-result-statuses.constant.d.ts",
+    "activatable/types/activatable-result-status.type.ts",
+    "activatable/types/activatable-options.type.ts",
+    "activatable/contracts/activatable.contract.ts",
+    "activatable/api/index.ts",
+    "examples/capabilities.test.ts"
   ],
   "include": []
 }

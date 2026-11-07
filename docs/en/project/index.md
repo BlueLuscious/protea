@@ -1,6 +1,6 @@
 # Protea Project
 
-Status: **Component foundation prototype specified; component runtime not implemented**
+Status: **Component and capability prototypes specified; component runtime not implemented**
 
 ## Purpose and authority
 
@@ -17,15 +17,17 @@ tooling and releases it introduces; ecosystem summaries do not establish impleme
 ## Current scope
 
 The current source contains private contributor infrastructure, documentation, an ISC licence,
-repository text hygiene configuration and a private component contract prototype with checked,
+repository text hygiene configuration and private component/capability prototypes with checked,
 non-executed consumption examples. There are no runtime implementations, product package manifests
 or functional adapters. The [repository tooling guide](../tooling/index.md) owns the configured contributor
 baseline, available commands and current verification.
 
 The [foundation design guide](../design/index.md) owns the selected cases, vocabulary and
 responsibility boundaries. The [component foundation](../design/component-foundation.md) owns
-reference identity, logical lifetime and disposal semantics for the current prototype. Capabilities,
-families, managers and concrete class relationships remain for their owning design work.
+reference identity, logical lifetime and disposal semantics for the current prototype.
+[Reusable capabilities](../design/reusable-capabilities.md) specify logical opening with one
+internal or external synchronous state authority, and activation without persistent pressed state.
+Families, managers and concrete class relationships remain for their owning design work.
 Integrations with Lilium, Aster and other hosts
 are optional product directions, not current dependencies or compatibility guarantees.
 

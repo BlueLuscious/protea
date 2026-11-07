@@ -14,7 +14,8 @@ the same relative structure.
 
 The [repository introduction](../../README.md) summarises the current state. The project guide links
 Garden's ecosystem authorities. The private [component foundation](design/component-foundation.md)
-specifies the first prototype contract; no shipping package API or integration support matrix is
-established yet.
+specifies the minimum lifetime contract; [reusable capabilities](design/reusable-capabilities.md)
+own opening, activation and state-authority semantics. These remain private prototypes; no shipping
+package API or integration support matrix is established yet.
 
 Software and documentation follow the repository's [ISC licence](../../LICENSE).
