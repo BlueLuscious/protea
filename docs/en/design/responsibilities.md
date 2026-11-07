@@ -1,6 +1,6 @@
 # Design Responsibilities
 
-Status: **Responsibility baseline with private component and capability contracts; runtime pending**
+Status: **Responsibility baseline with private foundation, capability and family contracts; runtime pending**
 
 This guide maps the responsibilities named in the [vocabulary](vocabulary.md) within Protea's
 bounded [design](index.md). It follows Garden's [Protea direction](https://github.com/BlueLuscious/garden/blob/master/docs/en/products/protea/index.md)
@@ -23,7 +23,8 @@ The map describes conceptual ownership and permitted consumption, not an impleme
 A foundation is justified by actual common obligations rather than a desire for one universal
 component shape. A permanently visible sidebar can challenge that shape without acquiring an
 opening capability simply to belong to the same family as a floating sidebar. This is a design
-constraint on abstraction, not an accepted component class or operation surface.
+constraint on abstraction, now exercised by the selected
+[family prototypes](representative-families.md) without requiring an implementation class.
 
 The capability contract defines behaviour for an instance. Opening selects either internal state
 or an explicitly borrowed synchronous application authority; its consumer surface exposes no
@@ -75,8 +76,9 @@ cannot be inferred from a family name, registration concept or implementation cl
 
 This baseline settles the separation of responsibilities and dependency direction. The component
 foundation selects common lifetime and disposal responsibilities; reusable capabilities specify
-opening, activation and their observations within that lifetime. Later design must select family
-constraints, decide whether management is needed, and specify parts and their cleanup relationships.
-Further public names,
-signatures, representation, inheritance and package boundaries remain provisional.
+opening, activation and their observations within that lifetime. The representative-family guide
+selects the pilot constraints, creation ownership and fixed borrowed-part connections. Family
+creation owns the resources it allocates without acquiring ownership of supplied collaborators.
+Later design must decide whether management is needed and consolidate the public/integration
+surface. Further representation, implementation inheritance and package boundaries remain provisional.
 No runtime state store, registry, listener, transition or host effect is implemented here.

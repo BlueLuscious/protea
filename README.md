@@ -11,8 +11,10 @@ responsibilities are documented in the [design guide](docs/en/design/index.md). 
 [component foundation prototype](docs/en/design/component-foundation.md) specifies reference identity
 and logical lifetime. [Reusable capability prototypes](docs/en/design/reusable-capabilities.md)
 specify opening, activation, state authority and observations, with non-executed consumption
-examples checked statically. Repository
-verification checks contributor configuration, design types and formatting. There is no component
+examples checked statically.
+The [representative families](docs/en/design/representative-families.md) now contrast buttons,
+static/floating sidebars and modals, including borrowed controls and their cleanup boundaries.
+Repository verification checks contributor configuration, design types and formatting. There is no component
 runtime implementation, product package, product build or runtime test suite yet.
 
 ## Development
@@ -31,7 +33,7 @@ The [tooling guide](docs/en/tooling/index.md) owns commands, prerequisites and v
 
 - [Documentation home](docs/en/index.md): canonical guides and subject ownership.
 - [Project](docs/en/project/index.md): current scope, shared-rule adoption and contribution.
-- [Foundation design](docs/en/design/index.md): selected cases, vocabulary, responsibilities and private component/capability prototypes.
+- [Foundation design](docs/en/design/index.md): selected cases, vocabulary, responsibilities and private component, capability and family prototypes.
 - [Repository tooling](docs/en/tooling/index.md): contributor infrastructure, current checks and limits.
 - [Repository automation](docs/en/tooling/automation/index.md): CI, Discord configuration and execution evidence.
 - [Garden product direction](https://github.com/BlueLuscious/garden/blob/master/docs/en/products/protea/index.md): ecosystem responsibility and optional integrations.

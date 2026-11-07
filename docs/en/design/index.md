@@ -1,6 +1,6 @@
 # Foundation Design
 
-Status: **Private component and reusable capability prototypes specified; runtime not implemented**
+Status: **Private foundation, capability and representative family prototypes specified; runtime not implemented**
 
 This guide owns the current foundation-design scope and representative cases. The
 [vocabulary](vocabulary.md) defines its concepts; the [responsibility map](responsibilities.md)
@@ -19,24 +19,28 @@ The design defines a small set of component responsibilities and what their publ
 promise before implementing behaviour. The [component foundation](component-foundation.md) now
 specifies reference identity, logical lifetime and disposal. [Reusable capabilities](reusable-capabilities.md)
 specify logical opening, activation, authority and observation. Their private type prototypes and
-non-executed consumption examples are checked by TypeScript.
+non-executed consumption examples are checked by TypeScript. [Representative families](representative-families.md)
+now test their composition through button, sidebar and modal contracts, creation declarations and
+a borrowed closing control.
 
-Scope, vocabulary, responsibilities, minimum lifetime and reusable capability contracts are selected for this
-experimental design. Repository verification checks actual type relationships, contributor
+Scope, vocabulary, responsibilities, minimum lifetime, reusable capabilities and representative
+family contracts are selected for this experimental design. Repository verification checks actual type relationships, contributor
 configuration and formatting. It demonstrates no component behaviour, resource cleanup or runtime
 implementation conformance.
 
 ## Representative cases
 
-The following cases are design constraints and questions, not implemented user journeys or accepted
-component classes. A declaration must eventually express their justified responsibilities without
+The following cases are design constraints, with their selected pilot surfaces owned by the
+representative-family guide. They are not implemented user journeys or mandatory component classes.
+A declaration must express their justified responsibilities without
 forcing unrelated operations on every component.
 
 ### Activating a control
 
 Use a button-like control to examine the minimum meaning of requesting an action. The selected
 activation contract defines the request and observations without persistent selection, pressed or
-opening state. Its concrete family and parts remain to be designed.
+opening state. The button pilot combines that capability with component lifetime and needs no
+separate model parts.
 
 This case tests whether a simple interactive component can use the foundation without gaining
 opening methods, mandatory manager registration or rendering concerns. Browser gestures, event
@@ -48,7 +52,7 @@ must be identified before such implementation is claimed.
 Use a floating sidebar to examine logical opening independently of its trigger and presentation.
 The selected opening contract resolves request/result meaning, state authority, observation and
 lifetime limits. Logical openness does not require animation completion or a framework runtime;
-the sidebar's family-specific constraints remain to be designed.
+the family guide now selects its static/floating contrast and composition boundaries.
 
 Contrast it with a sidebar that is permanently visible in this scenario. That static case must
 not acquire artificial opening/closing operations merely to satisfy a family relationship. The
@@ -89,8 +93,8 @@ focus algorithms, renderers and functional adapters. No empty methods, throwing 
 runtime components are used as design evidence. Icons, motion and presentation remain optional
 and cannot become incidental dependencies of the foundation.
 
-`Openable` and `Activatable` are selected experimental contracts. `Pressable` and `toggle` are
-deferred for lack of a current consumer. `BaseComponent` and component/manager class names remain
+`Openable`, `Activatable` and the representative family surfaces are selected experimental
+contracts. `Pressable` and `toggle` are deferred for lack of a current consumer. `BaseComponent` and component/manager class names remain
 provisional. `protea-core` is a working subject, not a package name, installed entrypoint or
 distribution promise. Composition is a starting point for evaluation; inheritance requires a
 real specialisation that preserves its consumer contract.
@@ -105,10 +109,12 @@ real specialisation that preserves its consumer contract.
 | Prototype signatures                      | Private type declarations in the design workspace; they describe an intended API without implementing it.           |
 | Component foundation semantics            | The component foundation guide, linked from its declarations; future capabilities retain their own semantic owners. |
 | Reusable capability semantics             | The reusable-capability guide owns opening, activation, authority and subscription rules.                           |
+| Representative family semantics           | The representative-family guide owns pilot purposes, variants, part composition and creation ownership.             |
 | Private workspace and checks              | The repository tooling guide owns paths, configuration, commands and actual coverage.                               |
 
-The private [design workspace](../../../design/README.md) contains component and capability
-contracts, type-only entrypoints, non-executed examples and their compiler configuration.
+The private [design workspace](../../../design/README.md) contains foundation, capability and family
+contracts, declaration-only family creation, type-only entrypoints, non-executed examples and their
+compiler configuration.
 [Design authoring](../tooling/index.md#design-authoring) records the real inputs, commands and
 coverage. No public package, workspace member, export map, build output or ambient host dependency
 is created by this prototype.
@@ -123,10 +129,10 @@ current signature authority.
 Treat the cases, vocabulary, responsibility boundaries and private workspace as the selected
 design basis. The component foundation selects its minimum lifetime surface and reference identity
 for this private prototype. The reusable-capability guide selects its two opening authority modes
-and minimal activation semantics. Further API names, concrete family types, class relationships
-and module exports remain provisional until their contract design resolves
-them. These prototype choices are not a versioned public API promise. A deferred decision must
-identify its owner and the case needed to resolve it; it must not
+and minimal activation semantics. The representative-family guide selects pilot surfaces, fixed
+part borrowing and creation ownership. Further API consolidation, managers and integration surfaces
+remain with their owning design work. These prototype choices are not a versioned public API
+promise. A deferred decision must identify its owner and the case needed to resolve it; it must not
 be hidden by a placeholder implementation or presented as a product guarantee.
 
 Apply Garden's [TypeScript/JavaScript profile](https://github.com/BlueLuscious/garden/blob/master/docs/en/project-rules.md#typescript-and-javascript-profile)
@@ -135,8 +141,8 @@ candidate public API; workspace privacy does not make every consumer-facing inte
 implementation interface. Concrete filenames and declaration forms follow the responsibility of
 the real symbol, not a catalogue of names invented in advance.
 
-The separate component foundation and reusable-capability guides own their selected contracts;
-this scope alone accepts no manager or concrete family contract.
+The separate component foundation, reusable-capability and representative-family guides own their
+selected contracts; this scope alone accepts no manager contract.
 There is no framework/browser compatibility, accessible-interaction or publication claim. Static
 evidence will cover type relationships; transitions, actual instance isolation, notification
 ordering, cleanup, accessibility and host integration will require their own later evidence.

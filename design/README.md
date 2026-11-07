@@ -17,12 +17,23 @@ narrow capabilities. Their [shared types](capabilities/api/index.ts) cover rejec
 subscription cleanup; neither capability acquires a second component lifetime. The
 [capability examples](examples/capabilities.test.ts) check authority modes, results, change payloads
 and composition through type-only fixtures. The [capability guide](../docs/en/design/reusable-capabilities.md)
-owns their semantics. All example collaborators are declaration-only: do not execute either file.
+owns their semantics.
 
-[tsconfig.json](tsconfig.json) explicitly lists the real declarations, entrypoints and both example
+The [button](button/api/index.ts), [sidebar](sidebar/api/index.ts) and [modal](modal/api/index.ts)
+entrypoints describe representative families and ambient factory objects through type-only exports.
+Each factory exposes a `create` operation with its own component inputs and result. No creation
+implementation, runtime factory object or executable export is supplied. The
+public factory declarations sit beside their feature's type-only `api/` entrypoints. The
+[family guide](../docs/en/design/representative-families.md) owns their purposes, fixed borrowed
+parts and cleanup boundaries. The [family examples](examples/families.test.ts) check capability
+consumption, static/floating discrimination, creation options and trigger/target composition.
+Model, factory and application-service fixtures are declaration-only. The family subscription
+callback is a non-executed consumer expression; do not execute these files.
+
+[tsconfig.json](tsconfig.json) explicitly lists the real declarations, entrypoints and three example
 files, and extends the shared strict
 baseline without emitting JavaScript. Run `pnpm run typecheck:design` from the repository root;
 `pnpm run verify` includes that check alongside lint and formatting. Static acceptance does not
 demonstrate resource release, lifecycle transitions, runtime ownership or implementation conformance.
 
-No component constructor, runtime value, package export or functional implementation is provided.
+No component constructor implementation, runtime value, package export or functional implementation is provided.

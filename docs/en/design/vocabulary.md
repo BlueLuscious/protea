@@ -1,6 +1,6 @@
 # Design Vocabulary
 
-Status: **Vocabulary baseline; component and capability prototypes specified separately; runtime not implemented**
+Status: **Vocabulary baseline; foundation, capability and family prototypes specified separately; runtime not implemented**
 
 This vocabulary distinguishes the responsibilities used in Protea's [design](index.md).
 The [responsibility map](responsibilities.md) assigns their boundaries and permitted dependency
@@ -54,6 +54,7 @@ separate runtime and host evidence.
 The conceptual distinctions above are the vocabulary baseline. The component foundation owns the
 minimum component prototype; [reusable capabilities](reusable-capabilities.md) own the selected
 opening, activation, state-authority and subscription rules. This glossary introduces no competing
-signature authority. Family/variant contracts, class relationships, part ownership and their
-cleanup protocols remain for their owning contract work. No implementation is created by using
-these terms.
+signature authority. [Representative families](representative-families.md) select the pilot variant
+contracts and part ownership/cleanup; they do not mandate a class hierarchy. Further manager,
+API and integration decisions remain with their owning contract work. No implementation is created
+by using these terms.
