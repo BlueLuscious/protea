@@ -79,6 +79,9 @@ foundation selects common lifetime and disposal responsibilities; reusable capab
 opening, activation and their observations within that lifetime. The representative-family guide
 selects the pilot constraints, creation ownership and fixed borrowed-part connections. Family
 creation owns the resources it allocates without acquiring ownership of supplied collaborators.
-Later design must decide whether management is needed and consolidate the public/integration
-surface. Further representation, implementation inheritance and package boundaries remain provisional.
+The [coordination assessment](component-coordination.md) retains direct-reference collaboration for
+these pilots and defers registry and multi-modal policy contracts until their consumers justify
+them. It owns connection responsibilities and the limits of existing lifecycle observations.
+Later design must consolidate the public/integration surface. Further representation,
+implementation inheritance and package boundaries remain provisional.
 No runtime state store, registry, listener, transition or host effect is implemented here.

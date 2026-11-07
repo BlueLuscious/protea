@@ -30,7 +30,14 @@ consumption, static/floating discrimination, creation options and trigger/target
 Model, factory and application-service fixtures are declaration-only. The family subscription
 callback is a non-executed consumer expression; do not execute these files.
 
-[tsconfig.json](tsconfig.json) explicitly lists the real declarations, entrypoints and three example
+The [coordination examples](examples/component-coordination.test.ts) use those existing factories
+and capabilities in two application-local lexical scopes. Nested cleanup expressions distinguish
+a Modal-owned borrowed-control connection from an application-owned trigger subscription; they
+introduce no scope object or manager API. The [coordination guide](../docs/en/design/component-coordination.md)
+owns that assessment and its deferred registry and multi-modal candidates. Static acceptance
+does not prove isolation, notification delivery or successful cleanup.
+
+[tsconfig.json](tsconfig.json) explicitly lists the real declarations, entrypoints and four example
 files, and extends the shared strict
 baseline without emitting JavaScript. Run `pnpm run typecheck:design` from the repository root;
 `pnpm run verify` includes that check alongside lint and formatting. Static acceptance does not

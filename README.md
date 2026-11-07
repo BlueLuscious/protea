@@ -14,6 +14,9 @@ specify opening, activation, state authority and observations, with non-executed
 examples checked statically.
 The [representative families](docs/en/design/representative-families.md) now contrast buttons,
 static/floating sidebars and modals, including borrowed controls and their cleanup boundaries.
+[Component coordination](docs/en/design/component-coordination.md) retains direct references and
+public capabilities for these pilots, with explicit connection ownership; registries and
+multi-modal policies need a further concrete consumer before introducing contracts.
 Repository verification checks contributor configuration, design types and formatting. There is no component
 runtime implementation, product package, product build or runtime test suite yet.
 
@@ -33,7 +36,7 @@ The [tooling guide](docs/en/tooling/index.md) owns commands, prerequisites and v
 
 - [Documentation home](docs/en/index.md): canonical guides and subject ownership.
 - [Project](docs/en/project/index.md): current scope, shared-rule adoption and contribution.
-- [Foundation design](docs/en/design/index.md): selected cases, vocabulary, responsibilities and private component, capability and family prototypes.
+- [Foundation design](docs/en/design/index.md): selected cases, private prototypes, responsibilities and coordination decisions.
 - [Repository tooling](docs/en/tooling/index.md): contributor infrastructure, current checks and limits.
 - [Repository automation](docs/en/tooling/automation/index.md): CI, Discord configuration and execution evidence.
 - [Garden product direction](https://github.com/BlueLuscious/garden/blob/master/docs/en/products/protea/index.md): ecosystem responsibility and optional integrations.

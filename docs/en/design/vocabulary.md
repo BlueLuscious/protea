@@ -55,6 +55,8 @@ The conceptual distinctions above are the vocabulary baseline. The component fou
 minimum component prototype; [reusable capabilities](reusable-capabilities.md) own the selected
 opening, activation, state-authority and subscription rules. This glossary introduces no competing
 signature authority. [Representative families](representative-families.md) select the pilot variant
-contracts and part ownership/cleanup; they do not mandate a class hierarchy. Further manager,
+contracts and part ownership/cleanup; they do not mandate a class hierarchy.
+[Component coordination](component-coordination.md) retains direct references for those pilots and
+records the consumers needed before introducing a registry or multi-modal policy contract. Further
 API and integration decisions remain with their owning contract work. No implementation is created
 by using these terms.

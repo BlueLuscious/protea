@@ -28,8 +28,11 @@ reference identity, logical lifetime and disposal semantics for the current prot
 [Reusable capabilities](../design/reusable-capabilities.md) specify logical opening with one
 internal or external synchronous state authority, and activation without persistent pressed state.
 [Representative families](../design/representative-families.md) contrast buttons, static/floating
-sidebars and modals, including fixed borrowed parts and owned connections. Managers and further
-API/integration consolidation remain for their owning design work; no implementation hierarchy is selected.
+sidebars and modals, including fixed borrowed parts and owned connections.
+[Component coordination](../design/component-coordination.md) retains direct references and public
+capabilities for these pilots; registry and multi-modal policy candidates are explicitly deferred
+until their consumers justify them. Further API/integration consolidation remains for its owning
+design work; no implementation hierarchy is selected.
 Integrations with Lilium, Aster and other hosts
 are optional product directions, not current dependencies or compatibility guarantees.
 

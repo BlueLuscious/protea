@@ -88,6 +88,8 @@ The [foundation design guide](../design/index.md) owns scope; the
 and observation semantics.
 [Representative families](../design/representative-families.md) own the button, sidebar and modal
 pilots, their creation ownership and fixed borrowed closing control.
+The [coordination assessment](../design/component-coordination.md) retains those existing public
+surfaces and explicit direct-reference connections without introducing manager declarations.
 There is no public package or executable component implementation.
 
 The authoring root is `design/`. The component, opening and activation responsibilities justify
@@ -109,7 +111,7 @@ base, parts framework, implementation class or manager is introduced.
 
 [design/tsconfig.json](../../../design/tsconfig.json) extends the shared baseline and explicitly
 lists the component, shared capability, opening, activation and representative family declarations
-and entrypoints, plus three consumption-example files. Its empty `include` list prevents implicit input discovery. The inherited
+and entrypoints, plus four consumption-example files: 37 explicit design inputs in total. Its empty `include` list prevents implicit input discovery. The inherited
 `noEmit: true`, `skipLibCheck: false`, `types: []` and ES2022 library keep declaration checking
 enabled and automatic host globals absent. Review explicit imports and reference directives
 independently; these settings alone do not prohibit host dependencies.
@@ -138,6 +140,11 @@ compatible parts, fixed readonly part references, non-callable factory owners, r
 operations and the absence of runtime factory exports.
 Creation validation, failure cleanup, real trigger connections and accessible host behaviour still
 require implementation evidence; no structural type proves a part is active or belongs to its caller.
+The coordination examples check two application-local compositions and cleanup callability using
+existing contracts. Their lexical scopes are not a product scope API or runtime isolation proof;
+non-executed `try`/`finally` expressions do not demonstrate successful resource release or error
+aggregation. Existing negative cases continue to protect the unchanged contract restrictions;
+there is no registry API requiring registration, lookup or removal cases.
 
 Reconciliation with later implementation-generated declarations remains a separate responsibility;
 there must eventually be one current signature authority.

@@ -22,6 +22,8 @@ specify logical opening, activation, authority and observation. Their private ty
 non-executed consumption examples are checked by TypeScript. [Representative families](representative-families.md)
 now test their composition through button, sidebar and modal contracts, creation declarations and
 a borrowed closing control.
+[Component coordination](component-coordination.md) assesses discovery and coordination needs,
+retaining direct references and explicit connection ownership without adding a manager contract.
 
 Scope, vocabulary, responsibilities, minimum lifetime, reusable capabilities and representative
 family contracts are selected for this experimental design. Repository verification checks actual type relationships, contributor
@@ -101,16 +103,17 @@ real specialisation that preserves its consumer contract.
 
 ## Design artefacts and authority
 
-| Artefact                                  | Owner and boundary                                                                                                  |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Scope and representative cases            | This guide; they constrain the design without declaring a component API.                                            |
-| Concept definitions                       | The vocabulary; names identify responsibilities rather than mandatory types or classes.                             |
-| Responsibilities and dependency direction | The responsibility map; further concrete collaboration remains to be designed within those boundaries.              |
-| Prototype signatures                      | Private type declarations in the design workspace; they describe an intended API without implementing it.           |
-| Component foundation semantics            | The component foundation guide, linked from its declarations; future capabilities retain their own semantic owners. |
-| Reusable capability semantics             | The reusable-capability guide owns opening, activation, authority and subscription rules.                           |
-| Representative family semantics           | The representative-family guide owns pilot purposes, variants, part composition and creation ownership.             |
-| Private workspace and checks              | The repository tooling guide owns paths, configuration, commands and actual coverage.                               |
+| Artefact                                  | Owner and boundary                                                                                                       |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Scope and representative cases            | This guide; they constrain the design without declaring a component API.                                                 |
+| Concept definitions                       | The vocabulary; names identify responsibilities rather than mandatory types or classes.                                  |
+| Responsibilities and dependency direction | The responsibility map; further concrete collaboration remains to be designed within those boundaries.                   |
+| Prototype signatures                      | Private type declarations in the design workspace; they describe an intended API without implementing it.                |
+| Component foundation semantics            | The component foundation guide, linked from its declarations; future capabilities retain their own semantic owners.      |
+| Reusable capability semantics             | The reusable-capability guide owns opening, activation, authority and subscription rules.                                |
+| Representative family semantics           | The representative-family guide owns pilot purposes, variants, part composition and creation ownership.                  |
+| Coordination decisions                    | The coordination guide owns current collaboration, connection responsibilities and deferred discovery/policy candidates. |
+| Private workspace and checks              | The repository tooling guide owns paths, configuration, commands and actual coverage.                                    |
 
 The private [design workspace](../../../design/README.md) contains foundation, capability and family
 contracts, declaration-only family creation, type-only entrypoints, non-executed examples and their
@@ -130,8 +133,9 @@ Treat the cases, vocabulary, responsibility boundaries and private workspace as 
 design basis. The component foundation selects its minimum lifetime surface and reference identity
 for this private prototype. The reusable-capability guide selects its two opening authority modes
 and minimal activation semantics. The representative-family guide selects pilot surfaces, fixed
-part borrowing and creation ownership. Further API consolidation, managers and integration surfaces
-remain with their owning design work. These prototype choices are not a versioned public API
+part borrowing and creation ownership. The coordination guide records why registry and multi-modal
+policy candidates are deferred and what would justify revisiting them. Further API consolidation
+and integration surfaces remain with their owning design work. These prototype choices are not a versioned public API
 promise. A deferred decision must identify its owner and the case needed to resolve it; it must not
 be hidden by a placeholder implementation or presented as a product guarantee.
 
@@ -142,7 +146,8 @@ implementation interface. Concrete filenames and declaration forms follow the re
 the real symbol, not a catalogue of names invented in advance.
 
 The separate component foundation, reusable-capability and representative-family guides own their
-selected contracts; this scope alone accepts no manager contract.
+selected contracts; the coordination guide owns their collaboration assessment. No manager contract
+is retained for the current pilots.
 There is no framework/browser compatibility, accessible-interaction or publication claim. Static
 evidence will cover type relationships; transitions, actual instance isolation, notification
 ordering, cleanup, accessibility and host integration will require their own later evidence.

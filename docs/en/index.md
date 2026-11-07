@@ -16,7 +16,10 @@ The [repository introduction](../../README.md) summarises the current state. The
 Garden's ecosystem authorities. The private [component foundation](design/component-foundation.md)
 specifies the minimum lifetime contract; [reusable capabilities](design/reusable-capabilities.md)
 own opening, activation and state-authority semantics. [Representative families](design/representative-families.md)
-own the button, sidebar and modal pilots and their part composition. These remain private prototypes; no shipping
+own the button, sidebar and modal pilots and their part composition.
+[Component coordination](design/component-coordination.md) owns direct-reference collaboration,
+connection responsibilities and the reasons for deferring registries and multi-modal policy.
+These remain private prototypes; no shipping
 package API or integration support matrix is established yet.
 
 Software and documentation follow the repository's [ISC licence](../../LICENSE).
