@@ -124,3 +124,5 @@ framework compatibility. Such claims require their own implementation and host e
 These outstanding integration qualifications do not require placeholder APIs to complete the
 current boundary design. Later runtime, host and accessibility checks must establish the promises
 of each retained adapter; static type acceptance alone cannot provide that evidence.
+The [implementation handover](implementation-handover.md) maps those obligations alongside the
+portable model regressions without claiming a host implementation or compatibility result.

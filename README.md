@@ -20,6 +20,8 @@ multi-modal policies need a further concrete consumer before introducing contrac
 The [proposed public API](docs/en/design/public-api.md) maps the existing type-only modules;
 [integration boundaries](docs/en/design/integration-boundaries.md) assign future host responsibilities
 and identify unavailable upstream contracts without promising compatibility.
+The [implementation handover](docs/en/design/implementation-handover.md) maps static evidence to
+the runtime and host regressions still required, and defines declaration reconciliation.
 Repository verification checks contributor configuration, design types and formatting. There is no component
 runtime implementation, product package, product build or runtime test suite yet.
 

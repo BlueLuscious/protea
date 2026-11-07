@@ -152,7 +152,10 @@ aggregation. Existing negative cases continue to protect the unchanged contract 
 there is no registry API requiring registration, lookup or removal cases.
 
 Reconciliation with later implementation-generated declarations remains a separate responsibility;
-there must eventually be one current signature authority.
+the [implementation handover](../design/implementation-handover.md) owns the producer transition
+and evidence map. There must eventually be one current signature authority. Reviewing the intended
+diagnostic for each negative example is a qualification activity, not an additional package script
+or a claim that the normal gate matches diagnostic codes automatically.
 
 ## Quality coverage
 

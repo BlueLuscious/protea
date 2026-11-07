@@ -36,6 +36,9 @@ the existing type-only modules and extension surface. [Integration boundaries](.
 assign future host responsibilities and record unavailable upstream contracts; no implementation hierarchy is selected.
 Integrations with Lilium, Aster and other hosts
 are optional product directions, not current dependencies or compatibility guarantees.
+The [implementation handover](../design/implementation-handover.md) consolidates the static evidence,
+required runtime regressions and declaration-production transition. It selects no implementation
+package or working integration.
 
 ## Shared rules adoption
 

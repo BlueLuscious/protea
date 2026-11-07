@@ -43,6 +43,11 @@ entrypoints, their selected names and structural extension surface. The
 without adding a host contract or adapter. The existing examples supply their consumer evidence;
 this consolidation adds no declaration, runtime export or duplicate fixture.
 
+The [implementation handover](../docs/en/design/implementation-handover.md) maps these examples to
+their actual guarantees and later runtime obligations. Its reconciliation procedure names the
+future declaration producer and distinguishes prototype-only value-absence checks from future
+product export conformance.
+
 [tsconfig.json](tsconfig.json) explicitly lists the real declarations, entrypoints and four example
 files, and extends the shared strict
 baseline without emitting JavaScript. Run `pnpm run typecheck:design` from the repository root;

@@ -128,3 +128,7 @@ semantics with these reviewed prototypes. Resolve differences at their actual co
 retire or re-scope the private prototypes so there is one current signature authority. Runtime,
 host and clean-consumer evidence must establish their own guarantees; compiling this workspace
 does not establish them.
+
+The [implementation handover](implementation-handover.md) owns the detailed evidence map and
+reconciliation procedure, including the future declaration producer and the experimental scope
+of the six runtime-value absence checks.

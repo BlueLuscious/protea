@@ -1,6 +1,6 @@
 # Foundation Design
 
-Status: **Private prototypes, proposed API and integration boundaries specified; runtime not implemented**
+Status: **Private contract design and implementation handover specified; runtime not implemented**
 
 This guide owns the current foundation-design scope and representative cases. The
 [vocabulary](vocabulary.md) defines its concepts; the [responsibility map](responsibilities.md)
@@ -27,6 +27,9 @@ retaining direct references and explicit connection ownership without adding a m
 The [proposed public API](public-api.md) maps the existing consumer surface and extension boundaries.
 [Integration boundaries](integration-boundaries.md) assign future host responsibilities and record
 unavailable upstream contracts without adding an adapter.
+The [implementation handover](implementation-handover.md) maps each evidence category to the
+runtime and host checks still required and defines how implementation-generated declarations
+will replace the prototype signature authority.
 
 Scope, vocabulary, responsibilities, minimum lifetime, reusable capabilities and representative
 family contracts are selected for this experimental design. Repository verification checks actual type relationships, contributor
@@ -118,6 +121,7 @@ real specialisation that preserves its consumer contract.
 | Coordination decisions                    | The coordination guide owns current collaboration, connection responsibilities and deferred discovery/policy candidates. |
 | Proposed public surface                   | The public-API guide maps logical modules, existing names, declaration owners and deliberate extension boundaries.       |
 | Integration boundaries                    | The integration guide owns future host responsibilities, optional product boundaries and unavailable upstream contracts. |
+| Validation and implementation handover    | The handover owns evidence classification, required implementation regressions and declaration reconciliation.           |
 | Private workspace and checks              | The repository tooling guide owns paths, configuration, commands and actual coverage.                                    |
 
 The private [design workspace](../../../design/README.md) contains foundation, capability and family

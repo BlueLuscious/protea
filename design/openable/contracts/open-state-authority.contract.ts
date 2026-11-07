@@ -27,7 +27,7 @@ export interface OpenStateAuthority {
   /**
    * @description Registers a synchronous observer of effective authoritative opening changes.
    * @remarks Registration does not emit an initial value. The caller owns the returned release
-   * obligation and borrows the listener. Ordering and failure rules are defined in
+   * obligation; the source borrows the listener. Ordering and failure rules are defined in
    * [Reusable capabilities](../../../docs/en/design/reusable-capabilities.md).
    * @param listener - Receives the previous and committed current logical values.
    * @returns An idempotent function that releases this observation registration.

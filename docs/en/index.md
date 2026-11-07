@@ -22,6 +22,8 @@ connection responsibilities and the reasons for deferring registries and multi-m
 The [proposed public API](design/public-api.md) maps declaration and semantic owners;
 [integration boundaries](design/integration-boundaries.md) own future host requirements and
 the limits of optional integrations.
+The [implementation handover](design/implementation-handover.md) maps evidence, remaining runtime
+obligations and the transition to implementation-generated declarations.
 These remain private prototypes; no shipping
 package API or integration support matrix is established yet.
 
