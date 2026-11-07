@@ -57,6 +57,9 @@ opening, activation, state-authority and subscription rules. This glossary intro
 signature authority. [Representative families](representative-families.md) select the pilot variant
 contracts and part ownership/cleanup; they do not mandate a class hierarchy.
 [Component coordination](component-coordination.md) retains direct references for those pilots and
-records the consumers needed before introducing a registry or multi-modal policy contract. Further
-API and integration decisions remain with their owning contract work. No implementation is created
+records the consumers needed before introducing a registry or multi-modal policy contract.
+The [proposed public API](public-api.md) maps the selected names and consumer/extension boundaries;
+[integration boundaries](integration-boundaries.md) assign prospective host responsibilities and
+record unavailable contracts. Concrete implementation and distribution remain with their owning
+work. No implementation is created
 by using these terms.

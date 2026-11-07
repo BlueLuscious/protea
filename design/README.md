@@ -37,6 +37,12 @@ introduce no scope object or manager API. The [coordination guide](../docs/en/de
 owns that assessment and its deferred registry and multi-modal candidates. Static acceptance
 does not prove isolation, notification delivery or successful cleanup.
 
+The [public-API map](../docs/en/design/public-api.md) consolidates the seven existing type-only
+entrypoints, their selected names and structural extension surface. The
+[integration guide](../docs/en/design/integration-boundaries.md) assigns future host responsibilities
+without adding a host contract or adapter. The existing examples supply their consumer evidence;
+this consolidation adds no declaration, runtime export or duplicate fixture.
+
 [tsconfig.json](tsconfig.json) explicitly lists the real declarations, entrypoints and four example
 files, and extends the shared strict
 baseline without emitting JavaScript. Run `pnpm run typecheck:design` from the repository root;

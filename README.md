@@ -17,6 +17,9 @@ static/floating sidebars and modals, including borrowed controls and their clean
 [Component coordination](docs/en/design/component-coordination.md) retains direct references and
 public capabilities for these pilots, with explicit connection ownership; registries and
 multi-modal policies need a further concrete consumer before introducing contracts.
+The [proposed public API](docs/en/design/public-api.md) maps the existing type-only modules;
+[integration boundaries](docs/en/design/integration-boundaries.md) assign future host responsibilities
+and identify unavailable upstream contracts without promising compatibility.
 Repository verification checks contributor configuration, design types and formatting. There is no component
 runtime implementation, product package, product build or runtime test suite yet.
 

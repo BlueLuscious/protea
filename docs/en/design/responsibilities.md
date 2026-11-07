@@ -82,6 +82,8 @@ creation owns the resources it allocates without acquiring ownership of supplied
 The [coordination assessment](component-coordination.md) retains direct-reference collaboration for
 these pilots and defers registry and multi-modal policy contracts until their consumers justify
 them. It owns connection responsibilities and the limits of existing lifecycle observations.
-Later design must consolidate the public/integration surface. Further representation,
+The [public-API map](public-api.md) consolidates existing logical modules and extension points;
+the [integration guide](integration-boundaries.md) assigns prospective host responsibilities and
+records unavailable upstream contracts. Further representation,
 implementation inheritance and package boundaries remain provisional.
 No runtime state store, registry, listener, transition or host effect is implemented here.

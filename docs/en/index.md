@@ -19,6 +19,9 @@ own opening, activation and state-authority semantics. [Representative families]
 own the button, sidebar and modal pilots and their part composition.
 [Component coordination](design/component-coordination.md) owns direct-reference collaboration,
 connection responsibilities and the reasons for deferring registries and multi-modal policy.
+The [proposed public API](design/public-api.md) maps declaration and semantic owners;
+[integration boundaries](design/integration-boundaries.md) own future host requirements and
+the limits of optional integrations.
 These remain private prototypes; no shipping
 package API or integration support matrix is established yet.
 

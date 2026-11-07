@@ -31,8 +31,9 @@ internal or external synchronous state authority, and activation without persist
 sidebars and modals, including fixed borrowed parts and owned connections.
 [Component coordination](../design/component-coordination.md) retains direct references and public
 capabilities for these pilots; registry and multi-modal policy candidates are explicitly deferred
-until their consumers justify them. Further API/integration consolidation remains for its owning
-design work; no implementation hierarchy is selected.
+until their consumers justify them. The [proposed public API](../design/public-api.md) consolidates
+the existing type-only modules and extension surface. [Integration boundaries](../design/integration-boundaries.md)
+assign future host responsibilities and record unavailable upstream contracts; no implementation hierarchy is selected.
 Integrations with Lilium, Aster and other hosts
 are optional product directions, not current dependencies or compatibility guarantees.
 

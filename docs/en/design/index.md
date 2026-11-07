@@ -1,6 +1,6 @@
 # Foundation Design
 
-Status: **Private foundation, capability and representative family prototypes specified; runtime not implemented**
+Status: **Private prototypes, proposed API and integration boundaries specified; runtime not implemented**
 
 This guide owns the current foundation-design scope and representative cases. The
 [vocabulary](vocabulary.md) defines its concepts; the [responsibility map](responsibilities.md)
@@ -24,6 +24,9 @@ now test their composition through button, sidebar and modal contracts, creation
 a borrowed closing control.
 [Component coordination](component-coordination.md) assesses discovery and coordination needs,
 retaining direct references and explicit connection ownership without adding a manager contract.
+The [proposed public API](public-api.md) maps the existing consumer surface and extension boundaries.
+[Integration boundaries](integration-boundaries.md) assign future host responsibilities and record
+unavailable upstream contracts without adding an adapter.
 
 Scope, vocabulary, responsibilities, minimum lifetime, reusable capabilities and representative
 family contracts are selected for this experimental design. Repository verification checks actual type relationships, contributor
@@ -113,6 +116,8 @@ real specialisation that preserves its consumer contract.
 | Reusable capability semantics             | The reusable-capability guide owns opening, activation, authority and subscription rules.                                |
 | Representative family semantics           | The representative-family guide owns pilot purposes, variants, part composition and creation ownership.                  |
 | Coordination decisions                    | The coordination guide owns current collaboration, connection responsibilities and deferred discovery/policy candidates. |
+| Proposed public surface                   | The public-API guide maps logical modules, existing names, declaration owners and deliberate extension boundaries.       |
+| Integration boundaries                    | The integration guide owns future host responsibilities, optional product boundaries and unavailable upstream contracts. |
 | Private workspace and checks              | The repository tooling guide owns paths, configuration, commands and actual coverage.                                    |
 
 The private [design workspace](../../../design/README.md) contains foundation, capability and family
@@ -134,8 +139,10 @@ design basis. The component foundation selects its minimum lifetime surface and 
 for this private prototype. The reusable-capability guide selects its two opening authority modes
 and minimal activation semantics. The representative-family guide selects pilot surfaces, fixed
 part borrowing and creation ownership. The coordination guide records why registry and multi-modal
-policy candidates are deferred and what would justify revisiting them. Further API consolidation
-and integration surfaces remain with their owning design work. These prototype choices are not a versioned public API
+policy candidates are deferred and what would justify revisiting them. The public-API and integration
+guides consolidate the selected consumer boundaries and the obligations of prospective hosts.
+Concrete host contracts, distribution and runtime conformance still need their own evidence.
+These prototype choices are not a versioned public API
 promise. A deferred decision must identify its owner and the case needed to resolve it; it must not
 be hidden by a placeholder implementation or presented as a product guarantee.
 

@@ -92,6 +92,11 @@ The [coordination assessment](../design/component-coordination.md) retains those
 surfaces and explicit direct-reference connections without introducing manager declarations.
 There is no public package or executable component implementation.
 
+The [proposed public API](../design/public-api.md) maps the seven existing type-only entrypoints
+and their consumer/extension boundaries. [Integration boundaries](../design/integration-boundaries.md)
+record prospective host duties and unavailable upstream contracts. Their import/export and semantic
+review is manual; neither guide adds a package-consumer suite, architecture gate or host fixture.
+
 The authoring root is `design/`. The component, opening and activation responsibilities justify
 their feature-local `contracts/`, `types/` and type-only `api/` entrypoints. Feature-local
 `constants/` now holds ambient `.d.ts` declarations for the named result vocabularies, with status
