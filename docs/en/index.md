@@ -1,18 +1,24 @@
 # Protea Documentation
 
-English under `docs/en/` is the canonical documentation locale. Future translations should preserve
-the same relative structure.
+English under `docs/en/` is canonical. Future translations should preserve its relative structure.
 
 ## Guides and ownership
 
-| Guide                                                | Responsibility                                                                      |
-| ---------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| [Project](project/index.md)                          | Current product scope, shared-rule adoption, contribution and ownership.            |
-| [Repository tooling](tooling/index.md)               | Contributor infrastructure, selected baseline, current verification and its limits. |
-| [Repository automation](tooling/automation/index.md) | CI orchestration, Discord configuration and execution/receipt boundaries.           |
+| Guide | Responsibility |
+| --- | --- |
+| [Packages](packages/index.md) | Actual package set, current API responsibilities and parallel feature guides. |
+| [Project](project/index.md) | Product direction, shared-rule adoption, contribution and ownership. |
+| [Repository tooling](tooling/index.md) | Contributor environment, actual commands, output ownership and checking limits. |
+| [Repository automation](tooling/automation/index.md) | CI orchestration and Discord execution/receipt boundaries. |
 
-The [repository introduction](../../README.md) summarises the current state. The project guide links
-Garden's ecosystem authorities; product contracts and implemented behaviour remain owned here when
-they are introduced. No package/API reference or integration support matrix is established yet.
+The [repository introduction](../../README.md) summarises current source. The private
+[core package](packages/core/index.md) implements the component foundation and reusable opening
+and activation, with production contracts and generated declarations.
+The [component guide](packages/core/component/index.md) owns logical lifetime and cleanup;
+[capability guides](packages/core/capabilities/index.md) own composition, requests, state authority,
+outcomes and observations.
 
+[Component direction](project/component-direction.md) records vocabulary, responsibilities,
+deferred original families and reopened Sidebar axes. [Integration boundaries](project/integration-boundaries.md)
+own future hosts and optional providers. Neither is a second API catalogue or a compatibility claim.
 Software and documentation follow the repository's [ISC licence](../../LICENSE).

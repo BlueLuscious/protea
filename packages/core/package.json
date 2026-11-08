@@ -1,0 +1,29 @@
+{
+  "name": "@luscious-garden/protea-core",
+  "version": "0.0.0",
+  "description": "Portable component foundations and reusable capabilities for Protea.",
+  "private": true,
+  "type": "module",
+  "license": "ISC",
+  "author": "BlueLuscious",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlueLuscious/protea.git",
+    "directory": "packages/core"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node ../../tooling/workspace/build-core.mjs"
+  }
+}

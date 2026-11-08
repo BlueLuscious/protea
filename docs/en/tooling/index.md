@@ -1,114 +1,148 @@
 # Repository Tooling
 
-Status: **Contributor baseline and workflow sources configured; product suites not implemented**
+Status: **Portable lifetime/capability runtime, build and public-consumer checks configured**
 
-This guide owns Protea's contributor toolchain and checking boundaries.
-The [project guide](../project/index.md) owns product responsibility and shared-rule adoption;
-the [documentation index](../index.md) identifies the current authorities.
+This guide owns contributor tools, actual commands and checking coverage. The
+[project guide](../project/index.md) owns product responsibility; the
+[core package tooling guide](core-package.md) owns production outputs and their filesystem boundary.
 
 ## Current verification
 
-`pnpm run verify` runs the root lint and formatting checks in order. Both inspect actual repository
-files; verification does not format or regenerate them. These checks do not validate links,
-fragments, product behaviour or complete shared-rule conformance.
+`pnpm run verify` runs six steps: focused lint, strict production type checking,
+manifest/configuration formatting, tooling tests, runtime tests and fresh package consumers.
+The tests build isolated candidates and use exactly owned system-temporary directories.
+Verification therefore has filesystem effects even though lint, no-emit type checking and
+format-check subcommands are read-only. The separate build command produces repository package
+outputs when requested.
 
-Documentary review still covers links and fragments, terminology, authority boundaries, present
-versus proposed behaviour, whitespace and the complete retained change. There are no product
-sources, type/runtime suites or build commands. [Repository automation](automation/index.md)
-orchestrates the same gate in CI and owns notification configuration. Successful local checks
-establish neither hosted CI evidence nor notification delivery or publication.
+These checks cover declarations, bounded output production, package inclusion, public module/type
+resolution and actual lifetime/opening/activation behaviour. Public runtime suites exercise the
+built package through its root; they do not depend on an experimental source workspace. Type
+consumers remain non-executed fixtures and prove their checked restrictions, not runtime semantics.
 
-## Selected toolchain
+Links, fragments, terminology, semantic architecture, complete JSDoc, British English, source/text
+hygiene and prose truth retain manual review. [Repository automation](automation/index.md) invokes
+the same gate on its configured platforms. Local results establish neither exact-source hosted
+success, live notification receipt nor registry publication.
 
-| Authority                     | Selection                                                       |
-| ----------------------------- | --------------------------------------------------------------- |
-| Node.js                       | `24.22.2`, recorded in [.node-version](../../../.node-version). |
-| Compatible repository runtime | `engines.node: ">=24.22.2 <25"`.                                |
-| Package manager               | `packageManager: "pnpm@10.28.1"`.                               |
-| TypeScript                    | `5.9.3`.                                                        |
-| ESLint                        | `10.11.0`.                                                      |
-| typescript-eslint             | `8.70.1`.                                                       |
-| Prettier                      | `3.9.8`.                                                        |
+## Selected contributor environment
 
-The root [package.json](../../../package.json) is private, named `protea`, and uses ESM contributor
-configuration. It owns the compatible engine range, package-manager pin, commands and four exact
-development dependencies. pnpm owns generated resolution in [pnpm-lock.yaml](../../../pnpm-lock.yaml).
+| Authority | Selection |
+| --- | --- |
+| Node.js | `24.22.2`, in [.node-version](../../../.node-version). |
+| Repository engine range | `>=24.22.2 <25`. |
+| pnpm | `10.28.1`, pinned by `packageManager`. |
+| TypeScript | `5.9.3`. |
+| ESLint | `10.11.0`. |
+| typescript-eslint | `8.70.1`. |
+| Prettier | `3.9.8`. |
 
-Workspace membership and `pnpm-workspace.yaml` wait for a real package; a private design directory
-need not be a package. Installed tools are development dependencies. There is no product runtime,
-framework, Aster or Lilium dependency. Node ambient types, `tsx`, suites, cleaners and build
-tooling wait for actual consumers. Node's runner with `tsx` is the selected starting point for
-executable TypeScript tests.
+The private root [manifest](../../../package.json) owns contributor scripts and development
+dependencies. [pnpm-lock.yaml](../../../pnpm-lock.yaml) owns generated resolution.
+[pnpm-workspace.yaml](../../../pnpm-workspace.yaml) and root `workspaces` both select
+`packages/*`; their one actual member is the private core package.
 
-These versions describe contributor infrastructure. They do not select future product package
-names, exports, browser support, runtime requirements or distribution targets.
+There is no production Node/DOM/framework dependency. Node's built-in runner executes current
+`.mjs` tooling, runtime and distribution tests; they need neither `tsx` nor Node ambient types.
+Those tools require actual executable TypeScript inputs before introduction. Contributor pins
+do not establish a portable package engine requirement or broader support matrix.
 
 ## Installation and commands
 
-Use the exact Node runtime in `.node-version` and the pnpm executable pinned by `packageManager`.
-From the repository root:
+Use the exact Node and pnpm versions above, then from the repository root:
 
 ```sh
 pnpm install --frozen-lockfile
 pnpm run verify
 ```
 
-| Command                 | Responsibility                                                  |
-| ----------------------- | --------------------------------------------------------------- |
-| `pnpm run lint`         | Check the real ESLint configuration with zero warnings allowed. |
-| `pnpm run format`       | Format the explicitly owned files below.                        |
-| `pnpm run format:check` | Check the same formatting scope without writing.                |
-| `pnpm run verify`       | Run lint, then the read-only formatting check.                  |
+| Command | Current responsibility |
+| --- | --- |
+| `pnpm run build` | Produce core JavaScript/declarations through the bounded output owner. |
+| `pnpm run typecheck` | Strict no-emit checking of production contracts and runtime. |
+| `pnpm run lint` | Check actual package, tooling, test and ESLint inputs with zero warnings. |
+| `pnpm run format` | Format root/package manifests, Prettier configuration and ESLint configuration. |
+| `pnpm run format:check` | Check that same explicit scope without writing. |
+| `pnpm run test:tooling` | Exercise build ownership and failure boundaries using isolated candidates. |
+| `pnpm run test:runtime` | Run `node --test tests/runtime/*.test.mjs` against freshly built public packages. |
+| `pnpm run test:consumer` | Check fresh archives, inclusion, exports and clean runtime/type consumers. |
+| `pnpm run verify` | Run lint, type checking, format checking, tooling tests, runtime tests and package consumers. |
 
-## Private authoring boundary
+The package build script invokes the same repository producer. No empty recursive gate, release
+command or publication gate is advertised.
 
-[tsconfig.base.json](../../../tsconfig.base.json) provides strict static checking with explicit ES2022 `target`
-and `lib`, `module: "ESNext"`, `moduleResolution: "Bundler"`, `moduleDetection: "force"`,
-`types: []`, `noEmit: true` and `skipLibCheck: false`. It also enables exact optional properties,
-unchecked-index protection, consistent casing, unused-local and parameter rejection, switch
-fallthrough rejection, explicit overrides, native class fields and verbatim module syntax.
+## Production type checking
 
-This environment checks private authoring; ES2022 ESM here is not a product distribution promise.
-Declaration prototypes and positive/negative examples must exist before a type gate is advertised;
-their declarations remain checked. Empty compiler inputs provide no product conformance evidence.
+The shared [strict baseline](../../../tsconfig.base.json) has explicit ES2022 libraries,
+`types: []`, `skipLibCheck: false`, exact optional properties, checked indexed access,
+unused-member checks and verbatim module syntax. Production configuration selects NodeNext
+module/resolution rules and relative `.js` specifiers. Build configuration explicitly enables
+JavaScript/declaration emission with `noEmitOnError`; checking remains a no-emit operation.
+The [package guide](core-package.md) owns the producer and included files.
 
-Node-specific tooling receives separate configuration and ambient types when its inputs exist.
-An explicit library list and `types: []` avoid automatic host-global inclusion; they do not forbid
-explicit host imports or prove host independence. Those imports retain their own review boundary.
+No automatic host ambient environment is included. Explicit imports and reference directives
+still require review: library choices do not by themselves prohibit host dependencies.
+Node-specific contributor tooling stays outside portable production contracts.
 
-## Quality coverage
+Public type fixtures are checked against fresh installed artefacts under NodeNext and Bundler
+resolution. They cover component ownership, capability construction/options, results, vocabularies,
+readonly views and unsupported operations. `@ts-expect-error` establishes that a diagnostic
+occurred, not its intended cause; each retained negative case still needs review. Type
+assignability cannot prove a state authority's synchrony, cleanup or semantic conformance.
 
-The lint command targets [eslint.config.mjs](../../../eslint.config.mjs) with `--max-warnings 0`,
-checking semicolons, double-quoted strings,
-braced control flow, strict equality and selected unsafe constructs. Parser configuration does
-not establish current TypeScript inputs.
+## Runtime and distribution evidence
 
-Formatting and its read-only check use the same explicit scope: `README.md`, authored Markdown
-under `docs/en/`, `package.json`, `tsconfig.base.json`, `eslint.config.mjs`, `.prettierrc.json` and
-`.github/workflows/*.yaml`. The explicit targets and [.prettierignore](../../../.prettierignore)
-keep dependency installations, contributor-local records, the manager-owned lockfile and legal
-notice bytes outside formatting. Review unsupported
-plain-text hygiene files separately; generated output needs its own boundary if introduced.
+[Runtime suites](../../../tests/runtime/) exercise actual public factory results rather than
+private implementation classes. The [component guide](../packages/core/component/index.md)
+owns lifetime and cleanup guarantees; [capability guides](../packages/core/capabilities/index.md)
+own request, authority, observation and setup rules.
 
-Architecture, link, build, type and test commands require real responsibilities and inputs.
-None is advertised as an empty recursive gate or disabled suite.
+Lifetime cases cover independent creation, deferred/duplicate obligations, invalid/terminal
+registration, terminal-before-release observation, all attempts, opaque failure, repetition,
+reentrancy, borrowing, early idempotent release and application-owned setup failure.
+Opening/activation cases require both state modes, refusal/no-op distinctions, guard rechecks,
+nested requests, source-driven changes, subscription mutation, callback errors, disposal during
+requests/delivery, partial setup and independent or intentionally shared state.
 
-Naming, complete JSDoc/comment policy, British English, semantic architecture, external validation
-and prose truth require review. Automated checks prove only their stated coverage.
+The runtime selection includes component-scope, opening, activation and capability-composition
+suites. Composition covers one lifetime with independent occupation/state, activation acceptance
+versus a borrowed target's result, and terminal checks when another required release fails. These
+are public workflow consumers, not concrete component-family implementations.
 
-## Text and dependency hygiene
+Each independently runnable consumer suite owns fresh build/package prerequisites and precisely
+identified temporary roots. [Distribution checks](../../../tests/distribution/core-package.test.mjs)
+pack actual included files, install offline and consume only the public manifest boundary.
+Test-owned collaborators exercise borrowed contracts without introducing a public state store,
+fake component family, framework adapter or manager.
 
-Owned text uses UTF-8, LF and a final newline. [Git attributes](../../../.gitattributes) select
-`* text=auto eol=lf`, preserving binary detection. [Ignore configuration](../../../.gitignore)
-owns dependency-installation and local delivery exclusions. No generated or cache exclusions
-are needed yet.
+Static, runtime, build and distribution evidence are separate. The suites establish no accessible
+host interaction, rendered state, animation completion, SSR or framework compatibility.
+Hosted results require exact-source readback.
 
-[.prettierrc.json](../../../.prettierrc.json) sets `semi: true`, `singleQuote: false`, `tabWidth: 2`,
-`trailingComma: "all"` and `endOfLine: "lf"`.
+## Lint and formatting coverage
 
-## Repository automation
+[ESLint configuration](../../../eslint.config.mjs) applies Aster's same focused seven rules:
+`curly`, `eqeqeq`, `no-debugger`, `no-eval`, `no-unsafe-finally`, `quotes` and `semi`.
+The command checks actual sources under packages, tooling and tests plus the configuration.
+It does not enforce all naming, architecture, JSDoc or Garden policy.
 
-The [automation guide](automation/index.md) owns CI orchestration, Discord configuration and
-execution/readback boundaries. Workflow files own exact event filters, action references and
-payloads. Source verification, hosted CI, operational configuration and live receipt remain
-separate evidence; a skipped notification send proves no receipt.
+Formatting follows Aster's explicit narrow scope:
+`package.json`, `packages/*/package.json`, `.prettierrc.json` and `eslint.config.mjs`.
+It checks neither TypeScript sources, Markdown, workflow YAML nor compiler configuration.
+[Prettier configuration](../../../.prettierrc.json) uses semicolons, double quotes, two spaces,
+trailing commas and `endOfLine: "auto"`; auto preserves detected line endings instead of
+enforcing LF. Files outside this scope still need review.
+
+Owned text remains UTF-8 with LF and a final newline.
+[Git attributes](../../../.gitattributes) select `* text=auto eol=lf`.
+[Ignore rules](../../../.gitignore) preserve local records and dependency/generated-output
+boundaries; [.prettierignore](../../../.prettierignore) preserves excluded legal, manager-owned
+and contributor-local inputs. Formatting coverage is distinct from these policies.
+
+## Reuse and automation
+
+[Tooling reuse](reuse.md) records Aster origins, actual repository consumers and conditional
+development-tool extraction. It creates no shared package or product dependency.
+The [automation guide](automation/index.md) owns exact CI/Discord sources and evidence boundaries.
+Workflow formatting remains outside the formatter command; hosted results and live receipt
+retain their own revision-specific evidence.
