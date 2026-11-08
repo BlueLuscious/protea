@@ -23,14 +23,13 @@
   "scripts": {
     "format": "prettier --write package.json packages/*/package.json .prettierrc.json eslint.config.mjs",
     "format:check": "prettier --check package.json packages/*/package.json .prettierrc.json eslint.config.mjs",
-    "lint": "eslint packages tooling tests eslint.config.mjs \"design/**/*.ts\" --max-warnings 0",
+    "lint": "eslint packages tooling tests eslint.config.mjs --max-warnings 0",
     "typecheck": "tsc --project packages/core/tsconfig.json",
-    "typecheck:design": "tsc --project design/tsconfig.json",
     "build": "node tooling/workspace/build-core.mjs",
     "test:tooling": "node --test tests/tooling/core-build.test.mjs",
-    "test:runtime": "node --test tests/runtime/component-scope.test.mjs",
+    "test:runtime": "node --test tests/runtime/*.test.mjs",
     "test:consumer": "node --test tests/distribution/core-package.test.mjs",
-    "verify": "pnpm run lint && pnpm run typecheck && pnpm run typecheck:design && pnpm run format:check && pnpm run test:tooling && pnpm run test:runtime && pnpm run test:consumer"
+    "verify": "pnpm run lint && pnpm run typecheck && pnpm run format:check && pnpm run test:tooling && pnpm run test:runtime && pnpm run test:consumer"
   },
   "devDependencies": {
     "eslint": "10.11.0",

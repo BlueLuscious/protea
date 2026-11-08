@@ -23,10 +23,10 @@ job to 15 minutes. Its concurrency group combines the workflow and ref; a newer 
 cancels the superseded run. Action references currently use version 6 tags, which are mutable
 references rather than immutable commit pins.
 
-These jobs invoke focused lint, production and residual capability type checks, narrow
-manifest/configuration formatting, build-ownership tests, public lifecycle runtime tests and fresh
-package consumers. The tests build isolated candidates and exercise the actual scope factory
-without running the legacy capability examples. Hosted results remain specific to the revision actually
+These jobs invoke focused lint, strict production type checking, narrow manifest/configuration
+formatting, build-ownership tests, public component/capability runtime tests and fresh package
+consumers. The tests build isolated candidates and exercise actual factories, state and observations.
+Hosted results remain specific to the revision actually
 checked and establish no browser, accessibility or registry-publication support.
 
 ## Discord notifications

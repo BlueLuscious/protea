@@ -1,46 +1,51 @@
 # Core
 
-Status: **Private component lifetime and cleanup runtime; capabilities remain pending**
+Status: **Private portable lifetime, opening and activation runtime implemented**
 
-`@luscious-garden/protea-core` owns Protea's portable foundation. The package currently exports
-the `componentScopeFactory` and `componentLifecycleStates` values, plus the `Component`,
-`ComponentScope`, `ComponentScopeFactory` and `ComponentLifecycleType` contracts through one root
-entry. The stateless factory's `create()` accepts no options and returns a new active ComponentScope
-with independent lifetime and cleanup obligations. Opening and activation factories are not exported.
+`@luscious-garden/protea-core` owns Protea's portable component foundation and reusable
+capabilities. Its one public root exports current contracts, factories and immutable vocabularies.
+Production TypeScript owns signatures and emits declarations; these guides own semantics,
+ownership and limitations.
 
-The [component guide](component/index.md) owns identity, lifetime, cleanup registration and the
-meaning of finalisation. Production TypeScript owns signatures and the build emits their
-declarations; this guide does not maintain a parallel handwritten API catalogue.
+| Owner | Public responsibility |
+| --- | --- |
+| [Component](component/index.md) | Component, ComponentScope, ComponentScopeFactory and ComponentLifecycleType; componentScopeFactory creates independent lifetimes, and componentLifecycleStates owns the lifecycle choices. |
+| [Opening](capabilities/openable/index.md) | OpenableFactory and openableFactory create Openable against one scope and selected state authority. OpenStateAuthority is a consumer-provided contract; opening options, changes, results and status types remain feature-owned. |
+| [Activation](capabilities/activatable/index.md) | ActivatableFactory and activatableFactory create Activatable with an optional synchronous eligibility guard; activation options, results and status types remain feature-owned. |
+| [Shared capability rules](capabilities/index.md) | CapabilityUnsubscribeType and CapabilityRejectionReasonType, with capabilityRejectionReasons; opening and activation each own their result-status vocabulary. |
+
+The runtime values are componentScopeFactory, componentLifecycleStates, openableFactory,
+activatableFactory, openableResultStatuses, activatableResultStatuses and capabilityRejectionReasons.
+No public constructor, implementation class, generic manager or capability base is exported.
 
 ## Package boundary
 
-The package lives under `packages/core/`, is ESM-only and emits ES2022 JavaScript plus declarations
-to its owned `dist/`. Its root export resolves types to `dist/index.d.ts` and JavaScript imports
-to `dist/index.js`. There are no public subpaths or wildcard exports. The generated JavaScript
-provides the scope factory and immutable lifecycle vocabulary. The implementation class and
-constructor are not public exports.
+The source lives under `packages/core/`, with component and capabilities as sibling feature
+groups. Opening, activation and their genuinely shared pieces belong under `src/capabilities/`.
+Grouping features allocates no public subpaths or additional npm package.
 
-The initial `0.0.0` package is private. Its manifest identity establishes no registry reservation,
-published archive or installable public release. It has no production dependencies and its
-portable contracts require no implicit Node, DOM or framework types. The
-[package tooling guide](../../tooling/core-package.md) owns build, inclusion, consumer checks
-and supported-qualification boundaries.
+The package is ESM-only and emits ES2022 JavaScript plus declarations to its owned `dist/`.
+Its root export resolves types to `dist/index.d.ts` and JavaScript to `dist/index.js`.
+There are no wildcard exports or supported private runtime imports. The initial `0.0.0`
+package is private; its identity establishes no registry reservation or published release.
 
-## Scope and current limits
+Core has no production dependencies and requires no implicit Node, DOM or framework types.
+The [package tooling guide](../../tooling/core-package.md) owns build, inclusion, consumer
+qualification and supported-evidence boundaries.
 
-A consumer can depend on the minimum `Component` contract or explicitly accept the stronger
-resource-owning `ComponentScope`. Structural extension permits additional domain responsibilities
-without making every component openable, activatable or managed. A contract does not require a
-base implementation class or expose private storage.
+## Composition and limits
 
-Opening and activation remain [legacy capability prototypes](../../design/index.md).
-Their production location, construction and independent teardown require further decisions.
-They are not current package exports. Button, Sidebar and Modal remain
-[future original families](../../project/component-direction.md), potentially in core when
-their actual responsibilities justify that location.
+The minimum Component contract remains lifetime and finalisation. A resource-owning consumer
+can accept ComponentScope explicitly. Opening and activation borrow that owner without widening
+Component or acquiring disposal authority. Instantiating a scope does not instantiate every
+capability, and sharing a scope shares lifetime rather than state, occupation or listeners.
 
-The lifetime runtime implements terminal finalisation, independent state and all required
-synchronous cleanup attempts. Its public runtime tests are separate from build and type-consumer
-checks. Real capability composition remains future work. Browser rendering, accessibility, SSR,
-frameworks and optional integrations require separate
-[host evidence](../../project/integration-boundaries.md).
+Factories expose `create` operations in their own context. Failed creation invalidates and
+releases its own acquisitions, preserving borrowed owners and previously created capabilities.
+Independent capability disposal, detach, replacement and reparenting remain deferred. Public
+composition examples and detailed failure rules belong to the [capability guide](capabilities/index.md).
+
+Concrete [families](../../project/component-direction.md), DOM binding, rendering, accessibility,
+SSR, frameworks, icons and motion retain their own product/host responsibilities. Runtime and
+public-consumer checks qualify their actual portable boundaries; they do not establish those
+future [integration guarantees](../../project/integration-boundaries.md).

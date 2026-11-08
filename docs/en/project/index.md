@@ -1,6 +1,6 @@
 # Protea Project
 
-Status: **Private component lifetime runtime; capabilities and original families pending**
+Status: **Private component foundation and capability runtime; original families pending**
 
 ## Purpose and authority
 
@@ -19,11 +19,10 @@ and releases; a Garden summary does not establish an implemented or published pr
 The private [core package](../packages/core/index.md) provides componentScopeFactory and its
 production component/scope contracts, with JavaScript/declaration emission and one root export.
 Its [component guide](../packages/core/component/index.md) owns actual creation, lifetime and
-cleanup registration. Each new scope has independent state and finalisation obligations.
-
-Opening and activation remain [legacy design inputs](../design/index.md), without production
-exports or runtime implementations. Their placement, construction and independent teardown need
-further capability decisions. [Component direction](component-direction.md) owns later
+cleanup registration. [Capabilities](../packages/core/capabilities/index.md) implement opening
+and activation beneath the same package, with contextual factories and a borrowed shared lifetime.
+State, occupation and listeners remain independent; individual teardown/replacement is deferred.
+[Component direction](component-direction.md) owns later
 original Button, Sidebar and Modal work, reopened Sidebar axes and composition questions.
 [Integration boundaries](integration-boundaries.md) own future hosts, icons and motion.
 No renderer, concrete framework adapter, manager or optional provider is implemented.
@@ -45,9 +44,9 @@ A Protea decision cannot silently change another product's public contract or ec
 
 ### Actual enforcement
 
-The current gate combines focused lint, strict production/legacy type checks, manifest/config
-formatting, bounded-build tests, public lifetime runtime tests and fresh package consumers.
-Capability state transitions and accessible interaction still require separate evidence. The exact
+The current gate combines focused lint, strict production type checks, manifest/config
+formatting, bounded-build tests, public component/capability runtime tests and fresh package consumers.
+Accessible host interaction still requires separate evidence. The exact
 [coverage](../tooling/index.md#current-verification) distinguishes static, build, filesystem and
 distribution evidence.
 

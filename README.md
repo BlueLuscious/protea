@@ -5,26 +5,25 @@ component behaviour, accessibility and composition with optional presentation an
 
 ## Current status
 
-The repository contains its first private [core package](docs/en/packages/core/index.md),
-`@luscious-garden/protea-core`. Its `componentScopeFactory.create()` creates an independent
-component lifetime with explicit cleanup registration. Finalisation becomes terminal before
-release callbacks and attempts every owned release. The package builds ESM JavaScript and
-declarations; opening and activation runtime remain pending.
+The private [core package](docs/en/packages/core/index.md), `@luscious-garden/protea-core`,
+implements portable component lifetime, cleanup ownership, logical opening and activation.
+It builds ESM JavaScript and declarations with one public package root.
 
-The [component guide](docs/en/packages/core/component/index.md) owns identity, logical lifetime
-and cleanup semantics. Opening and activation remain [legacy design inputs](docs/en/design/index.md)
-with non-executed type examples. Their production construction and independent teardown need
-further capability decisions.
+The [component guide](docs/en/packages/core/component/index.md) owns lifetime and finalisation.
+[Reusable capabilities](docs/en/packages/core/capabilities/index.md) share that lifetime while
+keeping state and listeners independent. Opening supports internal state or a borrowed synchronous
+authority; activation represents an accepted action. Named immutable vocabularies own lifecycle,
+request statuses and rejection reasons.
 
-Button, Sidebar and Modal are [future original families](docs/en/project/component-direction.md).
-The earlier static/floating Sidebar classification is reopened. Optional hosts, Icon/Aster and
-motion remain [future integrations](docs/en/project/integration-boundaries.md), without runtime
-dependencies or support claims.
+Button, Sidebar and Modal remain [future original families](docs/en/project/component-direction.md).
+The static/floating Sidebar classification is reopened. Optional hosts, Icon/Aster and motion
+remain [future integrations](docs/en/project/integration-boundaries.md), without mandatory
+runtime dependencies or support claims.
 
-Repository verification covers focused lint, production and legacy types, manifest/configuration
-formatting, bounded build behaviour, lifecycle runtime and fresh package consumers. Lifetime
-evidence is separate from capability, host and accessibility qualification. The package is private
-and has not been published.
+Repository verification covers focused lint, strict production types, manifest/configuration
+formatting, bounded builds, public runtime regressions and fresh package consumers. Component
+and capability evidence establishes no accessible host interaction or framework compatibility.
+The initial package remains private and unpublished.
 
 ## Development
 
@@ -37,7 +36,7 @@ pnpm run verify
 ```
 
 The [tooling guide](docs/en/tooling/index.md) owns actual commands, prerequisites and coverage.
-Verification includes tests which build isolated candidates and use owned temporary directories.
+Verification builds isolated candidates and uses owned temporary directories.
 
 ## Documentation
 

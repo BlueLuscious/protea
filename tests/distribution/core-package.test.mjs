@@ -96,7 +96,7 @@ componentLifecycleStates.active = "active";
 componentLifecycleStates.mounted;
 `;
 
-test("packed core exposes its lifecycle vocabulary, factory and current contracts", async () => {
+test("packed core exposes its component and capability contracts and runtime values", async () => {
   await withCoreConsumer("protea-core-consumer-test", async ({ consumer, installed }) => {
     const entries = (await readdir(installed)).sort();
     assert.deepEqual(entries, ["LICENSE", "README.md", "dist", "package.json"]);
@@ -110,12 +110,21 @@ test("packed core exposes its lifecycle vocabulary, factory and current contract
     const runtime = runNode(["--input-type=module", "--eval", `
       import assert from "node:assert/strict";
       const core = await import("@luscious-garden/protea-core");
-      assert.deepEqual(Object.keys(core).sort(), ["componentLifecycleStates", "componentScopeFactory"]);
+      assert.deepEqual(Object.keys(core).sort(), [
+        "activatableFactory", "activatableResultStatuses", "capabilityRejectionReasons",
+        "componentLifecycleStates", "componentScopeFactory", "openableFactory", "openableResultStatuses",
+      ]);
       assert.deepEqual(core.componentLifecycleStates, { active: "active", disposed: "disposed" });
       assert.equal(Object.isFrozen(core.componentLifecycleStates), true);
       assert.equal(typeof core.componentScopeFactory.create, "function");
       assert.equal(Object.isFrozen(core.componentScopeFactory), true);
-      for (const suffix of ["component", "package.json", "dist/index.js", "dist/component/runtime/component-scope.js"]) {
+      assert.deepEqual(core.openableResultStatuses, { changed: "changed", unchanged: "unchanged", rejected: "rejected" });
+      assert.deepEqual(core.activatableResultStatuses, { activated: "activated", rejected: "rejected" });
+      assert.deepEqual(core.capabilityRejectionReasons, { disposed: "disposed", busy: "busy", denied: "denied" });
+      for (const value of [core.openableFactory, core.activatableFactory, core.openableResultStatuses, core.activatableResultStatuses, core.capabilityRejectionReasons]) {
+        assert.equal(Object.isFrozen(value), true);
+      }
+      for (const suffix of ["component", "capabilities", "capabilities/openable", "package.json", "dist/index.js", "dist/component/runtime/component-scope.js", "dist/capabilities/shared/runtime/capability-listeners.js"]) {
         await assert.rejects(import("@luscious-garden/protea-core/" + suffix), { code: "ERR_PACKAGE_PATH_NOT_EXPORTED" });
       }
     `], consumer);
@@ -124,6 +133,7 @@ test("packed core exposes its lifecycle vocabulary, factory and current contract
     assert.equal(runtime.stderr, "");
 
     await writeFile(join(consumer, "consumer.ts"), source);
+    await writeFile(join(consumer, "capability-consumer.ts"), await readFile(new URL("./capability-consumer.test.ts", import.meta.url), "utf8"));
     const compiler = createRequire(import.meta.url).resolve("typescript/bin/tsc");
 
     for (const resolution of ["NodeNext", "Bundler"]) {
@@ -133,7 +143,7 @@ test("packed core exposes its lifecycle vocabulary, factory and current contract
         noUnusedLocals: true, noUnusedParameters: true, verbatimModuleSyntax: true,
         noEmit: true, module: resolution === "NodeNext" ? "NodeNext" : "ESNext", moduleResolution: resolution,
       };
-      await writeFile(join(consumer, "tsconfig.json"), JSON.stringify({ compilerOptions: options, files: ["consumer.ts"] }));
+      await writeFile(join(consumer, "tsconfig.json"), JSON.stringify({ compilerOptions: options, files: ["consumer.ts", "capability-consumer.ts"] }));
       const checked = runNode([compiler, "--project", join(consumer, "tsconfig.json"), "--pretty", "false"], consumer);
       assert.equal(checked.status, 0, `${resolution}\n${checked.stdout}\n${checked.stderr}`);
     }

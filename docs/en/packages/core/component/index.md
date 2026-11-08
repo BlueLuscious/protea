@@ -113,10 +113,10 @@ unregistered release obligation. Once registered, finalisation attempts it even 
 throws. A release failure propagates opaquely; no particular aggregation of simultaneous
 application and cleanup failures is promised by this example.
 
-Future composition must expose no partial model, clean up its own failed setup and preserve
-borrowed collaborators. Effects already performed by collaborators are not automatically rolled
-back. That future obligation does not introduce a resource-acquisition callback or options into
-the current scope factory.
+The [capability construction protocol](../capabilities/index.md#failed-setup) applies those
+ownership rules to actual opening/activation setup: failure cleans only its own acquisitions
+and preserves the borrowed scope. Effects already performed by collaborators are not rolled
+back. The scope factory itself takes no resource-acquisition callback or options.
 
 The contracts remain independent of implementation classes. A conforming structural owner is
 permitted, but its shape alone proves neither atomic registration, synchronous finalisation nor

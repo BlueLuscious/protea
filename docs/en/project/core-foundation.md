@@ -1,26 +1,23 @@
 # Portable Core Foundation
 
-Status: **Component lifetime and cleanup runtime implemented; capabilities remain pending**
+Status: **Component lifetime and reusable opening/activation runtime implemented**
 
-Protea's portable foundation supports the independent UI component library. Its first real
-package is [core](../packages/core/index.md). Its componentScopeFactory creates independent
-ComponentScope instances with the existing component lifetime and explicit cleanup-registration
-contract. The [component guide](../packages/core/component/index.md) owns semantics and use;
-production TypeScript owns signatures and emits their declarations.
+Protea's portable foundation supports its independent UI component library. The
+[core package](../packages/core/index.md) implements component lifetime and cleanup ownership,
+plus optional opening and activation with deliberate public contracts and factories.
 
-A component's minimum contract supplies identity through its reference, logical lifetime and
-finalisation. A resource-owning consumer can explicitly accept the stronger ComponentScope.
-Keeping those roles distinct avoids imposing cleanup-registration authority on every consumer,
-without replacing the component model with definition/instance aliases.
+The [component guide](../packages/core/component/index.md) owns identity, one logical lifetime
+and explicit cleanup registration. Component remains the minimum model contract; ComponentScope
+adds the stronger resource-owner responsibility without imposing it on every consumer.
+Production TypeScript owns signatures and emits their declarations.
 
-Opening and activation remain
-[legacy capability inputs](../design/index.md). Their production placement, factories and any
-independent capability teardown/replacement require further capability decisions. The current
-factory creates only a component scope, without options or attached capabilities. Consumers
-must not rely on opening/activation values which this package does not export.
+[Capabilities](../packages/core/capabilities/index.md) are grouped beneath core and share the
+captured scope's lifetime. They retain independent state and registrations and do not acquire
+authority to dispose the owner. Creation, failures and borrowing are specified alongside their
+actual implementations. Individual capability teardown, replacement and transfer remain deferred.
 
-DOM, rendering, styles, icons, motion, frameworks and managers stay outside the portable core
-slice. [Component direction](component-direction.md) owns future original families and their
-composition questions; [integration boundaries](integration-boundaries.md) own optional host and
-provider responsibilities. Neither allocates another package or a mandatory class hierarchy.
-The [package tooling guide](../tooling/core-package.md) owns actual distribution and build boundaries.
+DOM, rendering, styles, icons, motion, frameworks and managers stay outside this portable slice.
+[Component direction](component-direction.md) owns conceptual responsibilities and future original
+families; [integration boundaries](integration-boundaries.md) own optional host and provider work.
+Neither allocates another package or a mandatory class hierarchy. The
+[package tooling guide](../tooling/core-package.md) owns build and distribution qualification.

@@ -4,8 +4,8 @@ Status: **Prospective product boundaries; no host adapter or provider integratio
 
 This guide owns Protea's optional integration responsibilities. The portable
 [core package](../packages/core/index.md) currently supplies component contracts;
-[component direction](component-direction.md) owns future family questions. Neither establishes
-an executable host integration or compatibility promise.
+[component direction](component-direction.md) owns future family questions. Portable runtime
+establishes no executable host integration or compatibility promise.
 
 ## Models, applications and hosts
 
@@ -38,9 +38,9 @@ connections.
 
 ## Requests and observations
 
-The [legacy capability specification](../design/reusable-capabilities.md) distinguishes requests,
-effective changes, accepted activation and rejection. When those capabilities become production
-APIs, an adapter must preserve their actual results and failure semantics. Acceptance is not
+The [capability guides](../packages/core/capabilities/index.md) distinguish requests, effective
+changes, accepted activation and rejection. An adapter must preserve those actual public results
+and failure semantics. Acceptance is not
 proof of application-work completion, rendering, DOM event cancellation or animation completion.
 
 External opening control currently specifies synchronous authorisation, commitment and change

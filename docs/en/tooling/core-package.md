@@ -1,6 +1,6 @@
 # Core Package Tooling
 
-Status: **Private lifecycle package, ESM/declaration producer and public consumers configured**
+Status: **Private lifetime/capability package, ESM producer and public consumers configured**
 
 This guide owns the actual package/build boundary and its qualification requirements. The
 [core guide](../packages/core/index.md) owns current scope and the
@@ -11,26 +11,27 @@ This guide owns the actual package/build boundary and its qualification requirem
 
 | Subject | Current selection |
 | --- | --- |
-| Owner | `packages/core/`, with production component contracts and scope lifetime implementation. |
+| Owner | `packages/core/`, with component lifetime and grouped opening/activation capabilities. |
 | Identity | `@luscious-garden/protea-core`, version `0.0.0`, `private: true`. |
 | Runtime format | ESM only with `type: "module"`; ES2022 output and standard libraries. |
 | TypeScript resolution | NodeNext modules/resolution with explicit relative `.js` specifiers, strict checking, `types: []` and checked declarations. |
 | Producer | TypeScript emission through the owned build configuration and repository build entrypoint. |
 | Outputs | Package-owned `dist/` containing JavaScript and declarations; no maps or committed generated outputs. |
 | Public boundary | One root: `types` selects `dist/index.d.ts`; `import` and `default` select `dist/index.js`. No public subpaths or wildcard. |
-| Inclusion | Current built output plus manifest, package README and ISC licence. Tests, prototypes, local plans, caches and build metadata are excluded. |
+| Inclusion | Current built output plus manifest, package README and ISC licence. Sources, tests, local plans, caches and build metadata are excluded. |
 | Dependencies | No production dependency or intrinsic Node engine requirement. Contributor tooling stays outside portable contracts. |
 
-The root exports `componentScopeFactory`, `componentLifecycleStates` and four contract/type names:
-Component, ComponentScope, ComponentScopeFactory and ComponentLifecycleType. The implementation
-class and constructor are internal; no opening/activation value or concrete family is exported.
+The root intentionally exports seven runtime values and eighteen contracts/types, mapped by
+the [core guide](../packages/core/index.md). Implementation classes, helpers and constructors
+remain internal. Feature grouping creates no public subpath or additional package; concrete
+families, a public state store and host bindings are not exported.
 
 ## Canonical producer and ownership
 
 [build-core.mjs](../../../tooling/workspace/build-core.mjs) runs the package compiler using its
 production configuration. [tsconfig.json](../../../packages/core/tsconfig.json) checks without
 emission; [tsconfig.build.json](../../../packages/core/tsconfig.build.json) enables JavaScript
-and declaration output and excludes tests/prototypes. Production TypeScript is the canonical
+and declaration output from production sources, excluding tests. Production TypeScript is the canonical
 declaration source. Generated files are never edited manually.
 
 Compilation occurs in a staged, exactly owned temporary location before existing outputs are
@@ -60,22 +61,21 @@ consumers use both NodeNext and Bundler resolution without source aliases or pri
 The emitted runtime module must resolve while exposing no unavailable values.
 
 These checks establish build/distribution boundaries and present type restrictions. Separate
-public runtime tests exercise the scope's lifecycle and cleanup semantics; they establish no
-capability state, accessible interaction or published release.
+public runtime tests exercise lifetime, opening, activation, state authority and observations;
+they establish no accessible host interaction or published release.
 Every independently runnable consumer suite owns fresh prerequisites rather than inspect stale
 repository output. Owned temporary directories must be precisely identified, contained and cleaned
 without following links.
 
 Node's built-in runner executes the current JavaScript suites, including `.mjs` lifecycle tests.
 They need no `tsx` or Node ambient dependency. Future executable TypeScript inputs must justify
-those tools separately. Lifetime tests exercise finalisation, cleanup attempts, failure,
-reentrancy, borrowing and independent state. Capability transitions and subscription mutation
-remain future capability evidence.
+those tools separately. Runtime tests exercise finalisation, cleanup attempts, state transitions,
+authority protocols, guard rechecks, notification mutation, failures, reentrancy, borrowing and
+independent or deliberately shared instances.
 
-The root `test:runtime` command runs
-[component-scope.test.mjs](../../../tests/runtime/component-scope.test.mjs) against a fresh packed
-public package. Production source contains nine TypeScript files and emits their JavaScript
-and declarations; the package remains the only producer of current public signatures and values.
+The root `test:runtime` command selects [runtime suites](../../../tests/runtime/) using
+`node --test tests/runtime/*.test.mjs`. They consume fresh packed public artefacts. Production
+source is the sole producer of current JavaScript, signatures and runtime values.
 
 ## Support and evidence
 
@@ -88,14 +88,13 @@ Do not inherit the root contributor engine range as an intrinsic package runtime
 Broader Node versions, browsers, bundlers, frameworks, hydration, SSR and accessibility support
 need their own evidence. A local archive and clean consumer establish no registry publication.
 
-## Migration
+## Source and documentation authority
 
-The retained [legacy capability design](../design/index.md) is outside the package producer and
-package inclusion. Component/family prototypes have been removed rather than packaged as ambient
-runtime promises. Production opening/activation location, construction and independent teardown
-remain pending; their current type-only entrypoints allocate no core subpaths.
+Current contracts and implementation have one production owner. Generated declarations are not
+parallel handwritten specifications. [Package/feature guides](../packages/core/index.md) explain
+semantics and useful rationale alongside the actual responsibilities, without a contributor-local
+plan or experimental workspace dependency.
 
-The complete root experiment must disappear once its responsibilities are implemented or
-explicitly deferred. Reconcile signatures, useful restrictions and semantics into production
-sources, tests and parallel documentation together, removing stale imports, checker inputs and
-links. One current production producer must own each retained declaration.
+Deferred family and optional host questions remain with their
+[product owners](../project/component-direction.md). They do not require ambient placeholder
+values, companion packages or source aliases in public consumers.

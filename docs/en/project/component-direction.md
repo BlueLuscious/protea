@@ -1,6 +1,6 @@
 # Component Direction
 
-Status: **Original families and capability composition deferred; no family runtime or exports**
+Status: **Product concepts and deferred original families; portable capabilities implemented**
 
 Protea will build original Button, Sidebar and Modal families before selecting variants. They
 may later belong to the [core package](../packages/core/index.md); no separate component package,
@@ -24,22 +24,50 @@ classes by their names. The conceptual foundation, family, variant and presentat
 in [Garden's direction](https://github.com/BlueLuscious/garden/blob/master/docs/en/products/protea/index.md#responsibility)
 does not mandate implementation inheritance.
 
+## Vocabulary and responsibility
+
+These concepts distinguish product responsibilities without requiring matching classes or packages:
+
+| Concept | Meaning and owner |
+| --- | --- |
+| Component | An individual model with a defined purpose and contract; the [foundation](../packages/core/component/index.md) owns identity and lifetime. |
+| Family and variant | Related purposes and justified behavioural/structural differences; their actual component owner selects obligations and composition. |
+| Capability | A narrow reusable behaviour; [capability guides](../packages/core/capabilities/index.md) own opening, activation and their resource boundaries. |
+| Behaviour and controller | Behaviour is promised observable meaning. A controller is a possible implementation mechanism needing real responsibility, state and consumers; the two terms do not require parallel abstractions. |
+| Manager and coordination | A manager may own justified scoped membership/lookup. Family/application coordination policy uses public operations; neither automatically owns member state or lifetime. |
+| Part | A composition role with explicitly selected representation, retention, borrowing, replacement and cleanup. |
+| Configuration and state | Configuration supplies creation/use inputs; state is an authoritative condition with its own owner and observation rules. Neither implies a universal options object or state store. |
+| Presentation | Optional visual expression distinct from behavioural identity, with concrete [integration responsibilities](integration-boundaries.md). |
+| Contract and API | A contract defines semantic obligations and limits; API names/types express the consumable surface owned by production source and generated declarations. |
+| Request and effective change | Asking an owner for work is distinct from authorisation, commitment and any subsequent visual completion. |
+
+Contracts remain independent of concrete implementation classes. Capabilities consume the
+component lifetime/resource boundary; Component imports no capability, family, manager or host
+consumer. Families choose capabilities by real responsibilities, not inherited names. Optional
+hosts consume public model and host contracts without introducing reverse dependencies.
+
+Every composition identifies what is owned, copied, borrowed, retained or exposed. Registration
+storage and release obligations are distinct. Type compatibility alone proves no synchrony,
+ownership, cleanup or accessible interaction; implementations and host evidence qualify those
+guarantees at their actual owners.
+
 ## Capability lifetime and replacement
 
 The current [foundation](../packages/core/component/index.md) supplies one terminal component
-lifetime and explicit cleanup registration. Opening and activation remain legacy specifications;
-their production construction, placement and optional independent teardown require further review.
-Component and ComponentScope retain their distinct consumer and
-resource-owner roles; no definition/instance alias replaces them.
+lifetime and explicit cleanup registration. [Opening and activation](../packages/core/capabilities/index.md)
+now borrow that fixed scope within core; sharing it shares lifetime rather than state or listeners.
+Independent capability teardown and replacement remain deferred. Component and ComponentScope
+retain their distinct consumer and resource-owner roles; no definition/instance alias replaces them.
 
 Consider a future Modal whose opening capability can be replaced while the Modal remains alive.
 Closing it would change logical openness; disposing the Modal would end its model lifetime.
 Destroying or replacing just its opening capability would be a third responsibility. That case
 must answer who authorises replacement, how old subscriptions and source connections are released,
-what retained references observe or reject, and whether parent finalisation also ends every child
-capability. A dangling reference must not silently act on a replacement or revive retired work.
+what retained references observe or reject, and how independent retirement would preserve the
+existing parent's terminal guarantees. A dangling reference must not silently act on a replacement
+or revive retired work.
 
-The design must also decide how early release interacts with registered parent cleanup, failed
+That future extension must also decide how early release interacts with registered parent cleanup, failed
 physical disconnection, repeated teardown, in-flight callbacks and terminal state projection.
 The current `addCleanup` contract does not remove or transfer entries and introduces no capability
 destruction method, rebinding operation or capability registry. These questions must be resolved

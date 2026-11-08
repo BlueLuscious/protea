@@ -1,10 +1,10 @@
 # Protea Packages
 
-Status: **One private package with component lifetime and cleanup runtime**
+Status: **One private package with portable lifetime, opening and activation runtime**
 
 | Package | Current responsibility |
 | --- | --- |
-| [Core](core/index.md) | Portable component lifetime and cleanup ownership, with an ESM/declaration build and one public root. |
+| [Core](core/index.md) | Portable component lifetime, cleanup ownership and reusable opening/activation, with an ESM/declaration build and one public root. |
 
 The package set follows implemented responsibilities. Logical features do not allocate separate
 npm packages. Core is private and its local version is not a published release. The

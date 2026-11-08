@@ -1,6 +1,6 @@
 # Repository Tooling
 
-Status: **Component lifetime runtime, build and public-consumer checks configured**
+Status: **Portable lifetime/capability runtime, build and public-consumer checks configured**
 
 This guide owns contributor tools, actual commands and checking coverage. The
 [project guide](../project/index.md) owns product responsibility; the
@@ -8,22 +8,22 @@ This guide owns contributor tools, actual commands and checking coverage. The
 
 ## Current verification
 
-`pnpm run verify` runs focused lint, production type checking, remaining design type checking,
-manifest/configuration formatting, tooling, lifetime runtime and fresh package-consumer tests.
-The tests build isolated candidates and use exactly owned system-temporary directories; verification therefore
-has filesystem effects even though the lint, type and format-check subcommands are read-only.
-The separate build command produces repository package outputs when requested.
+`pnpm run verify` runs six steps: focused lint, strict production type checking,
+manifest/configuration formatting, tooling tests, runtime tests and fresh package consumers.
+The tests build isolated candidates and use exactly owned system-temporary directories.
+Verification therefore has filesystem effects even though lint, no-emit type checking and
+format-check subcommands are read-only. The separate build command produces repository package
+outputs when requested.
 
-These checks cover declaration validity, bounded output production, package inclusion and
-public type/module resolution. The lifetime suite executes the actual public scope factory,
-registration and finalisation behaviour against a fresh built package. Opening and activation
-remain unimplemented and their legacy examples remain non-executed.
+These checks cover declarations, bounded output production, package inclusion, public module/type
+resolution and actual lifetime/opening/activation behaviour. Public runtime suites exercise the
+built package through its root; they do not depend on an experimental source workspace. Type
+consumers remain non-executed fixtures and prove their checked restrictions, not runtime semantics.
+
 Links, fragments, terminology, semantic architecture, complete JSDoc, British English, source/text
-hygiene and prose truth retain manual review.
-
-[Repository automation](automation/index.md) invokes this gate on its existing platforms.
-A local result proves neither hosted success for the current revision, live notification receipt
-nor registry publication.
+hygiene and prose truth retain manual review. [Repository automation](automation/index.md) invokes
+the same gate on its configured platforms. Local results establish neither exact-source hosted
+success, live notification receipt nor registry publication.
 
 ## Selected contributor environment
 
@@ -42,11 +42,10 @@ dependencies. [pnpm-lock.yaml](../../../pnpm-lock.yaml) owns generated resolutio
 [pnpm-workspace.yaml](../../../pnpm-workspace.yaml) and root `workspaces` both select
 `packages/*`; their one actual member is the private core package.
 
-There is no production Node/DOM/framework dependency. Node runs contributor build/tests, using
-its built-in test runner for current JavaScript tooling, lifecycle and distribution tests. Runtime
-tests are `.mjs`, so they need neither `tsx` nor Node ambient types. Those tools remain deferred
-until actual executable TypeScript inputs require them. Contributor pins do not establish a
-portable package engine requirement or wider support matrix.
+There is no production Node/DOM/framework dependency. Node's built-in runner executes current
+`.mjs` tooling, runtime and distribution tests; they need neither `tsx` nor Node ambient types.
+Those tools require actual executable TypeScript inputs before introduction. Contributor pins
+do not establish a portable package engine requirement or broader support matrix.
 
 ## Installation and commands
 
@@ -59,99 +58,91 @@ pnpm run verify
 
 | Command | Current responsibility |
 | --- | --- |
-| `pnpm run build` | Produce the core package's JavaScript/declarations through its bounded output owner. |
-| `pnpm run typecheck` | Strict no-emit checking of production contracts and lifecycle implementation. |
-| `pnpm run typecheck:design` | Check the 18 retained legacy capability inputs without emission or execution. |
-| `pnpm run lint` | Check actual package, tooling, test, design and ESLint inputs with zero warnings. |
+| `pnpm run build` | Produce core JavaScript/declarations through the bounded output owner. |
+| `pnpm run typecheck` | Strict no-emit checking of production contracts and runtime. |
+| `pnpm run lint` | Check actual package, tooling, test and ESLint inputs with zero warnings. |
 | `pnpm run format` | Format root/package manifests, Prettier configuration and ESLint configuration. |
-| `pnpm run format:check` | Check that same explicit formatting scope without writing. |
-| `pnpm run test:tooling` | Exercise real build ownership and failure boundaries using isolated candidates. |
-| `pnpm run test:runtime` | Exercise actual scope creation, registration and finalisation through a fresh public package. |
-| `pnpm run test:consumer` | Build fresh candidates and check actual package inclusion, exports and clean consumers. |
-| `pnpm run verify` | Run lint, both type checks, format checking, tooling tests, lifetime tests and package consumers. |
+| `pnpm run format:check` | Check that same explicit scope without writing. |
+| `pnpm run test:tooling` | Exercise build ownership and failure boundaries using isolated candidates. |
+| `pnpm run test:runtime` | Run `node --test tests/runtime/*.test.mjs` against freshly built public packages. |
+| `pnpm run test:consumer` | Check fresh archives, inclusion, exports and clean runtime/type consumers. |
+| `pnpm run verify` | Run lint, type checking, format checking, tooling tests, runtime tests and package consumers. |
 
 The package build script invokes the same repository producer. No empty recursive gate, release
 command or publication gate is advertised.
 
-## Production and legacy type checking
+## Production type checking
 
 The shared [strict baseline](../../../tsconfig.base.json) has explicit ES2022 libraries,
 `types: []`, `skipLibCheck: false`, exact optional properties, checked indexed access,
-unused-member checks and verbatim module syntax. Actual production configuration selects
-NodeNext module/resolution rules and relative `.js` specifiers. Build configuration explicitly
-enables JavaScript/declaration emission with `noEmitOnError`; checking remains a no-emit operation.
+unused-member checks and verbatim module syntax. Production configuration selects NodeNext
+module/resolution rules and relative `.js` specifiers. Build configuration explicitly enables
+JavaScript/declaration emission with `noEmitOnError`; checking remains a no-emit operation.
 The [package guide](core-package.md) owns the producer and included files.
 
 No automatic host ambient environment is included. Explicit imports and reference directives
-still require review: compiler library choices do not by themselves prohibit host dependencies.
-Node-specific contributor tooling is separate from portable production contracts.
+still require review: library choices do not by themselves prohibit host dependencies.
+Node-specific contributor tooling stays outside portable production contracts.
 
-### Design authoring
+Public type fixtures are checked against fresh installed artefacts under NodeNext and Bundler
+resolution. They cover component ownership, capability construction/options, results, vocabularies,
+readonly views and unsupported operations. `@ts-expect-error` establishes that a diagnostic
+occurred, not its intended cause; each retained negative case still needs review. Type
+assignability cannot prove a state authority's synchrony, cleanup or semantic conformance.
 
-The remaining [private workspace](../../../design/README.md) has 18 explicit TypeScript inputs:
-17 shared/opening/activation source and entrypoint files, including two ambient vocabulary
-descriptors, and one non-executed capability example. Its [configuration](../../../design/tsconfig.json)
-extends the strict baseline with an explicit file list and empty `include`; it emits nothing.
-The [legacy specification](../design/reusable-capabilities.md) owns retained semantics.
+## Runtime and distribution evidence
 
-Foundation contracts now have one production owner. The legacy example imports the production
-root source; this explicit transitional coupling adds the nine production TypeScript files to
-its compiler closure and is not a clean package-consumer check. Independent distribution tests
-exercise the actual manifest instead. Concrete family declarations, ambient family factories,
-the Sidebar union and three obsolete examples are retired.
+[Runtime suites](../../../tests/runtime/) exercise actual public factory results rather than
+private implementation classes. The [component guide](../packages/core/component/index.md)
+owns lifetime and cleanup guarantees; [capability guides](../packages/core/capabilities/index.md)
+own request, authority, observation and setup rules.
 
-Positive/negative capability examples check options, vocabulary discrimination, readonly views,
-results, callbacks and structural composition. Two current negative cases protect absent runtime
-vocabularies in the legacy entrypoints; they must become export evidence when real values exist.
-There is no permanent negative-test-count target. `@ts-expect-error` establishes a diagnostic
-occurred, not that it has the intended cause; diagnostic review remains separate.
+Lifetime cases cover independent creation, deferred/duplicate obligations, invalid/terminal
+registration, terminal-before-release observation, all attempts, opaque failure, repetition,
+reentrancy, borrowing, early idempotent release and application-owned setup failure.
+Opening/activation cases require both state modes, refusal/no-op distinctions, guard rechecks,
+nested requests, source-driven changes, subscription mutation, callback errors, disposal during
+requests/delivery, partial setup and independent or intentionally shared state.
 
-Capabilities' production placement, construction and independent teardown/replacement remain
-pending. The remaining prototypes must be retired with their implemented or deferred responsibilities,
-rather than relocated into another declaration workspace.
+The runtime selection includes component-scope, opening, activation and capability-composition
+suites. Composition covers one lifetime with independent occupation/state, activation acceptance
+versus a borrowed target's result, and terminal checks when another required release fails. These
+are public workflow consumers, not concrete component-family implementations.
 
-## Lifecycle runtime checks
+Each independently runnable consumer suite owns fresh build/package prerequisites and precisely
+identified temporary roots. [Distribution checks](../../../tests/distribution/core-package.test.mjs)
+pack actual included files, install offline and consume only the public manifest boundary.
+Test-owned collaborators exercise borrowed contracts without introducing a public state store,
+fake component family, framework adapter or manager.
 
-[component-scope.test.mjs](../../../tests/runtime/component-scope.test.mjs) consumes a fresh local
-package archive through its public root. It exercises independent creation, active/terminal
-registration, duplicate release obligations, terminal-before-release observation, every required
-cleanup attempt, opaque failures, repetition, reentrancy and preservation of borrowed lifetimes.
-Its application-owned composition cases use real scopes rather than fake component families.
-
-The suite owns fresh package prerequisites and isolated temporary roots. It does not execute
-the legacy capability examples or supply opening, activation, host or accessibility evidence.
-Passing a type check is distinct from these observable runtime regressions; hosted results still
-need exact-source readback.
+Static, runtime, build and distribution evidence are separate. The suites establish no accessible
+host interaction, rendered state, animation completion, SSR or framework compatibility.
+Hosted results require exact-source readback.
 
 ## Lint and formatting coverage
 
-[ESLint configuration](../../../eslint.config.mjs) applies the same focused rules as Aster:
+[ESLint configuration](../../../eslint.config.mjs) applies Aster's same focused seven rules:
 `curly`, `eqeqeq`, `no-debugger`, `no-eval`, `no-unsafe-finally`, `quotes` and `semi`.
-The root command checks actual sources under packages, tooling, tests and residual design plus
-the configuration itself. These seven rules do not enforce all naming, architecture, JSDoc or
-Garden policy.
+The command checks actual sources under packages, tooling and tests plus the configuration.
+It does not enforce all naming, architecture, JSDoc or Garden policy.
 
-Formatting deliberately follows Aster's narrow explicit scope:
+Formatting follows Aster's explicit narrow scope:
 `package.json`, `packages/*/package.json`, `.prettierrc.json` and `eslint.config.mjs`.
 It checks neither TypeScript sources, Markdown, workflow YAML nor compiler configuration.
 [Prettier configuration](../../../.prettierrc.json) uses semicolons, double quotes, two spaces,
-trailing commas and `endOfLine: "auto"`; auto preserves detected line endings rather than
-enforcing LF. Changes outside the command's scope still need review.
+trailing commas and `endOfLine: "auto"`; auto preserves detected line endings instead of
+enforcing LF. Files outside this scope still need review.
 
 Owned text remains UTF-8 with LF and a final newline.
 [Git attributes](../../../.gitattributes) select `* text=auto eol=lf`.
 [Ignore rules](../../../.gitignore) preserve local records and dependency/generated-output
 boundaries; [.prettierignore](../../../.prettierignore) preserves excluded legal, manager-owned
-and contributor-local inputs. Formatting coverage is separate from these text policies.
+and contributor-local inputs. Formatting coverage is distinct from these policies.
 
-## Tooling reuse
+## Reuse and automation
 
-[Tooling reuse](reuse.md) records the actual Aster reference, current repository consumers and
-conditions for possible future development-tool extraction. It creates no shared package or
-product dependency. Each repository retains its own policy, output ownership and supported gates.
-
-## Automation
-
+[Tooling reuse](reuse.md) records Aster origins, actual repository consumers and conditional
+development-tool extraction. It creates no shared package or product dependency.
 The [automation guide](automation/index.md) owns exact CI/Discord sources and evidence boundaries.
-Workflow formatting is now outside the formatter command; workflow review remains explicit.
-Hosted results and live notification receipt need their own revision-specific evidence.
+Workflow formatting remains outside the formatter command; hosted results and live receipt
+retain their own revision-specific evidence.
