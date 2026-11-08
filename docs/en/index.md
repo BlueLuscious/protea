@@ -13,9 +13,10 @@ English under `docs/en/` is canonical. Future translations should preserve its r
 | [Repository automation](tooling/automation/index.md) | CI orchestration and Discord execution/receipt boundaries. |
 
 The [repository introduction](../../README.md) summarises current source. The private
-[core package](packages/core/index.md) provides production component contracts and a declaration
-build. Its [component guide](packages/core/component/index.md) owns logical lifetime and explicit
-cleanup registration. No executable component behaviour is supplied yet.
+[core package](packages/core/index.md) provides the component scope factory, lifetime and cleanup
+runtime with production contracts and generated declarations. Its
+[component guide](packages/core/component/index.md) owns creation, logical lifetime and explicit
+cleanup registration. Capability and concrete family runtime remain pending.
 
 [Component direction](project/component-direction.md) records deferred original families,
 reopened Sidebar axes and capability-lifetime questions. [Integration boundaries](project/integration-boundaries.md)

@@ -24,9 +24,9 @@ cancels the superseded run. Action references currently use version 6 tags, whic
 references rather than immutable commit pins.
 
 These jobs invoke focused lint, production and residual capability type checks, narrow
-manifest/configuration formatting, build-ownership tests and fresh package consumers. The tests
-build isolated candidates; the contract-only package supplies no component runtime behaviour.
-Legacy examples remain non-executed. Hosted results remain specific to the revision actually
+manifest/configuration formatting, build-ownership tests, public lifecycle runtime tests and fresh
+package consumers. The tests build isolated candidates and exercise the actual scope factory
+without running the legacy capability examples. Hosted results remain specific to the revision actually
 checked and establish no browser, accessibility or registry-publication support.
 
 ## Discord notifications

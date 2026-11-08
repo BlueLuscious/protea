@@ -6,14 +6,15 @@ component behaviour, accessibility and composition with optional presentation an
 ## Current status
 
 The repository contains its first private [core package](docs/en/packages/core/index.md),
-`@luscious-garden/protea-core`. It exports portable component and resource-ownership contracts
-and builds ESM JavaScript plus declarations. The package currently has no executable component
-values, lifecycle implementation or capability runtime.
+`@luscious-garden/protea-core`. Its `componentScopeFactory.create()` creates an independent
+component lifetime with explicit cleanup registration. Finalisation becomes terminal before
+release callbacks and attempts every owned release. The package builds ESM JavaScript and
+declarations; opening and activation runtime remain pending.
 
 The [component guide](docs/en/packages/core/component/index.md) owns identity, logical lifetime
 and cleanup semantics. Opening and activation remain [legacy design inputs](docs/en/design/index.md)
 with non-executed type examples. Their production construction and independent teardown need
-further decisions after the foundation.
+further capability decisions.
 
 Button, Sidebar and Modal are [future original families](docs/en/project/component-direction.md).
 The earlier static/floating Sidebar classification is reopened. Optional hosts, Icon/Aster and
@@ -21,9 +22,9 @@ motion remain [future integrations](docs/en/project/integration-boundaries.md), 
 dependencies or support claims.
 
 Repository verification covers focused lint, production and legacy types, manifest/configuration
-formatting, bounded build behaviour and fresh package consumers. A contract-only build and consumer
-check establish no component behaviour or accessibility conformance. The package is private and
-has not been published.
+formatting, bounded build behaviour, lifecycle runtime and fresh package consumers. Lifetime
+evidence is separate from capability, host and accessibility qualification. The package is private
+and has not been published.
 
 ## Development
 

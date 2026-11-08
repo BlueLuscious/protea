@@ -1,6 +1,6 @@
 # Repository Tooling
 
-Status: **Workspace, contract build and consumer checks configured; component runtime pending**
+Status: **Component lifetime runtime, build and public-consumer checks configured**
 
 This guide owns contributor tools, actual commands and checking coverage. The
 [project guide](../project/index.md) owns product responsibility; the
@@ -9,14 +9,15 @@ This guide owns contributor tools, actual commands and checking coverage. The
 ## Current verification
 
 `pnpm run verify` runs focused lint, production type checking, remaining design type checking,
-manifest/configuration formatting, tooling tests and fresh package-consumer tests. The tests build
-isolated candidates and use exactly owned system-temporary directories; verification therefore
+manifest/configuration formatting, tooling, lifetime runtime and fresh package-consumer tests.
+The tests build isolated candidates and use exactly owned system-temporary directories; verification therefore
 has filesystem effects even though the lint, type and format-check subcommands are read-only.
 The separate build command produces repository package outputs when requested.
 
-The current package contains contracts only. These checks exercise declaration validity,
-bounded output production, package inclusion and public type/module resolution. They do not
-execute component lifetime, opening or activation behaviour. Legacy examples remain non-executed.
+These checks cover declaration validity, bounded output production, package inclusion and
+public type/module resolution. The lifetime suite executes the actual public scope factory,
+registration and finalisation behaviour against a fresh built package. Opening and activation
+remain unimplemented and their legacy examples remain non-executed.
 Links, fragments, terminology, semantic architecture, complete JSDoc, British English, source/text
 hygiene and prose truth retain manual review.
 
@@ -42,9 +43,10 @@ dependencies. [pnpm-lock.yaml](../../../pnpm-lock.yaml) owns generated resolutio
 `packages/*`; their one actual member is the private core package.
 
 There is no production Node/DOM/framework dependency. Node runs contributor build/tests, using
-its built-in test runner for current JavaScript tooling and distribution tests. `tsx` and Node
-ambient types remain deferred until real executable TypeScript tests need them. Contributor
-pins do not establish a portable package engine requirement or wider support matrix.
+its built-in test runner for current JavaScript tooling, lifecycle and distribution tests. Runtime
+tests are `.mjs`, so they need neither `tsx` nor Node ambient types. Those tools remain deferred
+until actual executable TypeScript inputs require them. Contributor pins do not establish a
+portable package engine requirement or wider support matrix.
 
 ## Installation and commands
 
@@ -58,17 +60,18 @@ pnpm run verify
 | Command | Current responsibility |
 | --- | --- |
 | `pnpm run build` | Produce the core package's JavaScript/declarations through its bounded output owner. |
-| `pnpm run typecheck` | Strict no-emit checking of production component contracts. |
+| `pnpm run typecheck` | Strict no-emit checking of production contracts and lifecycle implementation. |
 | `pnpm run typecheck:design` | Check the 18 retained legacy capability inputs without emission or execution. |
 | `pnpm run lint` | Check actual package, tooling, test, design and ESLint inputs with zero warnings. |
 | `pnpm run format` | Format root/package manifests, Prettier configuration and ESLint configuration. |
 | `pnpm run format:check` | Check that same explicit formatting scope without writing. |
 | `pnpm run test:tooling` | Exercise real build ownership and failure boundaries using isolated candidates. |
+| `pnpm run test:runtime` | Exercise actual scope creation, registration and finalisation through a fresh public package. |
 | `pnpm run test:consumer` | Build fresh candidates and check actual package inclusion, exports and clean consumers. |
-| `pnpm run verify` | Run lint, both type checks, format checking and both current test suites. |
+| `pnpm run verify` | Run lint, both type checks, format checking, tooling tests, lifetime tests and package consumers. |
 
-The package build script invokes the same repository producer. No empty recursive runtime suite,
-component test command, release command or publication gate is advertised.
+The package build script invokes the same repository producer. No empty recursive gate, release
+command or publication gate is advertised.
 
 ## Production and legacy type checking
 
@@ -92,10 +95,10 @@ extends the strict baseline with an explicit file list and empty `include`; it e
 The [legacy specification](../design/reusable-capabilities.md) owns retained semantics.
 
 Foundation contracts now have one production owner. The legacy example imports the production
-root source; this explicit transitional coupling adds five production files to the compiler
-closure and is not a clean package-consumer check. Independent distribution tests exercise the
-actual manifest instead. Concrete family declarations, ambient
-family factories, the Sidebar union and three obsolete examples are retired.
+root source; this explicit transitional coupling adds the nine production TypeScript files to
+its compiler closure and is not a clean package-consumer check. Independent distribution tests
+exercise the actual manifest instead. Concrete family declarations, ambient family factories,
+the Sidebar union and three obsolete examples are retired.
 
 Positive/negative capability examples check options, vocabulary discrimination, readonly views,
 results, callbacks and structural composition. Two current negative cases protect absent runtime
@@ -106,6 +109,19 @@ occurred, not that it has the intended cause; diagnostic review remains separate
 Capabilities' production placement, construction and independent teardown/replacement remain
 pending. The remaining prototypes must be retired with their implemented or deferred responsibilities,
 rather than relocated into another declaration workspace.
+
+## Lifecycle runtime checks
+
+[component-scope.test.mjs](../../../tests/runtime/component-scope.test.mjs) consumes a fresh local
+package archive through its public root. It exercises independent creation, active/terminal
+registration, duplicate release obligations, terminal-before-release observation, every required
+cleanup attempt, opaque failures, repetition, reentrancy and preservation of borrowed lifetimes.
+Its application-owned composition cases use real scopes rather than fake component families.
+
+The suite owns fresh package prerequisites and isolated temporary roots. It does not execute
+the legacy capability examples or supply opening, activation, host or accessibility evidence.
+Passing a type check is distinct from these observable runtime regressions; hosted results still
+need exact-source readback.
 
 ## Lint and formatting coverage
 

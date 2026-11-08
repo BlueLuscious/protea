@@ -1,6 +1,6 @@
 # Core Package Tooling
 
-Status: **Private contract package, ESM/declaration producer and consumer checks configured**
+Status: **Private lifecycle package, ESM/declaration producer and public consumers configured**
 
 This guide owns the actual package/build boundary and its qualification requirements. The
 [core guide](../packages/core/index.md) owns current scope and the
@@ -11,7 +11,7 @@ This guide owns the actual package/build boundary and its qualification requirem
 
 | Subject | Current selection |
 | --- | --- |
-| Owner | `packages/core/`, currently production component contracts only. |
+| Owner | `packages/core/`, with production component contracts and scope lifetime implementation. |
 | Identity | `@luscious-garden/protea-core`, version `0.0.0`, `private: true`. |
 | Runtime format | ESM only with `type: "module"`; ES2022 output and standard libraries. |
 | TypeScript resolution | NodeNext modules/resolution with explicit relative `.js` specifiers, strict checking, `types: []` and checked declarations. |
@@ -21,9 +21,9 @@ This guide owns the actual package/build boundary and its qualification requirem
 | Inclusion | Current built output plus manifest, package README and ISC licence. Tests, prototypes, local plans, caches and build metadata are excluded. |
 | Dependencies | No production dependency or intrinsic Node engine requirement. Contributor tooling stays outside portable contracts. |
 
-The root exports three type names. Its emitted JavaScript has no executable component exports;
-an empty runtime namespace at this checkpoint is intentional. A contract-only package does not
-advertise a scope factory, component constructor or capability value.
+The root exports `componentScopeFactory`, `componentLifecycleStates` and four contract/type names:
+Component, ComponentScope, ComponentScopeFactory and ComponentLifecycleType. The implementation
+class and constructor are internal; no opening/activation value or concrete family is exported.
 
 ## Canonical producer and ownership
 
@@ -59,16 +59,23 @@ root in a clean environment. TypeScript
 consumers use both NodeNext and Bundler resolution without source aliases or private imports.
 The emitted runtime module must resolve while exposing no unavailable values.
 
-These checks establish build/distribution boundaries and present type restrictions, not lifetime
-execution, resource cleanup, capability state, accessible interaction or a published release.
+These checks establish build/distribution boundaries and present type restrictions. Separate
+public runtime tests exercise the scope's lifecycle and cleanup semantics; they establish no
+capability state, accessible interaction or published release.
 Every independently runnable consumer suite owns fresh prerequisites rather than inspect stale
 repository output. Owned temporary directories must be precisely identified, contained and cleaned
 without following links.
 
-Node's built-in runner executes these current JavaScript suites. Executable TypeScript runtime
-tests, `tsx` and Node ambient types are deferred until actual implementation inputs require them.
-Future lifetime and capability tests must exercise accepted semantic guarantees, failure,
-reentrancy, borrowing, subscription mutation and independent state at their actual owners.
+Node's built-in runner executes the current JavaScript suites, including `.mjs` lifecycle tests.
+They need no `tsx` or Node ambient dependency. Future executable TypeScript inputs must justify
+those tools separately. Lifetime tests exercise finalisation, cleanup attempts, failure,
+reentrancy, borrowing and independent state. Capability transitions and subscription mutation
+remain future capability evidence.
+
+The root `test:runtime` command runs
+[component-scope.test.mjs](../../../tests/runtime/component-scope.test.mjs) against a fresh packed
+public package. Production source contains nine TypeScript files and emits their JavaScript
+and declarations; the package remains the only producer of current public signatures and values.
 
 ## Support and evidence
 

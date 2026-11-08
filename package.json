@@ -28,8 +28,9 @@
     "typecheck:design": "tsc --project design/tsconfig.json",
     "build": "node tooling/workspace/build-core.mjs",
     "test:tooling": "node --test tests/tooling/core-build.test.mjs",
+    "test:runtime": "node --test tests/runtime/component-scope.test.mjs",
     "test:consumer": "node --test tests/distribution/core-package.test.mjs",
-    "verify": "pnpm run lint && pnpm run typecheck && pnpm run typecheck:design && pnpm run format:check && pnpm run test:tooling && pnpm run test:consumer"
+    "verify": "pnpm run lint && pnpm run typecheck && pnpm run typecheck:design && pnpm run format:check && pnpm run test:tooling && pnpm run test:runtime && pnpm run test:consumer"
   },
   "devDependencies": {
     "eslint": "10.11.0",

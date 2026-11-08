@@ -1,22 +1,23 @@
 # Portable Core Foundation
 
-Status: **Production foundation contracts; runtime construction and capabilities pending**
+Status: **Component lifetime and cleanup runtime implemented; capabilities remain pending**
 
 Protea's portable foundation supports the independent UI component library. Its first real
-package is [core](../packages/core/index.md), which currently exports Component, ComponentScope
-and ComponentLifecycleType as contracts. The [component guide](../packages/core/component/index.md)
-owns their semantics and production TypeScript owns their signatures.
+package is [core](../packages/core/index.md). Its componentScopeFactory creates independent
+ComponentScope instances with the existing component lifetime and explicit cleanup-registration
+contract. The [component guide](../packages/core/component/index.md) owns semantics and use;
+production TypeScript owns signatures and emits their declarations.
 
 A component's minimum contract supplies identity through its reference, logical lifetime and
 finalisation. A resource-owning consumer can explicitly accept the stronger ComponentScope.
 Keeping those roles distinct avoids imposing cleanup-registration authority on every consumer,
 without replacing the component model with definition/instance aliases.
 
-No creation value or lifecycle runtime exists yet. Opening and activation remain
+Opening and activation remain
 [legacy capability inputs](../design/index.md). Their production placement, factories and any
-independent capability teardown/replacement are intentionally decided after the foundation.
-The earlier target factory-composition example is withdrawn as a selected production API;
-capability consumers must not rely on values which this package does not export.
+independent capability teardown/replacement require further capability decisions. The current
+factory creates only a component scope, without options or attached capabilities. Consumers
+must not rely on opening/activation values which this package does not export.
 
 DOM, rendering, styles, icons, motion, frameworks and managers stay outside the portable core
 slice. [Component direction](component-direction.md) owns future original families and their

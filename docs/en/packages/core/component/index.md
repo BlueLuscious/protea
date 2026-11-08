@@ -1,11 +1,13 @@
 # Component Foundation
 
-Status: **Production contracts specified; lifecycle runtime not implemented**
+Status: **Component lifetime and cleanup runtime implemented**
 
-This guide owns the semantics of `Component`, `ComponentLifecycleType` and `ComponentScope`.
-Their [production source](../../../../../packages/core/src/component/) owns signatures; the
+This guide owns component lifetime, scope construction and cleanup registration.
+The [production source](../../../../../packages/core/src/component/) owns signatures; the
 [core package](../index.md) exports them through its root and emits declarations from that source.
-The contracts describe required behaviour without supplying a factory or implementation class.
+The root exports `componentScopeFactory` and `componentLifecycleStates`, alongside the
+`Component`, `ComponentScope`, `ComponentScopeFactory` and `ComponentLifecycleType` contracts.
+Implementation classes and their constructors remain private to the package.
 
 ## Identity and lifetime
 
@@ -18,6 +20,11 @@ Lifecycle distinguishes `active` from terminal `disposed`. Active means the logi
 has not ended; it says nothing about mounting, visibility, eligibility, openness or work currently
 in progress. Creation must expose an active model. The transition to disposed is irreversible
 and must prevent new model work without inventing closing or activation notifications.
+
+`componentLifecycleStates.active` and `.disposed` are the named string choices in a frozen
+vocabulary object. ComponentLifecycleType derives its union from that authority; existing
+`"active"` and `"disposed"` string consumers remain compatible. These are lifecycle states,
+separate from the result statuses of a future capability operation.
 
 The lifecycle reading remains valid after finalisation. Its readonly type view restricts consumer
 assignment without freezing the object or supplying a lifecycle subscription. Future capabilities
@@ -71,10 +78,45 @@ functions in some void-return positions; that assignability is not semantic conf
 
 ## Construction and extension boundary
 
-No runtime creation value is exported yet. Later construction must expose no partial model,
-capture its required ownership before exposure and clean up allocations from failed setup.
-Cleanup failure must not hide other required release attempts or silently adopt borrowed
-collaborators. Effects already performed by collaborators are not automatically rolled back.
+`componentScopeFactory.create()` accepts no options and returns a new active scope. Each call
+has its own lifetime and cleanup entries. Creating a scope acquires no external resource, calls
+no application callback and attaches no capability. The caller owns the new scope's disposal.
+The factory exposes completed scopes rather than a public implementation constructor.
+
+The following application-owned helper registers a caller-supplied synchronous release before
+letting a consumer borrow the minimum component contract:
+
+```ts
+import {
+  componentScopeFactory,
+  type Component,
+} from "@luscious-garden/protea-core";
+
+export function useOwnedResource(
+  release: () => void,
+  consume: (component: Component) => void,
+): void {
+  const scope = componentScopeFactory.create();
+
+  try {
+    scope.addCleanup(release);
+    consume(scope);
+  } finally {
+    scope.dispose();
+  }
+}
+```
+
+The helper owns the created scope; borrowing it as Component does not transfer lifecycle
+authority. A failed registration retains or invokes nothing, so its caller still owns that
+unregistered release obligation. Once registered, finalisation attempts it even if the consumer
+throws. A release failure propagates opaquely; no particular aggregation of simultaneous
+application and cleanup failures is promised by this example.
+
+Future composition must expose no partial model, clean up its own failed setup and preserve
+borrowed collaborators. Effects already performed by collaborators are not automatically rolled
+back. That future obligation does not introduce a resource-acquisition callback or options into
+the current scope factory.
 
 The contracts remain independent of implementation classes. A conforming structural owner is
 permitted, but its shape alone proves neither atomic registration, synchronous finalisation nor
@@ -88,12 +130,12 @@ contract.
 
 ## Evidence
 
-Strict production/declaration checks and current public type consumers exercise members,
-structural extension, readonly restrictions and host-free consumption. They do not execute a
-lifetime, freeze objects or prove cleanup, ordering, reentrancy or instance isolation.
+Strict production/declaration checks and public type consumers exercise members, structural
+extension, readonly restrictions and host-free consumption. Separate runtime tests consume a
+fresh built public package to exercise creation, independent instances, terminal-before-release
+observation, every required cleanup attempt, invalid/terminal registration, duplicate obligations,
+borrowing, failure and repeated/reentrant disposal.
 
-Runtime evidence must exercise terminal-before-release observation, every required cleanup
-attempt, invalid and terminal registration, duplicate obligations, borrowed lifetimes, partial
-setup, failure and repeated/reentrant disposal. The
-[tooling guide](../../../tooling/index.md#current-verification) owns current commands and their
-actual coverage. No runtime suite is advertised for these unimplemented operations.
+This runtime evidence does not establish opening, activation, host teardown or accessibility.
+The [tooling guide](../../../tooling/index.md#current-verification) owns actual commands and
+coverage; local, hosted and publication evidence remain separate.

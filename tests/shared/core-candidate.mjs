@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { copyFile, cp, mkdir } from "node:fs/promises";
+import { copyFile, cp, mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { withTemporaryDirectory } from "../../tooling/shared/runtime/temporary-directory.mjs";
+import { buildCore } from "../../tooling/workspace/runtime/core-build.mjs";
 
 export const repositoryRoot = fileURLToPath(new URL("../../", import.meta.url));
 
@@ -40,4 +42,21 @@ export function runPnpm(arguments_, cwd, temporaryRoot) {
   });
   assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
   return result;
+}
+
+export async function withCoreConsumer(prefix, operation) {
+  return withTemporaryDirectory(prefix, async (root) => {
+    const packageRoot = await prepareCoreCandidate(root);
+    await buildCore(root);
+    const archives = join(root, "archives");
+    await mkdir(archives);
+    const packed = runPnpm(["--dir", packageRoot, "pack", "--pack-destination", archives, "--json"], root, root);
+    const archive = JSON.parse(packed.stdout).filename;
+    const consumer = join(root, "consumer");
+    await mkdir(consumer);
+    await writeFile(join(consumer, "package.json"), JSON.stringify({ name: "protea-core-consumer", private: true, type: "module" }));
+    runPnpm(["--dir", consumer, "add", archive, "--offline", "--ignore-scripts", "--store-dir", join(root, "store")], root, root);
+    const installed = join(consumer, "node_modules", "@luscious-garden", "protea-core");
+    return operation({ root, packageRoot, consumer, installed });
+  });
 }

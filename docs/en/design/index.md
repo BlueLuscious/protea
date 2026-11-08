@@ -27,8 +27,8 @@ families, Sidebar's opening requirement and meaningful variants remain deferred.
 ## Transition boundary
 
 Opening and activation are candidate reusable responsibilities. Their exact production
-placement, construction and independent teardown/replacement require review after the foundation
-runtime. The old component/family prototype surface is not an export quota, and this workspace
+placement, construction and independent teardown/replacement require further capability review.
+The old component/family prototype surface is not an export quota, and this workspace
 does not allocate capability packages or subpaths.
 
 Implementation must preserve useful semantic constraints in actual production contracts, tests
@@ -39,4 +39,5 @@ should survive that transition.
 
 All remaining root `design/` files and their current checker/link dependencies must be retired
 when their responsibilities are implemented or explicitly deferred. This guide claims no
-lifecycle runtime, accessible interaction, rendering or framework support.
+capability runtime, accessible interaction, rendering or framework support. The production
+foundation's implemented lifetime has its own package and runtime evidence.

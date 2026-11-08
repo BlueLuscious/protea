@@ -22,7 +22,7 @@ test("build replaces only unchanged owned output and removes retired emitted fil
     const previous = await readFile(manifest, "utf8");
     await buildCore(root);
     assert.equal(await readFile(manifest, "utf8"), previous);
-    assert.equal(JSON.parse(previous).files.length, 10);
+    assert.equal(JSON.parse(previous).files.length, 18);
   });
 });
 

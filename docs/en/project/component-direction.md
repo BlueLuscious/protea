@@ -28,8 +28,8 @@ does not mandate implementation inheritance.
 
 The current [foundation](../packages/core/component/index.md) supplies one terminal component
 lifetime and explicit cleanup registration. Opening and activation remain legacy specifications;
-their production construction, placement and optional independent teardown require review after
-the foundation is executable. Component and ComponentScope retain their distinct consumer and
+their production construction, placement and optional independent teardown require further review.
+Component and ComponentScope retain their distinct consumer and
 resource-owner roles; no definition/instance alias replaces them.
 
 Consider a future Modal whose opening capability can be replaced while the Modal remains alive.

@@ -1,6 +1,6 @@
 # Protea Project
 
-Status: **Private foundation contract package; runtime and original component families pending**
+Status: **Private component lifetime runtime; capabilities and original families pending**
 
 ## Purpose and authority
 
@@ -16,14 +16,14 @@ and releases; a Garden summary does not establish an implemented or published pr
 
 ## Current scope
 
-The private [core package](../packages/core/index.md) provides production Component,
-ComponentScope and ComponentLifecycleType contracts, with JavaScript/declaration emission and
-one root export. Its [component guide](../packages/core/component/index.md) owns lifetime and
-cleanup registration. The package supplies no executable component behaviour yet.
+The private [core package](../packages/core/index.md) provides componentScopeFactory and its
+production component/scope contracts, with JavaScript/declaration emission and one root export.
+Its [component guide](../packages/core/component/index.md) owns actual creation, lifetime and
+cleanup registration. Each new scope has independent state and finalisation obligations.
 
 Opening and activation remain [legacy design inputs](../design/index.md), without production
 exports or runtime implementations. Their placement, construction and independent teardown need
-decisions after the foundation runtime. [Component direction](component-direction.md) owns later
+further capability decisions. [Component direction](component-direction.md) owns later
 original Button, Sidebar and Modal work, reopened Sidebar axes and composition questions.
 [Integration boundaries](integration-boundaries.md) own future hosts, icons and motion.
 No renderer, concrete framework adapter, manager or optional provider is implemented.
@@ -46,8 +46,8 @@ A Protea decision cannot silently change another product's public contract or ec
 ### Actual enforcement
 
 The current gate combines focused lint, strict production/legacy type checks, manifest/config
-formatting, bounded-build tests and fresh package consumers. It establishes no lifecycle execution,
-capability state transitions or accessible interaction. The exact
+formatting, bounded-build tests, public lifetime runtime tests and fresh package consumers.
+Capability state transitions and accessible interaction still require separate evidence. The exact
 [coverage](../tooling/index.md#current-verification) distinguishes static, build, filesystem and
 distribution evidence.
 

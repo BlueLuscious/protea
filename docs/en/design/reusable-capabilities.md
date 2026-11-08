@@ -19,7 +19,7 @@ The prototype now imports the production root source for its type-only component
 example. That transitional coupling is not installed-package consumer evidence. This guide does
 not allocate the capabilities to core or select their production
 construction API. Their placement, resource ownership and any independent teardown/replacement
-are reviewed after the foundation runtime under the
+require further capability review under the
 [component direction](../project/component-direction.md#capability-lifetime-and-replacement).
 The retained rules below describe the legacy lifetime-bound design; they do not pre-empt that
 review or introduce a second component lifetime, public class, factory or controller.
@@ -275,5 +275,6 @@ callback failures, disposal during requests, freezing a value read before source
 borrowed-source cleanup and instance isolation.
 No listeners, state store, transition algorithm, runtime component or functional adapter is
 implemented here. The [core package](../packages/core/index.md) currently exports foundation
-contracts only. Original families and capability placement remain deferred; the
+contracts and the scope lifetime factory/runtime. Original families and capability placement
+remain deferred; the
 [integration guide](../project/integration-boundaries.md) owns future host responsibilities.
