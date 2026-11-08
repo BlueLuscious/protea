@@ -1,34 +1,23 @@
 # Protea Documentation
 
-English under `docs/en/` is the canonical documentation locale. Future translations should preserve
-the same relative structure.
+English under `docs/en/` is canonical. Future translations should preserve its relative structure.
 
 ## Guides and ownership
 
-| Guide                                                | Responsibility                                                                       |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| [Project](project/index.md)                          | Current product scope, shared-rule adoption, contribution and ownership.             |
-| [Foundation design](design/index.md)                 | Selected design scope, vocabulary, responsibility boundaries and artefact ownership. |
-| [Repository tooling](tooling/index.md)               | Contributor infrastructure, selected baseline, current verification and its limits.  |
-| [Repository automation](tooling/automation/index.md) | CI orchestration, Discord configuration and execution/receipt boundaries.            |
+| Guide | Responsibility |
+| --- | --- |
+| [Packages](packages/index.md) | Actual package set, current API responsibilities and parallel feature guides. |
+| [Project](project/index.md) | Product direction, shared-rule adoption, contribution and ownership. |
+| [Legacy capabilities](design/index.md) | Retained opening/activation prototypes and their pending production decisions. |
+| [Repository tooling](tooling/index.md) | Contributor environment, actual commands, output ownership and checking limits. |
+| [Repository automation](tooling/automation/index.md) | CI orchestration and Discord execution/receipt boundaries. |
 
-The [repository introduction](../../README.md) summarises the current state. The project guide links
-Garden's ecosystem authorities. The [portable core scope](project/core-foundation.md) owns the
-selected construction and ownership model; its [package baseline](tooling/core-package.md) owns
-future distribution and qualification. No production package or runtime exists yet.
-The private [component foundation](design/component-foundation.md)
-specifies the minimum lifetime contract; [reusable capabilities](design/reusable-capabilities.md)
-own opening, activation and state-authority semantics. [Representative families](design/representative-families.md)
-describe legacy button, sidebar and modal pilots and their part composition. Their static/floating
-classification is reopened; original families remain later work.
-[Component coordination](design/component-coordination.md) owns direct-reference collaboration,
-connection responsibilities and the reasons for deferring registries and multi-modal policy.
-The [proposed public API](design/public-api.md) maps declaration and semantic owners;
-[integration boundaries](design/integration-boundaries.md) own future host requirements and
-the limits of optional integrations.
-The [implementation handover](design/implementation-handover.md) maps evidence, remaining runtime
-obligations and the transition to implementation-generated declarations.
-These remain private prototypes; no shipping
-package API or integration support matrix is established yet.
+The [repository introduction](../../README.md) summarises current source. The private
+[core package](packages/core/index.md) provides production component contracts and a declaration
+build. Its [component guide](packages/core/component/index.md) owns logical lifetime and explicit
+cleanup registration. No executable component behaviour is supplied yet.
 
+[Component direction](project/component-direction.md) records deferred original families,
+reopened Sidebar axes and capability-lifetime questions. [Integration boundaries](project/integration-boundaries.md)
+own future hosts and optional providers. Neither is a second API catalogue or a compatibility claim.
 Software and documentation follow the repository's [ISC licence](../../LICENSE).

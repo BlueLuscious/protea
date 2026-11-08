@@ -1,34 +1,29 @@
 # Protea
 
-Protea is a UI component library project in Garden. It aims to provide reusable component
-behaviour, accessibility and composition with optional presentation and framework integrations.
+Protea is Garden's standalone UI component library project. It aims to provide reusable
+component behaviour, accessibility and composition with optional presentation and integrations.
 
 ## Current status
 
-The [portable core scope](docs/en/project/core-foundation.md) now selects construction, ownership
-and consumption for the first package. Its [production baseline](docs/en/tooling/core-package.md)
-selects a private ESM package; package source and runtime remain unimplemented.
+The repository contains its first private [core package](docs/en/packages/core/index.md),
+`@luscious-garden/protea-core`. It exports portable component and resource-ownership contracts
+and builds ESM JavaScript plus declarations. The package currently has no executable component
+values, lifecycle implementation or capability runtime.
 
-The repository provides a private contributor toolchain, project documentation, shared-rule
-adoption, an ISC licence and text hygiene configuration. Foundation scope, vocabulary and
-responsibilities are documented in the [design guide](docs/en/design/index.md). A private
-[component foundation prototype](docs/en/design/component-foundation.md) specifies reference identity
-and logical lifetime. [Reusable capability prototypes](docs/en/design/reusable-capabilities.md)
-specify opening, activation, state authority and observations, with non-executed consumption
-examples checked statically.
-The [legacy family pilots](docs/en/design/representative-families.md) contrast buttons, sidebars
-and modals, including borrowed controls. Original families are deferred; the static/floating
-Sidebar classification is reopened and is not the selected production model.
-[Component coordination](docs/en/design/component-coordination.md) retains direct references and
-public capabilities for these pilots, with explicit connection ownership; registries and
-multi-modal policies need a further concrete consumer before introducing contracts.
-The [proposed public API](docs/en/design/public-api.md) maps the existing type-only modules;
-[integration boundaries](docs/en/design/integration-boundaries.md) assign future host responsibilities
-and identify unavailable upstream contracts without promising compatibility.
-The [implementation handover](docs/en/design/implementation-handover.md) maps static evidence to
-the runtime and host regressions still required, and defines declaration reconciliation.
-Repository verification checks contributor configuration, design types and formatting. There is no component
-runtime implementation, product package, product build or runtime test suite yet.
+The [component guide](docs/en/packages/core/component/index.md) owns identity, logical lifetime
+and cleanup semantics. Opening and activation remain [legacy design inputs](docs/en/design/index.md)
+with non-executed type examples. Their production construction and independent teardown need
+further decisions after the foundation.
+
+Button, Sidebar and Modal are [future original families](docs/en/project/component-direction.md).
+The earlier static/floating Sidebar classification is reopened. Optional hosts, Icon/Aster and
+motion remain [future integrations](docs/en/project/integration-boundaries.md), without runtime
+dependencies or support claims.
+
+Repository verification covers focused lint, production and legacy types, manifest/configuration
+formatting, bounded build behaviour and fresh package consumers. A contract-only build and consumer
+check establish no component behaviour or accessibility conformance. The package is private and
+has not been published.
 
 ## Development
 
@@ -40,16 +35,16 @@ pnpm install --frozen-lockfile
 pnpm run verify
 ```
 
-The [tooling guide](docs/en/tooling/index.md) owns commands, prerequisites and verification coverage.
+The [tooling guide](docs/en/tooling/index.md) owns actual commands, prerequisites and coverage.
+Verification includes tests which build isolated candidates and use owned temporary directories.
 
 ## Documentation
 
 - [Documentation home](docs/en/index.md): canonical guides and subject ownership.
-- [Project](docs/en/project/index.md): current scope, shared-rule adoption and contribution.
-- [Portable core](docs/en/project/core-foundation.md): selected scope, construction and ownership for implementation.
-- [Foundation design](docs/en/design/index.md): selected cases, private prototypes, responsibilities and coordination decisions.
-- [Repository tooling](docs/en/tooling/index.md): contributor infrastructure, current checks and limits.
-- [Repository automation](docs/en/tooling/automation/index.md): CI, Discord configuration and execution evidence.
+- [Packages](docs/en/packages/index.md): actual package set and current capabilities.
+- [Project](docs/en/project/index.md): product direction, shared rules and contribution.
+- [Repository tooling](docs/en/tooling/index.md): contributor infrastructure and checking limits.
+- [Repository automation](docs/en/tooling/automation/index.md): CI and Discord configuration.
 - [Garden product direction](https://github.com/BlueLuscious/garden/blob/master/docs/en/products/protea/index.md): ecosystem responsibility and optional integrations.
 - [Shared engineering rules](https://github.com/BlueLuscious/garden/blob/master/docs/en/project-rules.md): applicable Garden conventions.
 

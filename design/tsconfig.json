@@ -1,10 +1,6 @@
 {
   "extends": "../tsconfig.base.json",
   "files": [
-    "component/types/component-lifecycle.type.ts",
-    "component/contracts/component.contract.ts",
-    "component/api/index.ts",
-    "examples/component-foundation.test.ts",
     "capabilities/types/capability-rejection-reason.type.ts",
     "capabilities/types/capability-unsubscribe.type.ts",
     "capabilities/api/index.ts",
@@ -22,22 +18,7 @@
     "activatable/types/activatable-options.type.ts",
     "activatable/contracts/activatable.contract.ts",
     "activatable/api/index.ts",
-    "examples/capabilities.test.ts",
-    "button/contracts/button.contract.ts",
-    "button/api/button.factory.d.ts",
-    "button/api/index.ts",
-    "sidebar/contracts/static-sidebar.contract.ts",
-    "sidebar/contracts/floating-sidebar.contract.ts",
-    "sidebar/types/sidebar.type.ts",
-    "sidebar/api/static-sidebar.factory.d.ts",
-    "sidebar/api/floating-sidebar.factory.d.ts",
-    "sidebar/api/index.ts",
-    "modal/contracts/modal.contract.ts",
-    "modal/types/modal-options.type.ts",
-    "modal/api/modal.factory.d.ts",
-    "modal/api/index.ts",
-    "examples/families.test.ts",
-    "examples/component-coordination.test.ts"
+    "examples/capabilities.test.ts"
   ],
   "include": []
 }

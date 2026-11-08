@@ -9,7 +9,7 @@ import type {
   CapabilityRejectionReasonType,
   CapabilityUnsubscribeType,
 } from "../capabilities/api/index.js";
-import type { Component } from "../component/api/index.js";
+import type { Component } from "../../packages/core/src/index.js";
 import type {
   Openable,
   OpenableChangeType,

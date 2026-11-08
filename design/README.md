@@ -1,57 +1,29 @@
-# Private Design Workspace
+# Remaining Private Capability Prototypes
 
-This directory is the private authoring space for Protea's foundation declaration prototypes and
-non-executed consumption examples. It is not a product package or executable library.
+This temporary workspace contains the opening and activation declaration prototypes and their
+non-executed type examples. It is not a product package or an executable library. The
+[remaining design guide](../docs/en/design/index.md) explains its scope; the
+[capability guide](../docs/en/design/reusable-capabilities.md) owns its proposed semantics.
 
-The [foundation design guide](../docs/en/design/index.md) owns scope and semantic design decisions.
-[Design authoring](../docs/en/tooling/index.md#design-authoring) owns the layout, check prerequisites
-and actual coverage.
+The component foundation now belongs to [core](../packages/core/README.md). The remaining
+[capability examples](examples/capabilities.test.ts) import that production source contract
+explicitly during migration. This is a private authoring dependency, not evidence of package
+distribution. The separate [package consumer suite](../tests/distribution/core-package.test.mjs)
+checks the built package through its manifest.
 
-The [type-only component entrypoint](component/api/index.ts) exposes the experimental foundation
-contracts. Their [semantic guide](../docs/en/design/component-foundation.md) owns identity,
-lifetime and disposal obligations. The [consumption examples](examples/component-foundation.test.ts)
-check simple and interactive shapes, intended restrictions and the absence of implicit host globals.
+The [opening](openable/api/index.ts), [activation](activatable/api/index.ts) and
+[shared-type](capabilities/api/index.ts) entrypoints remain type-only. Their ambient result
+vocabularies supply no runtime values. A capability does not acquire a separate component lifetime.
+Its eventual package owner and construction API remain undecided until the foundation is executable.
 
-The [opening](openable/api/index.ts) and [activation](activatable/api/index.ts) entrypoints expose
-narrow capabilities. Their [shared types](capabilities/api/index.ts) cover rejection reasons and
-subscription cleanup; neither capability acquires a second component lifetime. The
-[capability examples](examples/capabilities.test.ts) check authority modes, results, change payloads
-and composition through type-only fixtures. The [capability guide](../docs/en/design/reusable-capabilities.md)
-owns their semantics.
+The family, variant and factory prototypes have been retired. Their useful design considerations
+remain proposals in [component direction](../docs/en/project/component-direction.md); the
+[integration guide](../docs/en/project/integration-boundaries.md) owns product-wide boundaries.
+There are no Button, Sidebar or Modal exports here or in the core package.
 
-The [button](button/api/index.ts), [sidebar](sidebar/api/index.ts) and [modal](modal/api/index.ts)
-entrypoints describe representative families and ambient factory objects through type-only exports.
-Each factory exposes a `create` operation with its own component inputs and result. No creation
-implementation, runtime factory object or executable export is supplied. The
-public factory declarations sit beside their feature's type-only `api/` entrypoints. The
-[family guide](../docs/en/design/representative-families.md) owns their purposes, fixed borrowed
-parts and cleanup boundaries. The [family examples](examples/families.test.ts) check capability
-consumption, static/floating discrimination, creation options and trigger/target composition.
-Model, factory and application-service fixtures are declaration-only. The family subscription
-callback is a non-executed consumer expression; do not execute these files.
-
-The [coordination examples](examples/component-coordination.test.ts) use those existing factories
-and capabilities in two application-local lexical scopes. Nested cleanup expressions distinguish
-a Modal-owned borrowed-control connection from an application-owned trigger subscription; they
-introduce no scope object or manager API. The [coordination guide](../docs/en/design/component-coordination.md)
-owns that assessment and its deferred registry and multi-modal candidates. Static acceptance
-does not prove isolation, notification delivery or successful cleanup.
-
-The [public-API map](../docs/en/design/public-api.md) consolidates the seven existing type-only
-entrypoints, their selected names and structural extension surface. The
-[integration guide](../docs/en/design/integration-boundaries.md) assigns future host responsibilities
-without adding a host contract or adapter. The existing examples supply their consumer evidence;
-this consolidation adds no declaration, runtime export or duplicate fixture.
-
-The [implementation handover](../docs/en/design/implementation-handover.md) maps these examples to
-their actual guarantees and later runtime obligations. Its reconciliation procedure names the
-future declaration producer and distinguishes prototype-only value-absence checks from future
-product export conformance.
-
-[tsconfig.json](tsconfig.json) explicitly lists the real declarations, entrypoints and four example
-files, and extends the shared strict
-baseline without emitting JavaScript. Run `pnpm run typecheck:design` from the repository root;
-`pnpm run verify` includes that check alongside lint and formatting. Static acceptance does not
-demonstrate resource release, lifecycle transitions, runtime ownership or implementation conformance.
-
-No component constructor implementation, runtime value, package export or functional implementation is provided.
+[tsconfig.json](tsconfig.json) explicitly lists 18 capability and example TypeScript inputs and
+extends the strict, host-free baseline. Its imported production types also enter the compiler
+closure. Run `pnpm run typecheck:design` from the root; `pnpm run verify` includes this no-emit check.
+These examples must not be executed. Static acceptance does not demonstrate notification delivery,
+state transitions, resource release or runtime ownership. The remaining prototypes will be
+reconciled and removed as their implementation decisions are made.

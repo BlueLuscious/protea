@@ -1,9 +1,9 @@
 # Reusable Capabilities
 
-Status: **Private experimental capability design; no runtime implementation**
+Status: **Legacy opening/activation specification; no production capability export or runtime**
 
 This guide owns request, state-authority and observation semantics for the retained reusable
-capabilities. The [component foundation](component-foundation.md) retains its accepted identity,
+capabilities. The [production component foundation](../packages/core/component/index.md) retains its identity,
 logical lifetime and disposal rules. The [design scope](index.md), [vocabulary](vocabulary.md)
 and [responsibility map](responsibilities.md) supply the surrounding boundaries.
 
@@ -15,15 +15,20 @@ The private declarations own signatures:
 - [Non-executed consumption examples](../../../design/examples/capabilities.test.ts).
 
 These are experimental authoring entrypoints, not package exports or executable components.
-This guide specifies no public class, constructor, factory or controller. A capability consumer
-does not acquire the whole component interface: later component contracts compose the relevant
-capabilities with `Component`, sharing one logical lifetime without changing its foundation.
+The prototype now imports the production root source for its type-only component composition
+example. That transitional coupling is not installed-package consumer evidence. This guide does
+not allocate the capabilities to core or select their production
+construction API. Their placement, resource ownership and any independent teardown/replacement
+are reviewed after the foundation runtime under the
+[component direction](../project/component-direction.md#capability-lifetime-and-replacement).
+The retained rules below describe the legacy lifetime-bound design; they do not pre-empt that
+review or introduce a second component lifetime, public class, factory or controller.
 
 ## Retained responsibilities
 
 | Candidate     | Consumer and disposition                                                                                                               |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `Openable`    | Retained for logical opening in the floating-sidebar and modal scenarios. A permanently visible sidebar does not need this capability. |
+| `Openable`    | Retained for logical opening scenarios; actual families decide whether and how they require it. The previous Sidebar split is reopened. |
 | `Activatable` | Retained for a simple control that requests an action. Activation is not persistent opening, selection or pressed state.               |
 | `Pressable`   | Deferred: the current action scenario supplies no distinct persistent-state consumer requiring this contract.                          |
 | `toggle`      | Excluded: the current consumers justify explicit opening and closing, without an additional inversion operation.                       |
@@ -269,5 +274,6 @@ guard rechecks, re-entrant rejection, notification order, subscription mutation 
 callback failures, disposal during requests, freezing a value read before source forwarding,
 borrowed-source cleanup and instance isolation.
 No listeners, state store, transition algorithm, runtime component or functional adapter is
-implemented here. Family contracts, host integration, public package boundaries and distribution
-remain with their owning work.
+implemented here. The [core package](../packages/core/index.md) currently exports foundation
+contracts only. Original families and capability placement remain deferred; the
+[integration guide](../project/integration-boundaries.md) owns future host responsibilities.

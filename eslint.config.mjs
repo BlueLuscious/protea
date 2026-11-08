@@ -19,7 +19,13 @@ const sourceRules = {
 
 export default [
   {
-    ignores: ["**/node_modules/**", "plans/**"],
+    ignores: [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/.build/**",
+      "**/fixtures/**",
+      "plans/**",
+    ],
   },
   {
     files: ["**/*.{ts,mjs}"],

@@ -23,9 +23,11 @@ job to 15 minutes. Its concurrency group combines the workflow and ref; a newer 
 cancels the superseded run. Action references currently use version 6 tags, which are mutable
 references rather than immutable commit pins.
 
-These jobs check contributor configuration, private design types and formatting. They do not
-execute the consumption examples or establish component behaviour, browser support, a product
-build or runtime test coverage. Hosted results remain specific to the revision actually checked.
+These jobs invoke focused lint, production and residual capability type checks, narrow
+manifest/configuration formatting, build-ownership tests and fresh package consumers. The tests
+build isolated candidates; the contract-only package supplies no component runtime behaviour.
+Legacy examples remain non-executed. Hosted results remain specific to the revision actually
+checked and establish no browser, accessibility or registry-publication support.
 
 ## Discord notifications
 
@@ -71,13 +73,14 @@ triggers only after the notification workflow is present on the default branch, 
 ## Verification and readback
 
 Review workflow structure, action inputs, shell/expression boundaries, event conditions and the
-exact retained source differences locally. The root gate checks workflow formatting; passing it
-does not execute GitHub Actions or prove notification delivery.
+exact retained source differences locally. Workflow YAML is outside the current narrow formatter
+scope and requires explicit review. Passing the root gate does not execute GitHub Actions or
+prove notification delivery.
 
-Hosted CI evidence must identify successful Ubuntu and Windows jobs for the reviewed source,
-the PR's tested revision and the exact integrated `develop` and `master` revisions. Compare the
-integrated contents with the reviewed source and inspect any differences. A green result on
-another revision or platform does not supply that evidence.
+Hosted CI evidence must identify successful Ubuntu and Windows jobs for the reviewed source.
+When a PR or integration is actually in delivery scope, inspect its tested/integrated revision
+and compare content with the reviewed source. No merge into develop or master follows from a
+local pass. A green result on another revision or platform does not supply current evidence.
 
 Before reporting live notification delivery, identify the triggering event and workflow revision,
 confirm that its sending step executed without the missing-secret skip and verify receipt

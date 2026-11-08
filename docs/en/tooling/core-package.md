@@ -1,87 +1,94 @@
-# Core Package Baseline
+# Core Package Tooling
 
-Status: **Selected production baseline; package, build and runtime checks not yet implemented**
+Status: **Private contract package, ESM/declaration producer and consumer checks configured**
 
-This guide owns the selected tooling and distribution requirements for the first portable core.
-The [core foundation guide](../project/core-foundation.md) owns product scope and construction.
-The [repository tooling guide](index.md) still owns the actual commands and contributor pins;
-this selection adds no executable script, dependency or support claim by itself.
+This guide owns the actual package/build boundary and its qualification requirements. The
+[core guide](../packages/core/index.md) owns current scope and the
+[component guide](../packages/core/component/index.md) owns semantics.
+[Repository tooling](index.md) owns contributor pins and root commands.
 
-## Identity and distribution
+## Identity and outputs
 
-| Subject                          | Selection                                                                                                                                                                                  |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Source owner                     | `packages/core/`, organised by real component, shared-capability, opening and activation responsibilities.                                                                                 |
-| Package name                     | `@luscious-garden/protea-core`; selected identity, with no claim of registry reservation or availability.                                                                                  |
-| Initial version and visibility   | `0.0.0` and `private: true` while establishing the product. Publication/version release requires separate work and authority.                                                              |
-| Runtime format                   | ESM only, with `type: "module"`; no CommonJS build or UMD/browser bundle.                                                                                                                  |
-| Language and libraries           | ECMAScript 2022 output and standard ES2022 libraries, with no implicit Node, DOM or framework environment.                                                                                 |
-| TypeScript production resolution | `module: "NodeNext"`, `moduleResolution: "NodeNext"` and explicit relative `.js` specifiers, retaining strictness and checked declarations.                                                |
-| Producer and outputs             | TypeScript emission from production sources to package-owned `dist/`, producing JavaScript and `.d.ts` files. No maps or committed generated outputs initially.                            |
-| Public boundary                  | One root export. Its `types` condition selects `dist/index.d.ts`; `import` and `default` select the same `dist/index.js`. No wildcard, public subpath or private runtime path is selected. |
-| Package inclusion                | Current built `dist/` plus package metadata, introduction and licence; no tests, prototypes, local plans, caches or contributor installation.                                              |
-| Dependencies                     | No production dependency is required by the selected scope. Compiler/test/tooling dependencies stay at their actual development owner.                                                     |
+| Subject | Current selection |
+| --- | --- |
+| Owner | `packages/core/`, currently production component contracts only. |
+| Identity | `@luscious-garden/protea-core`, version `0.0.0`, `private: true`. |
+| Runtime format | ESM only with `type: "module"`; ES2022 output and standard libraries. |
+| TypeScript resolution | NodeNext modules/resolution with explicit relative `.js` specifiers, strict checking, `types: []` and checked declarations. |
+| Producer | TypeScript emission through the owned build configuration and repository build entrypoint. |
+| Outputs | Package-owned `dist/` containing JavaScript and declarations; no maps or committed generated outputs. |
+| Public boundary | One root: `types` selects `dist/index.d.ts`; `import` and `default` select `dist/index.js`. No public subpaths or wildcard. |
+| Inclusion | Current built output plus manifest, package README and ISC licence. Tests, prototypes, local plans, caches and build metadata are excluded. |
+| Dependencies | No production dependency or intrinsic Node engine requirement. Contributor tooling stays outside portable contracts. |
 
-Feature-local contracts, types, runtime and API owners do not allocate public subpaths or npm
-packages. The root entrypoint intentionally re-exports the selected consumer surface; it must not
-advertise unavailable factories while implementation is incomplete. Stateless factory objects and
-immutable vocabularies introduce no eager component instance, subscription, host effect or mutable
-global runtime. Marking package imports free of side effects requires checking those actual sources.
+The root exports three type names. Its emitted JavaScript has no executable component exports;
+an empty runtime namespace at this checkpoint is intentional. A contract-only package does not
+advertise a scope factory, component constructor or capability value.
 
-The selected production checker retains `strict`, `skipLibCheck: false` and `types: []` with
-`lib: ["ES2022"]`. Build configuration explicitly enables emission instead of inheriting the
-private authoring configuration's `noEmit` setting accidentally. Separate no-emit checks from producing outputs;
-enable `noEmitOnError` and exclude tests and prototypes from the distribution producer. Node-oriented resolution validates
-portable ESM specifiers; it does not authorise Node APIs inside the core.
+## Canonical producer and ownership
 
-## Support and qualification boundary
+[build-core.mjs](../../../tooling/workspace/build-core.mjs) runs the package compiler using its
+production configuration. [tsconfig.json](../../../packages/core/tsconfig.json) checks without
+emission; [tsconfig.build.json](../../../packages/core/tsconfig.build.json) enables JavaScript
+and declaration output and excludes tests/prototypes. Production TypeScript is the canonical
+declaration source. Generated files are never edited manually.
 
-The selected runtime contract is standard ES2022 JavaScript consumed as ESM. Initial concrete
-execution qualification uses the repository's pinned Node 24.22.2 on its existing Ubuntu/Windows
-CI platforms. Declaration consumers use TypeScript 5.9.3, checked under both NodeNext and Bundler
-resolution. These are qualification targets for future tests, not results already obtained.
+Compilation occurs in a staged, exactly owned temporary location before existing outputs are
+changed. The owner inspects the destination, links and prior output state before applying it.
+It preserves unknown files and refuses conflicting or modified output instead of recursively
+deleting an unrecognised directory.
 
-Do not copy the contributor's Node engine range into the portable package as an intrinsic runtime
-dependency. Broader Node versions, browsers, concrete bundlers, frameworks, SSR and compatibility
-ranges require their own evidence before advertising support. Having no DOM imports demonstrates
-neither rendered accessibility nor execution in every web environment.
+The package's `.build/core-output.json` records owned output paths and SHA-256 preimages outside
+published `dist/`. Output and this build metadata are ignored generated state. Their ownership
+does not include source, arbitrary files beside outputs or linked targets. Failure must not
+silently claim a completed build or discard preserved inputs. The actual helper and its tests
+own the detailed filesystem protocol; this guide does not promise a universal transaction.
 
-## Checks and real consumers
+Building regenerates owned outputs. No-emit checking is read-only; a successful build is not
+automatically a separate comparison proving zero drift. Production changes must flow through
+the source/configuration producer, preserving files outside its boundary.
 
-The following are required evidence owners to introduce when their inputs exist, not commands
-that can be run in the current repository:
+## Actual checks
 
-- Strict production and test checking, including the generated declarations and meaningful valid/
-  invalid consumers. Keep Node test/tooling ambient types in their own configuration.
-- A real build with bounded output ownership. Clean only the exact package output after containment
-  and link inspection; never treat source, unrelated files or borrowed targets as generated.
-- Runtime tests using Node's runner with `tsx` as the selected starting point. Introduce `tsx`
-  and Node ambient types only with those real inputs, without a new test framework by default.
-- Lifetime regressions for terminal-before-release behaviour, all cleanup attempts, failures,
-  repeated/reentrant finalisation, partial setup, borrowing and independent instances.
-- Capability regressions for both authority modes, refusals/no-ops, guards, callback order and
-  subscription mutation, commitment/disposal interaction, cleanup failure and intentional sharing.
-- Public runtime and type consumers using fresh artefacts through the actual manifest/export map.
-  A local package archive/clean installation may prove file inclusion without registry publication.
-  Consumers must not resolve TypeScript source aliases, private paths or inherited installations.
+The root `build` and package build command invoke this producer.
+[Build tests](../../../tests/tooling/core-build.test.mjs) use isolated candidates to exercise
+output ownership, guarded updates and failures. The
+[distribution tests](../../../tests/distribution/core-package.test.mjs) build fresh candidates,
+pack a local archive, inspect included files, install it offline and consume the actual package
+root in a clean environment. TypeScript
+consumers use both NodeNext and Bundler resolution without source aliases or private imports.
+The emitted runtime module must resolve while exposing no unavailable values.
 
-Keep successful type checking, semantic runtime proof, output production, distribution conformance
-and hosted CI distinct. A clean consumer/build check must produce the outputs it examines or own
-explicit current prerequisites; stale artefacts supply no evidence. Negative cases from the old
-prototype must protect a present restriction, not forbid newly implemented runtime values.
+These checks establish build/distribution boundaries and present type restrictions, not lifetime
+execution, resource cleanup, capability state, accessible interaction or a published release.
+Every independently runnable consumer suite owns fresh prerequisites rather than inspect stale
+repository output. Owned temporary directories must be precisely identified, contained and cleaned
+without following links.
 
-## Root verification and documentation
+Node's built-in runner executes these current JavaScript suites. Executable TypeScript runtime
+tests, `tsx` and Node ambient types are deferred until actual implementation inputs require them.
+Future lifetime and capability tests must exercise accepted semantic guarantees, failure,
+reentrancy, borrowing, subscription mutation and independent state at their actual owners.
 
-During migration, root lint, type checking and formatting must cover real retained production and
-remaining experimental inputs, with a working gate at each step. CI already invokes root `verify`;
-it must eventually exercise the meaningful package checks rather than keep a removed design gate.
-If verification builds outputs, replace its current read-only/no-emission claim with its actual
-owned effects, distinguishing read-only subchecks from emission. Do not weaken coverage or invent
-a platform matrix, empty suite, notification receipt or hosted pass.
+## Support and evidence
 
-Update README, documentation/project/tooling/automation indexes, affected semantic guides and
-package introductions alongside each implementation. Real package guides belong under
-`docs/en/packages/core/`, with feature semantics and rationale at their respective owners.
-Remove root `design/`, its obsolete command/configuration/globs and every current dependency or
-link to it once migrated. Filesystem, references, compiler inputs, built file sets and clean public
-consumers must all agree before qualifying the completed product.
+The product's selected language contract is standard ES2022 consumed as ESM. Current concrete
+build/consumer qualification targets pinned Node 24.22.2, TypeScript 5.9.3 and the existing
+Ubuntu/Windows CI platforms. Configuration identifies targets, not successful hosted results;
+review exact-source outcomes before reporting qualification.
+
+Do not inherit the root contributor engine range as an intrinsic package runtime dependency.
+Broader Node versions, browsers, bundlers, frameworks, hydration, SSR and accessibility support
+need their own evidence. A local archive and clean consumer establish no registry publication.
+
+## Migration
+
+The retained [legacy capability design](../design/index.md) is outside the package producer and
+package inclusion. Component/family prototypes have been removed rather than packaged as ambient
+runtime promises. Production opening/activation location, construction and independent teardown
+remain pending; their current type-only entrypoints allocate no core subpaths.
+
+The complete root experiment must disappear once its responsibilities are implemented or
+explicitly deferred. Reconcile signatures, useful restrictions and semantics into production
+sources, tests and parallel documentation together, removing stale imports, checker inputs and
+links. One current production producer must own each retained declaration.

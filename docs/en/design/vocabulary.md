@@ -1,65 +1,34 @@
 # Design Vocabulary
 
-Status: **Vocabulary baseline; foundation, capability and family prototypes specified separately; runtime not implemented**
+Status: **Conceptual vocabulary; actual contracts remain with their owning guides**
 
-This vocabulary distinguishes the responsibilities used in Protea's [design](index.md).
-The [responsibility map](responsibilities.md) assigns their boundaries and permitted dependency
-directions. Terms describe concepts; they do not establish exported symbols, classes or packages.
+These terms distinguish responsibilities without establishing exported symbols, packages or
+implementation classes. The [responsibility map](responsibilities.md) owns dependency direction.
 
-## Component concepts
+| Term | Meaning |
+| --- | --- |
+| Component | An individual model with a defined purpose and contract. The [production foundation](../packages/core/component/index.md) specifies identity and logical lifetime. |
+| Family | Related component purposes and constraints; the relationship does not prescribe implementation inheritance. |
+| Variant | A justified behavioural or structural distinction within a family. Visual treatment alone does not establish one. |
+| Capability | A narrow reusable behaviour contract used where an instance needs it; common shape does not require shared mutable state or a base class. |
+| Behaviour | The observable meaning of operations, outcomes, state readings and notifications; it is not automatically a separate implementation object. |
+| Controller | A possible mechanism needing real state, responsibility and consumers before introduction. |
+| Manager | A justified scoped membership/lookup owner, without implicit ownership of its members' state or lifetime. |
+| Part | A composition role whose representation, borrowing, retention, replacement and cleanup require a concrete owning contract. |
+| Configuration | Inputs for creation or use, distinct from current state; retention and validation need explicit contracts. |
+| State | A behaviour's authoritative condition, with a specified owner and observation rules; no universal state store is implied. |
+| Presentation | Optional visual expression, distinct from component behavioural identity. |
+| Contract | Semantic obligations and limits, including inputs, results, authority, lifetime and observations. |
+| API | The concrete consumable surface expressing a contract, owned by production source or an explicitly legacy prototype. |
+| Operation request | A request to the responsible owner; making a request does not establish authorisation or effect. |
+| Effective change | A logical change permitted by its state authority, distinct from request and visual completion. |
 
-| Term          | Meaning                                                                                                                                                                                                                             |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Component     | An individual UI model with a defined purpose and observable contract. The [component foundation](component-foundation.md) selects its reference identity, logical lifetime and disposal obligations.                               |
-| Family        | A set of related component purposes and constraints, such as a sidebar family. A family relationship does not prescribe an implementation class or inheritance relationship.                                                        |
-| Variant       | A behavioural or structural distinction within a family. The distinction must explain a real difference in obligations or composition; visual treatment alone does not establish one.                                               |
-| Capability    | A narrow reusable behavioural contract used where an instance needs it. Sharing the contract does not require a common base class or shared mutable state.                                                                          |
-| Behaviour     | The observable meaning promised by a contract: what an operation, result, state observation or notification means where that contract provides it. Behaviour is a semantic responsibility, not a selected implementation mechanism. |
-| Controller    | A possible future mechanism for implementing a justified responsibility. No separate controller abstraction is accepted merely because the design describes behaviour.                                                              |
-| Manager       | An optional scoped responsibility for membership or lookup when real consumers need it. Its membership authority does not make it the owner of a managed component's behavioural state.                                             |
-| Part          | A role within a component's composition. Whether it is represented by another component, a value or a borrowed collaborator, and who owns it, remain design decisions.                                                              |
-| Configuration | Inputs describing how a supported component or collaborator is to be created or used. Configuration is distinct from current state; mutability, retention and validation rules require their own contract.                          |
-| State         | The authoritative condition relevant to a particular behaviour at a given point. Its owner, representation and observation rules must be specified; the term creates no universal state object or field.                            |
-| Presentation  | An optional visual expression of a component's semantics, including appropriate styles or templates. Presentation does not determine the component's entire behavioural identity.                                                   |
+Family, variant, state and presentation describe potentially independent reasons to vary.
+[Component direction](../project/component-direction.md) reopens the previous Sidebar
+classification and leaves original families for later work. Behaviour and controller are not a
+pair of abstractions to implement by default.
 
-Family, variant and presentation describe different reasons for a design to vary. The conceptual
-progression from a shared foundation through families and variants to presentation does not select
-a class hierarchy. A component consumes only the capabilities its own purpose needs.
-
-Behaviour and controller are not two parallel abstractions to implement by default. Behaviour
-names the promised semantics. A future controller would need its own concrete responsibility and
-consumers before becoming a justified mechanism under Garden's
-[architecture rules](https://github.com/BlueLuscious/garden/blob/master/docs/en/project-rules.md#responsibilities-layers-and-dependencies).
-
-## Contracts and operations
-
-| Term              | Meaning                                                                                                                                                                                       |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Contract          | The obligations and limits a consumer may rely on, including relevant inputs, outcomes, state authority, lifecycle and observations. A type signature alone does not specify those semantics. |
-| API               | The consumable names, types and operation surface through which a contract is expressed. Its concrete symbols, signatures and module boundaries have not been selected here.                  |
-| Operation request | An attempt to ask the responsible owner for an action or change. A request is not itself evidence that a change was authorised or took effect.                                                |
-| Effective change  | An actual logical change permitted by the owning contract and state authority. Its meaning is distinct from a request and from any subsequent visual or motion effect.                        |
-
-These distinctions let later contracts state who requests an operation, who authorises state,
-what changes and what may be observed. They do not select a request method, control model,
-notification sequence, synchronous or asynchronous result, or rejection mechanism.
-
-Semantic documentation owns the meaning of selected contracts; declaration prototypes own their
-signatures. Static type checking establishes only its checked type
-relationships. Actual transitions, ordering, resource cleanup and accessible interaction require
-separate runtime and host evidence.
-
-## Decision boundary
-
-The conceptual distinctions above are the vocabulary baseline. The component foundation owns the
-minimum component prototype; [reusable capabilities](reusable-capabilities.md) own the selected
-opening, activation, state-authority and subscription rules. This glossary introduces no competing
-signature authority. [Representative families](representative-families.md) select the pilot variant
-contracts and part ownership/cleanup; they do not mandate a class hierarchy.
-[Component coordination](component-coordination.md) retains direct references for those pilots and
-records the consumers needed before introducing a registry or multi-modal policy contract.
-The [proposed public API](public-api.md) maps the selected names and consumer/extension boundaries;
-[integration boundaries](integration-boundaries.md) assign prospective host responsibilities and
-record unavailable contracts. Concrete implementation and distribution remain with their owning
-work. No implementation is created
-by using these terms.
+The [legacy capabilities](reusable-capabilities.md) retain candidate opening and activation
+semantics. Production component/resource contracts and their generated declarations have their
+own source authority. Type compatibility supplies no evidence of runtime transitions, synchrony,
+cleanup, ownership or accessible host interaction.
