@@ -84,6 +84,8 @@ these pilots and defers registry and multi-modal policy contracts until their co
 them. It owns connection responsibilities and the limits of existing lifecycle observations.
 The [public-API map](public-api.md) consolidates existing logical modules and extension points;
 the [integration guide](integration-boundaries.md) assigns prospective host responsibilities and
-records unavailable upstream contracts. Further representation,
-implementation inheritance and package boundaries remain provisional.
+records unavailable upstream contracts. The [core scope](../project/core-foundation.md) and
+[package baseline](../tooling/core-package.md) now select portable construction and distribution
+boundaries. Representation, implementation inheritance and future family/integration package
+placement remain provisional.
 No runtime state store, registry, listener, transition or host effect is implemented here.

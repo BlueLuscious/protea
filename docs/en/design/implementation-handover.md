@@ -109,6 +109,14 @@ modal stack. A future retained manager or policy needs its own consumer and qual
 
 ## Transition to implementation-generated declarations
 
+The [portable core scope](../project/core-foundation.md) and
+[production baseline](../tooling/core-package.md) now select construction and package requirements.
+The evidence inventory here describes the retained prototype. Its family/variant/factory names
+are not required production exports; the Sidebar classification is reopened. Reconcile retained
+core responsibilities and their real consumers, explicitly retiring deferred family prototypes
+instead of moving ambient promises into a package. This does not change the accepted lifetime,
+opening or activation operation semantics.
+
 The intended canonical producer is the TypeScript declaration emitter operating on future
 production TypeScript contracts and implementation through their owning build configuration.
 No such product build, output directory, package or declaration-generation script exists yet.
@@ -121,7 +129,8 @@ Reconciliation must preserve one current signature authority:
 2. When separately authorised, replace ambient factory and vocabulary placeholders with actual
    runtime values. Derive status types from their real vocabulary authority rather than keeping
    disconnected literal catalogues or parallel handwritten declarations.
-3. Compare the generated surface with all 26 selected names and their requirements: call shapes,
+3. Compare the generated surface with the retained core names and newly selected construction
+   contracts, explicitly accounting for retired family names, and check their requirements: call shapes,
    required and optional inputs, exclusivity, readonly modifiers, result branches, callback
    shapes and provider semantics. Assignability alone cannot establish equivalence or synchrony.
    Resolve intentional differences at the declaration and semantic owners before accepting them.
@@ -142,14 +151,14 @@ claim that a type-only import proves an executable value exists.
 ## Implementation entry decisions
 
 The design has no known unresolved signature contradiction blocking implementation planning.
-Runtime qualification remains outstanding as specified above. Product layout, concrete runtime
-and module targets, package boundaries, public export paths and supported environments still
-need decisions in their owning implementation and distribution work. They cannot be inferred
-from contributor settings, source folders or another Garden product's implementation choices.
+Runtime qualification remains outstanding as specified above. The current core scope and package
+baseline now select production construction, layout, module/output boundaries, public entry and
+qualification targets. Their implementation and evidence are still pending. Future family and
+integration packaging is undecided; it cannot be inferred from this prototype or another product.
 
 A bounded implementation can first establish lifetime and disposal, then the selected
-capabilities and their authority/notification regressions, followed by pilot factories and
-borrowed-part composition. Reconcile generated declarations and real public consumers alongside
+capabilities and their authority/notification regressions. Concrete family factories and borrowed
+parts are deferred. Reconcile generated declarations and real public core consumers alongside
 that implementation. Introduce host bindings only when actual public host contracts and supported
 scenarios justify them, preserving the [integration boundaries](integration-boundaries.md).
 

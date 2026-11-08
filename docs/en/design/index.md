@@ -2,6 +2,12 @@
 
 Status: **Private contract design and implementation handover specified; runtime not implemented**
 
+The [portable core scope](../project/core-foundation.md) now owns selected production construction
+and ownership, with its [package baseline](../tooling/core-package.md). This guide describes the
+retained experimental inputs. Original families are deferred and their earlier static/floating
+Sidebar classification is reopened; the historical contrast below is not a required production
+hierarchy. Prototypes and their documentation are to be migrated or retired alongside implementation.
+
 This guide owns the current foundation-design scope and representative cases. The
 [vocabulary](vocabulary.md) defines its concepts; the [responsibility map](responsibilities.md)
 assigns their roles and permitted dependencies. The [project guide](../project/index.md) owns
@@ -60,7 +66,8 @@ must be identified before such implementation is claimed.
 Use a floating sidebar to examine logical opening independently of its trigger and presentation.
 The selected opening contract resolves request/result meaning, state authority, observation and
 lifetime limits. Logical openness does not require animation completion or a framework runtime;
-the family guide now selects its static/floating contrast and composition boundaries.
+the family guide records the prototype's static/floating contrast and composition boundaries, now
+reopened for future family work.
 
 Contrast it with a sidebar that is permanently visible in this scenario. That static case must
 not acquire artificial opening/closing operations merely to satisfy a family relationship. The
@@ -103,8 +110,9 @@ and cannot become incidental dependencies of the foundation.
 
 `Openable`, `Activatable` and the representative family surfaces are selected experimental
 contracts. `Pressable` and `toggle` are deferred for lack of a current consumer. `BaseComponent` and component/manager class names remain
-provisional. `protea-core` is a working subject, not a package name, installed entrypoint or
-distribution promise. Composition is a starting point for evaluation; inheritance requires a
+provisional. The selected production name and distribution boundary belong to the package
+baseline; the prototype establishes no installed entrypoint. Composition is a starting point
+for evaluation; inheritance requires a
 real specialisation that preserves its consumer contract.
 
 ## Design artefacts and authority

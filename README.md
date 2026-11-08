@@ -5,6 +5,10 @@ behaviour, accessibility and composition with optional presentation and framewor
 
 ## Current status
 
+The [portable core scope](docs/en/project/core-foundation.md) now selects construction, ownership
+and consumption for the first package. Its [production baseline](docs/en/tooling/core-package.md)
+selects a private ESM package; package source and runtime remain unimplemented.
+
 The repository provides a private contributor toolchain, project documentation, shared-rule
 adoption, an ISC licence and text hygiene configuration. Foundation scope, vocabulary and
 responsibilities are documented in the [design guide](docs/en/design/index.md). A private
@@ -12,8 +16,9 @@ responsibilities are documented in the [design guide](docs/en/design/index.md). 
 and logical lifetime. [Reusable capability prototypes](docs/en/design/reusable-capabilities.md)
 specify opening, activation, state authority and observations, with non-executed consumption
 examples checked statically.
-The [representative families](docs/en/design/representative-families.md) now contrast buttons,
-static/floating sidebars and modals, including borrowed controls and their cleanup boundaries.
+The [legacy family pilots](docs/en/design/representative-families.md) contrast buttons, sidebars
+and modals, including borrowed controls. Original families are deferred; the static/floating
+Sidebar classification is reopened and is not the selected production model.
 [Component coordination](docs/en/design/component-coordination.md) retains direct references and
 public capabilities for these pilots, with explicit connection ownership; registries and
 multi-modal policies need a further concrete consumer before introducing contracts.
@@ -41,6 +46,7 @@ The [tooling guide](docs/en/tooling/index.md) owns commands, prerequisites and v
 
 - [Documentation home](docs/en/index.md): canonical guides and subject ownership.
 - [Project](docs/en/project/index.md): current scope, shared-rule adoption and contribution.
+- [Portable core](docs/en/project/core-foundation.md): selected scope, construction and ownership for implementation.
 - [Foundation design](docs/en/design/index.md): selected cases, private prototypes, responsibilities and coordination decisions.
 - [Repository tooling](docs/en/tooling/index.md): contributor infrastructure, current checks and limits.
 - [Repository automation](docs/en/tooling/automation/index.md): CI, Discord configuration and execution evidence.

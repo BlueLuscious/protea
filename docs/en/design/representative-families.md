@@ -1,8 +1,15 @@
 # Representative Families, Variants and Parts
 
-Status: **Private experimental family design; no runtime implementation**
+Status: **Legacy family pilots; production families deferred and Sidebar classification reopened**
 
-This guide owns the selected button, sidebar and modal pilots: their composition, variant
+The [portable core scope](../project/core-foundation.md#deferred-components-and-environments)
+supersedes this prototype's production classification. Button, Sidebar and Modal will start as
+original families in later work. Floating presentation and static state/interaction may be
+independent axes and may coexist; whether Sidebar needs Openable remains undecided. The retained
+declarations and matrix below describe legacy experiments, not selected production variants or
+future core exports. They will be retired without implementing their families in the portable slice.
+
+This guide describes the legacy button, sidebar and modal pilots: their composition, variant
 meaning, creation obligations, parts and future accessibility responsibilities. The
 [component foundation](component-foundation.md) owns identity, lifetime and disposal;
 [reusable capabilities](reusable-capabilities.md) own opening, activation, state authority,
@@ -26,17 +33,18 @@ experimental API, not an installed package, runtime component or compatibility p
 
 The [SidebarType union](../../../design/sidebar/types/sidebar.type.ts) admits the two sidebar
 variants. Their readonly discriminant lets a consumer distinguish them before using the floating
-variant's opening surface. Static and floating are different behavioural contracts, not visual
-styles or required subclasses. A floating sidebar must not be substituted for the permanently
-present scenario simply because both belong to one family.
+variant's opening surface. Those declarations assigned different behavioural contracts to static
+and floating; that experimental classification is now reopened. It must not determine the future
+Sidebar family, its presentation axes, opening requirement or implementation hierarchy.
 
 These are structural interfaces. Their names establish no nominal identity, base class or
 implementation inheritance. Consumers needing only opening or activation can depend on the
 capability alone. No family introduces a second lifecycle or requires manager registration.
 
 Visual choices such as `Default`, `Minimal` or `Glass` remain presentation choices. They create
-no behavioural class, theme dependency or additional variant by themselves. The floating variant
-selects logical opening semantics, not CSS positioning, animation, focus management or modality.
+no behavioural class, theme dependency or additional variant by themselves. The legacy floating
+prototype selected logical opening semantics; future Sidebar work must distinguish those semantics
+from positioning, static state, animation, focus management and modality.
 
 ## Creation and fixed composition
 
@@ -241,7 +249,8 @@ Motion remains optional future integration through explicit public contracts und
 Logical opening and its accepted results remain distinct from visual completion; this candidate
 adds no animation operation or asynchronous completion protocol.
 
-Package boundaries, workspace membership and runtime distribution remain open. Factory ownership,
-family identity and candidate integrations do not establish separate packages or registry names;
-those decisions remain with Protea's later concrete distribution design under Garden's
+The [core package baseline](../tooling/core-package.md) is selected. Future family and integration
+package placement and distribution remain open. Factory ownership, family identity and candidate
+integrations do not establish separate packages or registry names; those decisions remain with
+Protea's later concrete distribution work under Garden's
 [dependency and distribution rules](https://github.com/BlueLuscious/garden/blob/master/docs/en/project-rules.md#dependencies-and-distribution).

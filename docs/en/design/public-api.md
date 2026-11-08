@@ -2,6 +2,12 @@
 
 Status: **Private consumer surface consolidated; no executable or published API**
 
+This is the retained prototype surface, not the selected production export list. The
+[portable core scope](../project/core-foundation.md) selects a new construction owner and real
+capability factories; the [package baseline](../tooling/core-package.md) selects one root entry.
+Legacy family factories and Sidebar variants remain deferred and will be retired. Neither the
+26 names below nor their type-only restrictions are a preservation quota for the core package.
+
 This guide owns the proposed logical modules, consumer boundaries and extension surface of the
 current design. The [declarations](../../../design/README.md) own signatures; the semantic guides
 linked below own operation meaning, authority, ownership and failure rules. This map introduces
@@ -120,8 +126,9 @@ resource release, accessible interaction or distribution conformance. The
 
 This is a selected experimental surface for further validation, not a versioned public API promise.
 The [integration boundary](integration-boundaries.md) records the host contracts and evidence still
-needed. Product package names, export paths, runtime/module targets and compatibility ranges remain
-unselected; source directories do not allocate npm packages.
+needed. This prototype established no production package identity or runtime target. The current
+[package baseline](../tooling/core-package.md) now selects those core boundaries; implementation
+and qualification remain outstanding. Future family/integration packages remain undecided.
 
 Before implementation supplies runtime objects or generated declarations, compare its surface and
 semantics with these reviewed prototypes. Resolve differences at their actual contract owner and

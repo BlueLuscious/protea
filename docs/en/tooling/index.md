@@ -6,6 +6,11 @@ This guide owns Protea's contributor toolchain and checking boundaries.
 The [project guide](../project/index.md) owns product responsibility and shared-rule adoption;
 the [documentation index](../index.md) identifies the current authorities.
 
+The [selected core package baseline](core-package.md) owns future production resolution, outputs
+and qualification. The [core scope](../project/core-foundation.md) owns construction and product
+boundaries. Those decisions add no package, script, dependency or runtime check yet; the current
+verification and authoring sections below describe actual retained inputs.
+
 ## Current verification
 
 `pnpm run verify` runs lint, private design type checking and formatting checks in that order.

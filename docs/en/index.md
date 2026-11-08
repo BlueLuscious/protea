@@ -13,10 +13,14 @@ the same relative structure.
 | [Repository automation](tooling/automation/index.md) | CI orchestration, Discord configuration and execution/receipt boundaries.            |
 
 The [repository introduction](../../README.md) summarises the current state. The project guide links
-Garden's ecosystem authorities. The private [component foundation](design/component-foundation.md)
+Garden's ecosystem authorities. The [portable core scope](project/core-foundation.md) owns the
+selected construction and ownership model; its [package baseline](tooling/core-package.md) owns
+future distribution and qualification. No production package or runtime exists yet.
+The private [component foundation](design/component-foundation.md)
 specifies the minimum lifetime contract; [reusable capabilities](design/reusable-capabilities.md)
 own opening, activation and state-authority semantics. [Representative families](design/representative-families.md)
-own the button, sidebar and modal pilots and their part composition.
+describe legacy button, sidebar and modal pilots and their part composition. Their static/floating
+classification is reopened; original families remain later work.
 [Component coordination](design/component-coordination.md) owns direct-reference collaboration,
 connection responsibilities and the reasons for deferring registries and multi-modal policy.
 The [proposed public API](design/public-api.md) maps declaration and semantic owners;

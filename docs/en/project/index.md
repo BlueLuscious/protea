@@ -1,6 +1,6 @@
 # Protea Project
 
-Status: **Component, capability and representative family prototypes specified; runtime not implemented**
+Status: **Portable core scope selected; legacy prototypes retained; runtime not implemented**
 
 ## Purpose and authority
 
@@ -16,6 +16,11 @@ tooling and releases it introduces; ecosystem summaries do not establish impleme
 
 ## Current scope
 
+The [portable core foundation](core-foundation.md) selects the first production responsibility,
+public construction/composition and lifetime ownership. The [package baseline](../tooling/core-package.md)
+selects identity, output and qualification requirements. These decisions create no package or
+runtime values. Current commands still check the existing contributor and legacy design inputs.
+
 The current source contains private contributor infrastructure, documentation, an ISC licence,
 repository text hygiene configuration and private component, capability and family prototypes with checked,
 non-executed consumption examples. There are no runtime implementations, product package manifests
@@ -27,8 +32,9 @@ responsibility boundaries. The [component foundation](../design/component-founda
 reference identity, logical lifetime and disposal semantics for the current prototype.
 [Reusable capabilities](../design/reusable-capabilities.md) specify logical opening with one
 internal or external synchronous state authority, and activation without persistent pressed state.
-[Representative families](../design/representative-families.md) contrast buttons, static/floating
-sidebars and modals, including fixed borrowed parts and owned connections.
+[Representative families](../design/representative-families.md) describe legacy pilots, including
+fixed borrowed parts and owned connections. Button, Sidebar and Modal remain later original
+families; the static/floating classification and Sidebar's Openable requirement are reopened.
 [Component coordination](../design/component-coordination.md) retains direct references and public
 capabilities for these pilots; registry and multi-modal policy candidates are explicitly deferred
 until their consumers justify them. The [proposed public API](../design/public-api.md) consolidates
