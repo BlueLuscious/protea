@@ -22,8 +22,11 @@ Its [component guide](../packages/core/component/index.md) owns actual creation,
 cleanup registration. [Capabilities](../packages/core/capabilities/index.md) implement opening
 and activation beneath the same package, with contextual factories and a borrowed shared lifetime.
 State, occupation and listeners remain independent; individual teardown/replacement is deferred.
-[Component direction](component-direction.md) owns later
-original Button, Sidebar and Modal work, reopened Sidebar axes and composition questions.
+The first portable [families](../packages/core/components/index.md) are selected for the same core
+package. A joint contract review of Button, Modal and Sidebar precedes capability selection and
+family implementation; the [Button guide](../packages/core/components/button/index.md) records
+its initial baseline. [Component direction](component-direction.md) owns reopened Sidebar axes
+and wider composition questions. No family type or runtime is implemented yet.
 [Integration boundaries](integration-boundaries.md) own future hosts, icons and motion.
 No renderer, concrete framework adapter, manager or optional provider is implemented.
 

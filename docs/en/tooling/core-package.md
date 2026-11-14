@@ -98,3 +98,24 @@ plan or experimental workspace dependency.
 Deferred family and optional host questions remain with their
 [product owners](../project/component-direction.md). They do not require ambient placeholder
 values, companion packages or source aliases in public consumers.
+
+## Selected family extension
+
+The [first family models](../packages/core/components/index.md) are selected to extend this core
+package, starting with a joint contract review and the [Button baseline](../packages/core/components/button/index.md).
+No second workspace member, package identity, dependency or producer is needed for that selection.
+Family source and values are not implemented yet; the current output/export inventory above
+remains the actual boundary.
+
+When family interfaces/types are authored, extend actual strict checks and clean public type
+consumers against fresh emitted declarations. Reviewed type exports can precede runtime factories;
+keep unavailable executable values out of the package namespace and document that distinction.
+Static examples can consume synthetic typed instances without declaring missing library values.
+Introduce no implementation merely to make a contract example execute.
+
+When each family is implemented, extend runtime and packed-consumer cases, review intentional
+root value exports and verify fresh declaration/file inclusion from its production sources.
+Retain the guarded producer, strict host-free baseline, contributor pins and focused lint/format
+policy. No new generic workspace engine or shared tooling extraction is required. Manual review
+must confirm dependency direction and accurate future host/accessibility limits in addition to
+the executable checks.

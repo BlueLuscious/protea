@@ -15,9 +15,13 @@ keeping state and listeners independent. Opening supports internal state or a bo
 authority; activation represents an accepted action. Named immutable vocabularies own lifecycle,
 request statuses and rejection reasons.
 
-Button, Sidebar and Modal remain [future original families](docs/en/project/component-direction.md).
-The static/floating Sidebar classification is reopened. Optional hosts, Icon/Aster and motion
-remain [future integrations](docs/en/project/integration-boundaries.md), without mandatory
+The first portable [families](docs/en/packages/core/components/index.md) are selected to live
+inside core; none is implemented yet. [Button](docs/en/packages/core/components/button/index.md)
+has an initial contract baseline for owned lifetime, observable availability and activation.
+A joint review will define Button, Modal and Sidebar contracts before selecting capability
+composition and implementing each family. The static/floating Sidebar classification is reopened.
+Optional hosts, Icon/Aster and motion remain
+[future integrations](docs/en/project/integration-boundaries.md), without mandatory
 runtime dependencies or support claims.
 
 Repository verification covers focused lint, strict production types, manifest/configuration

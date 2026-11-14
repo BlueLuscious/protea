@@ -33,6 +33,12 @@ Core has no production dependencies and requires no implicit Node, DOM or framew
 The [package tooling guide](../../tooling/core-package.md) owns build, inclusion, consumer
 qualification and supported-evidence boundaries.
 
+The first portable [component families](components/index.md) are selected for future modules
+under `src/components/` in this same package. The [Button baseline](components/button/index.md)
+will be reviewed alongside Modal and Sidebar contracts before selecting capability composition
+and implementing runtime. Reviewed type contracts may precede real factory values; neither family
+types nor runtime values are exported today. The current inventory above remains unchanged.
+
 ## Composition and limits
 
 The minimum Component contract remains lifetime and finalisation. A resource-owning consumer

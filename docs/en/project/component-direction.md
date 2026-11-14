@@ -1,15 +1,20 @@
 # Component Direction
 
-Status: **Product concepts and deferred original families; portable capabilities implemented**
+Status: **Portable capabilities implemented; family ownership selected; joint contract review pending**
 
-Protea will build original Button, Sidebar and Modal families before selecting variants. They
-may later belong to the [core package](../packages/core/index.md); no separate component package,
-mandatory hierarchy or catalogue is allocated here. Shared family implementation needs concrete
-state, behaviour and consumers before composition or a base implementation is selected.
+Protea will build original Button, Modal and Sidebar families before selecting variants. Their
+initial portable models will belong to the existing core, in the
+[family modules](../packages/core/components/index.md). That owner records the package comparison,
+costs and reasons to reconsider extraction; no second component package is selected. Shared family
+implementation still needs concrete state, behaviour and consumers before a common layer is chosen.
 
 ## Families and independent axes
 
-A Button motivates a discrete action without implying persistent pressed or selected state.
+A [Button](../packages/core/components/button/index.md) has an initial baseline for owned lifetime,
+observable application-set availability and discrete activation. Review it jointly with Modal and
+Sidebar cases under the [contract-led workflow](../packages/core/components/index.md#contract-led-development),
+then select capability composition from the requirements. No family source or export exists yet;
+persistent pressed or selected state is not assumed.
 A Modal motivates logical opening with additional host interaction and accessibility obligations.
 Those scenarios guide later design without retaining ambient component factories as present APIs.
 
