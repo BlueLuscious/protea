@@ -1,6 +1,6 @@
 # Component Direction
 
-Status: **Portable capabilities implemented; family ownership selected; joint contract review pending**
+Status: **Portable capabilities implemented; bounded family contracts reviewed and typed**
 
 Protea will build original Button, Modal and Sidebar families before selecting variants. Their
 initial portable models will belong to the existing core, in the
@@ -10,19 +10,21 @@ implementation still needs concrete state, behaviour and consumers before a comm
 
 ## Families and independent axes
 
-A [Button](../packages/core/components/button/index.md) has an initial baseline for owned lifetime,
-observable application-set availability and discrete activation. Review it jointly with Modal and
-Sidebar cases under the [contract-led workflow](../packages/core/components/index.md#contract-led-development),
-then select capability composition from the requirements. No family source or export exists yet;
-persistent pressed or selected state is not assumed.
-A Modal motivates logical opening with additional host interaction and accessibility obligations.
-Those scenarios guide later design without retaining ambient component factories as present APIs.
+A [Button](../packages/core/components/button/index.md) combines owned lifetime, observable
+application-set availability and discrete activation. The reviewed
+[contract-led workflow](../packages/core/components/index.md#contract-led-development) maps these
+requirements to Component, Activatable and family-owned availability. [Modal](../packages/core/components/modal/index.md)
+and [Sidebar](../packages/core/components/sidebar/index.md) combine owned lifetime with logical
+opening for their selected cases. Production types are exported; runtime factories and family
+behaviour remain unimplemented. Persistent pressed or selected state is not assumed.
 
 Sidebar must be designed as a family first. The previous StaticSidebar/FloatingSidebar pilot
 is retired as a production classification: floating presentation and static state or interaction
-may describe independent axes and may coexist. Whether Sidebar always has opening behaviour,
-which distinctions justify variants and which remain presentation require that family's actual
-use cases. No variant union or inherited opening obligation is selected here.
+may describe independent axes and may coexist. The first Sidebar contract selects changeable
+logical presence, so opening/closing are useful operations independent of positioning. Permanently
+invariant visibility is outside that bounded contract; it must be reviewed before expanding the
+family, rather than inheriting unusable operations. This does not establish that every possible
+sidebar must be Openable. No variant union or presentation discriminator is selected.
 
 Presentation choices such as Default, Minimal or Glass likewise do not justify behavioural
 classes by their names. The conceptual foundation, family, variant and presentation progression
@@ -89,7 +91,8 @@ Target disposal cannot automatically remove application-owned registrations on o
 
 A family may justify a borrowed part such as a closing control. It must specify multiplicity,
 retention, replacement, ownership, failed setup and behaviour after either participant ends.
-The retired modal pilot supplied useful questions, not a fixed production `closeControl` API.
+The first Modal contract leaves the closing control with the application and has no closeControl
+option. The retired modal pilot supplied useful questions, not a fixed production part API.
 Shared controls would need explicit fan-out or exclusivity semantics rather than an inferred
 topmost target. Failed physical release must not revive logically invalidated work.
 

@@ -1,6 +1,6 @@
 # Core
 
-Status: **Private portable lifetime, opening and activation runtime implemented**
+Status: **Private lifetime/capability runtime and reviewed family type contracts**
 
 `@luscious-garden/protea-core` owns Protea's portable component foundation and reusable
 capabilities. Its one public root exports current contracts, factories and immutable vocabularies.
@@ -13,6 +13,7 @@ ownership and limitations.
 | [Opening](capabilities/openable/index.md) | OpenableFactory and openableFactory create Openable against one scope and selected state authority. OpenStateAuthority is a consumer-provided contract; opening options, changes, results and status types remain feature-owned. |
 | [Activation](capabilities/activatable/index.md) | ActivatableFactory and activatableFactory create Activatable with an optional synchronous eligibility guard; activation options, results and status types remain feature-owned. |
 | [Shared capability rules](capabilities/index.md) | CapabilityUnsubscribeType and CapabilityRejectionReasonType, with capabilityRejectionReasons; opening and activation each own their result-status vocabulary. |
+| [Families](components/index.md) | Button, ButtonFactory, ButtonOptionsType and ButtonDisabledChangeType; Modal, ModalFactory and ModalOptionsType; Sidebar, SidebarFactory and SidebarOptionsType. These are type-only exports, without executable family factories. |
 
 The runtime values are componentScopeFactory, componentLifecycleStates, openableFactory,
 activatableFactory, openableResultStatuses, activatableResultStatuses and capabilityRejectionReasons.
@@ -33,11 +34,11 @@ Core has no production dependencies and requires no implicit Node, DOM or framew
 The [package tooling guide](../../tooling/core-package.md) owns build, inclusion, consumer
 qualification and supported-evidence boundaries.
 
-The first portable [component families](components/index.md) are selected for future modules
-under `src/components/` in this same package. The [Button baseline](components/button/index.md)
-will be reviewed alongside Modal and Sidebar contracts before selecting capability composition
-and implementing runtime. Reviewed type contracts may precede real factory values; neither family
-types nor runtime values are exported today. The current inventory above remains unchanged.
+The first portable [component families](components/index.md) have reviewed production interfaces
+and types under `src/components/` in this same package. The root exports their ten type contracts
+and retains the existing seven runtime values; no Button/Modal/Sidebar constructor or factory value
+is present. Family behaviour is specified for subsequent implementation, with current static
+evidence limited to the public type surface.
 
 ## Composition and limits
 

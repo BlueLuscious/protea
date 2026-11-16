@@ -1,6 +1,6 @@
 # Repository Tooling
 
-Status: **Portable lifetime/capability runtime, build and public-consumer checks configured**
+Status: **Portable lifetime/capability runtime and family type consumers configured**
 
 This guide owns contributor tools, actual commands and checking coverage. The
 [project guide](../project/index.md) owns product responsibility; the
@@ -86,7 +86,9 @@ Node-specific contributor tooling stays outside portable production contracts.
 
 Public type fixtures are checked against fresh installed artefacts under NodeNext and Bundler
 resolution. They cover component ownership, capability construction/options, results, vocabularies,
-readonly views and unsupported operations. `@ts-expect-error` establishes that a diagnostic
+readonly views and unsupported operations. The family fixture additionally checks Button,
+Modal and Sidebar construction interfaces, type-only availability and public composition,
+without executing those unimplemented models. `@ts-expect-error` establishes that a diagnostic
 occurred, not its intended cause; each retained negative case still needs review. Type
 assignability cannot prove a state authority's synchrony, cleanup or semantic conformance.
 

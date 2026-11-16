@@ -1,14 +1,13 @@
 # Button
 
-Status: **Initial contract baseline awaiting joint family review; no Button source or export exists**
+Status: **Public type contracts defined; Button runtime and factory value not implemented**
 
-Button will model a discrete application action with its own lifetime and explicit, observable
-availability. This initial baseline identifies the existing [Component](../../component/index.md)
-and [Activatable](../../capabilities/activatable/index.md) as likely composition boundaries.
-The [joint family review](../index.md#contract-led-development) must first validate the family's
-requirements and their semantic fit with those contracts. Existing capabilities do not dictate
-the family API. No implementation inheritance is required; production source and generated
-declarations will own signatures when authored.
+Button models a discrete application action with its own lifetime and explicit, observable
+availability. Its reviewed contract combines [Component](../../component/index.md) and
+[Activatable](../../capabilities/activatable/index.md). Activation fits the request/acceptance case;
+availability remains family-owned because a per-call guard cannot publish disabled changes.
+No implementation inheritance is required. Production interfaces/types and their generated
+declarations own signatures; the behaviour specified here still requires a runtime implementation.
 
 For example, an application keeps a Save button disabled while its input is invalid. It later
 enables the same model, observes accepted activations and owns the resulting save operation.
@@ -18,9 +17,12 @@ for an isolated activation capability.
 
 ## Construction and ownership
 
-The initial names for review are `Button`, `ButtonFactory`, `ButtonOptionsType`,
-`ButtonDisabledChangeType` and `buttonFactory`. They are not current core exports. A reviewed
-factory interface can describe construction before its runtime value is implemented; the
+The core root exports `Button`, `ButtonFactory`, `ButtonOptionsType` and
+`ButtonDisabledChangeType` as types. The
+[Button contract](../../../../../../packages/core/src/components/button/contracts/button.contract.ts)
+owns its family operations. `buttonFactory` remains a future runtime value and cannot be imported
+or called from the current package. The construction interface describes the implementation's
+obligations without supplying an executable factory; the
 [family factory boundary](../index.md#construction-contracts-and-factories) owns that distinction
 and the conditional possibility of a common factory interface.
 The contextual factory's `create` operation will accept optional initial configuration and return
@@ -34,7 +36,7 @@ a model. Mutating the original options does not reconfigure Button, and the call
 neither frozen nor adopted. There is no public scope parameter, capability instance or cleanup
 registration method. Borrowing a Button does not transfer its disposal authority.
 
-The future options type must admit both omission and explicit undefined under the strict compiler's
+The options type admits both omission and explicit undefined under the strict compiler's
 exact-optional-property rules. Other non-boolean values remain invalid; this does not change the
 existing capability option types.
 
@@ -45,10 +47,9 @@ performs no application action, initial change notification or host effect.
 
 ## Activation and input
 
-The initial baseline proposes `activate` and `subscribeActivation` with the existing Activatable
-meanings, results, rejection vocabulary and subscription protocol. The joint review must confirm
-that these meanings meet the Button cases before selecting that composition. If retained,
-internal activation authorisation reads the Button's disabled state through the existing
+`activate` and `subscribeActivation` preserve the existing Activatable meanings, results, rejection
+vocabulary and subscription protocol. Internal activation authorisation reads the Button's
+disabled state through the existing
 capability guard, preserving lifecycle and occupation checks before disabled authorisation.
 
 | Condition | Activation outcome |
@@ -113,8 +114,8 @@ Disposal invents no activation or disabled transition and does not force isDisab
 Existing release handles remain valid. No scope or internal capability escapes through Button.
 
 An application connecting Button activation to another model owns that connection and its release.
-Neither participant acquires the other's lifetime. The later Modal work will decide whether a
-closing control is a real owned part or application composition; this contract selects no
+Neither participant acquires the other's lifetime. The reviewed [Modal](../modal/index.md)
+composition leaves the closing connection with the application; neither family accepts a
 closeControl option, manager membership or implicit target.
 
 ## Host responsibilities and verification
@@ -129,13 +130,18 @@ The [APG Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/) infor
 naming and interaction work. Native submit/reset behaviour, DOM events and their cancellation,
 tab order, gestures, rendering, icons and motion are not supplied by this model.
 
+## Static evidence and runtime handover
+
+The fresh packed-package type consumer checks construction contracts, readonly availability,
+activation results, opposite-direction snapshots and absence of public scope or factory values.
+It uses typed collaborators in non-executed examples; no working Button follows from those checks.
+
 Implementation must verify independent lifetimes/state, configuration capture/validation,
 activation precedence, repeated writes, immutable opposite-direction snapshots, subscription
 mutation, cross-operation reentrancy, callback failures, setup cleanup and terminal behaviour.
 Public type consumers must protect readonly members, available operations, initial configuration,
 transition shapes and absence of public scope/private constructors. Fresh built/package consumers
 must verify intentional exports and portable consumption in the existing supported modes.
-Contract review and strict type examples precede runtime implementation. Confirm or refine this
-baseline against the family cases, recording accepted differences before implementation rather
-than silently changing an existing core contract. These are required future checks, not evidence
-already supplied by the current core suite.
+The joint review retains the initial baseline without changing an accepted core contract.
+These runtime obligations remain future checks; existing capability evidence does not establish
+their family composition, availability delivery or host behaviour.

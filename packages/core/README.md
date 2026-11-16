@@ -20,8 +20,14 @@ The [component guide](../../docs/en/packages/core/component/index.md) owns lifet
 outcomes and observations. Follow the [tooling guide](../../docs/en/tooling/index.md) for actual
 commands, coverage and contributor prerequisites.
 
+The core root also exports type contracts for Button, Modal and Sidebar and their specific
+construction interfaces. Their reviewed responsibilities and ownership are documented in the
+[family guide](../../docs/en/packages/core/components/index.md). Family runtime implementations,
+constructors and factory values do not exist yet; the seven implemented runtime exports remain
+unchanged. Static examples do not execute these family contracts.
+
 The package builds ES2022 ESM and declarations. Its initial `0.0.0` remains private and
-unpublished. Concrete families, host bindings, icons and motion remain future work.
+unpublished. Host bindings, icons and motion remain future work.
 Repository-relative guides are not included in the local archive; package metadata identifies
 the owning repository.
 

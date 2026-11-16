@@ -96,7 +96,7 @@ componentLifecycleStates.active = "active";
 componentLifecycleStates.mounted;
 `;
 
-test("packed core exposes its component and capability contracts and runtime values", async () => {
+test("packed core exposes production contracts and available runtime values", async () => {
   await withCoreConsumer("protea-core-consumer-test", async ({ consumer, installed }) => {
     const entries = (await readdir(installed)).sort();
     assert.deepEqual(entries, ["LICENSE", "README.md", "dist", "package.json"]);
@@ -124,7 +124,7 @@ test("packed core exposes its component and capability contracts and runtime val
       for (const value of [core.openableFactory, core.activatableFactory, core.openableResultStatuses, core.activatableResultStatuses, core.capabilityRejectionReasons]) {
         assert.equal(Object.isFrozen(value), true);
       }
-      for (const suffix of ["component", "capabilities", "capabilities/openable", "package.json", "dist/index.js", "dist/component/runtime/component-scope.js", "dist/capabilities/shared/runtime/capability-listeners.js"]) {
+      for (const suffix of ["component", "capabilities", "capabilities/openable", "components", "components/button", "components/modal", "components/sidebar", "package.json", "dist/index.js", "dist/component/runtime/component-scope.js", "dist/capabilities/shared/runtime/capability-listeners.js", "dist/components/button/contracts/button.contract.js"]) {
         await assert.rejects(import("@luscious-garden/protea-core/" + suffix), { code: "ERR_PACKAGE_PATH_NOT_EXPORTED" });
       }
     `], consumer);
@@ -134,6 +134,7 @@ test("packed core exposes its component and capability contracts and runtime val
 
     await writeFile(join(consumer, "consumer.ts"), source);
     await writeFile(join(consumer, "capability-consumer.ts"), await readFile(new URL("./capability-consumer.test.ts", import.meta.url), "utf8"));
+    await writeFile(join(consumer, "family-consumer.ts"), await readFile(new URL("./family-consumer.test.ts", import.meta.url), "utf8"));
     const compiler = createRequire(import.meta.url).resolve("typescript/bin/tsc");
 
     for (const resolution of ["NodeNext", "Bundler"]) {
@@ -143,7 +144,7 @@ test("packed core exposes its component and capability contracts and runtime val
         noUnusedLocals: true, noUnusedParameters: true, verbatimModuleSyntax: true,
         noEmit: true, module: resolution === "NodeNext" ? "NodeNext" : "ESNext", moduleResolution: resolution,
       };
-      await writeFile(join(consumer, "tsconfig.json"), JSON.stringify({ compilerOptions: options, files: ["consumer.ts", "capability-consumer.ts"] }));
+      await writeFile(join(consumer, "tsconfig.json"), JSON.stringify({ compilerOptions: options, files: ["consumer.ts", "capability-consumer.ts", "family-consumer.ts"] }));
       const checked = runNode([compiler, "--project", join(consumer, "tsconfig.json"), "--pretty", "false"], consumer);
       assert.equal(checked.status, 0, `${resolution}\n${checked.stdout}\n${checked.stderr}`);
     }

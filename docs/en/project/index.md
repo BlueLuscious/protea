@@ -1,6 +1,6 @@
 # Protea Project
 
-Status: **Private component foundation and capability runtime; original families pending**
+Status: **Private foundation/capability runtime and original-family type contracts**
 
 ## Purpose and authority
 
@@ -23,10 +23,11 @@ cleanup registration. [Capabilities](../packages/core/capabilities/index.md) imp
 and activation beneath the same package, with contextual factories and a borrowed shared lifetime.
 State, occupation and listeners remain independent; individual teardown/replacement is deferred.
 The first portable [families](../packages/core/components/index.md) are selected for the same core
-package. A joint contract review of Button, Modal and Sidebar precedes capability selection and
-family implementation; the [Button guide](../packages/core/components/button/index.md) records
-its initial baseline. [Component direction](component-direction.md) owns reopened Sidebar axes
-and wider composition questions. No family type or runtime is implemented yet.
+package. The reviewed Button, Modal and Sidebar contracts select compatible capabilities after
+their cases and expose production types; family runtime remains unimplemented. Their parallel
+guides own state, construction, ownership and static-versus-runtime limits.
+[Component direction](component-direction.md) owns independent Sidebar axes and wider composition
+questions. No executable family factory is exported.
 [Integration boundaries](integration-boundaries.md) own future hosts, icons and motion.
 No renderer, concrete framework adapter, manager or optional provider is implemented.
 

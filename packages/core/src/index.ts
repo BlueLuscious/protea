@@ -28,3 +28,11 @@ export type {
   ActivatableResultStatusType,
 } from "./capabilities/activatable/api/index.js";
 export { activatableFactory, activatableResultStatuses } from "./capabilities/activatable/api/index.js";
+export type {
+  Button,
+  ButtonFactory,
+  ButtonDisabledChangeType,
+  ButtonOptionsType,
+} from "./components/button/api/index.js";
+export type { Modal, ModalFactory, ModalOptionsType } from "./components/modal/api/index.js";
+export type { Sidebar, SidebarFactory, SidebarOptionsType } from "./components/sidebar/api/index.js";

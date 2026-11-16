@@ -1,6 +1,6 @@
 # Core Package Tooling
 
-Status: **Private lifetime/capability package, ESM producer and public consumers configured**
+Status: **Private lifetime/capability runtime and type-only families with public consumers**
 
 This guide owns the actual package/build boundary and its qualification requirements. The
 [core guide](../packages/core/index.md) owns current scope and the
@@ -11,7 +11,7 @@ This guide owns the actual package/build boundary and its qualification requirem
 
 | Subject | Current selection |
 | --- | --- |
-| Owner | `packages/core/`, with component lifetime and grouped opening/activation capabilities. |
+| Owner | `packages/core/`, with component lifetime, grouped opening/activation capabilities and original-family contracts. |
 | Identity | `@luscious-garden/protea-core`, version `0.0.0`, `private: true`. |
 | Runtime format | ESM only with `type: "module"`; ES2022 output and standard libraries. |
 | TypeScript resolution | NodeNext modules/resolution with explicit relative `.js` specifiers, strict checking, `types: []` and checked declarations. |
@@ -21,10 +21,10 @@ This guide owns the actual package/build boundary and its qualification requirem
 | Inclusion | Current built output plus manifest, package README and ISC licence. Sources, tests, local plans, caches and build metadata are excluded. |
 | Dependencies | No production dependency or intrinsic Node engine requirement. Contributor tooling stays outside portable contracts. |
 
-The root intentionally exports seven runtime values and eighteen contracts/types, mapped by
+The root intentionally exports seven runtime values and twenty-eight contracts/types, mapped by
 the [core guide](../packages/core/index.md). Implementation classes, helpers and constructors
 remain internal. Feature grouping creates no public subpath or additional package; concrete
-families, a public state store and host bindings are not exported.
+family implementations/factory values, a public state store and host bindings are not exported.
 
 ## Canonical producer and ownership
 
@@ -101,17 +101,20 @@ values, companion packages or source aliases in public consumers.
 
 ## Selected family extension
 
-The [first family models](../packages/core/components/index.md) are selected to extend this core
-package, starting with a joint contract review and the [Button baseline](../packages/core/components/button/index.md).
+The [first family contracts](../packages/core/components/index.md) extend this core package, after
+a joint requirement/semantics review of Button, Modal and Sidebar.
 No second workspace member, package identity, dependency or producer is needed for that selection.
-Family source and values are not implemented yet; the current output/export inventory above
-remains the actual boundary.
+Their thirteen production contract/type/barrel sources emit declarations and empty ESM modules;
+they add no executable family behaviour or root runtime values. The current forty-seven TypeScript
+sources produce ninety-four owned output files.
 
-When family interfaces/types are authored, extend actual strict checks and clean public type
-consumers against fresh emitted declarations. Reviewed type exports can precede runtime factories;
-keep unavailable executable values out of the package namespace and document that distinction.
-Static examples can consume synthetic typed instances without declaring missing library values.
-Introduce no implementation merely to make a contract example execute.
+The [family consumer](../../../tests/distribution/family-consumer.test.ts) checks public types from
+fresh installed declarations under strict NodeNext and Bundler resolution. It receives typed
+model/factory inputs rather than declaring missing library values. Positive and negative cases
+cover required authority modes, excluded mixed options, readonly members, unavailable operations,
+factory contracts, owned-lifetime views and separate activation/opening results. Modal and Sidebar
+remain structurally compatible; no nominal distinction or runtime compliance is proved.
+The runtime namespace assertion still requires exactly the seven implemented values.
 
 When each family is implemented, extend runtime and packed-consumer cases, review intentional
 root value exports and verify fresh declaration/file inclusion from its production sources.

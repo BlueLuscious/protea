@@ -1,11 +1,11 @@
 # Component Families
 
-Status: **Initial portable family ownership selected; no family runtime implemented**
+Status: **Original family type contracts defined; no family runtime implemented**
 
-The first original Button, Modal and Sidebar models will live in the existing
+The first original Button, Modal and Sidebar contracts live in the existing
 [core package](../index.md), under `src/components/<family>/`. Their guides follow the same
-feature ownership here. This selects the implementation destination; those source directories,
-family exports and runtime values do not exist yet.
+feature ownership here. The package exports their interfaces/types, including construction
+contracts; family implementations and executable factories do not exist yet.
 
 ## Package decision
 
@@ -34,7 +34,8 @@ host consumers. Internal feature imports must not pass through an aggregate root
 the importing family and introduces a cycle. No family imports a capability implementation class
 to bypass its public contract.
 
-Only real `api/`, `contracts/`, `types/` and `runtime/` owners are created during implementation.
+The current family sources have real `api/`, `contracts/` and `types/` owners. Runtime owners will
+be added with executable behaviour.
 Internal interfaces and type aliases follow Garden's `contracts/internal/` and `types/internal/`
 rules; implementation classes remain private behind contextual factories. A conceptual family
 or variant does not require a base class, manager or shared family layer.
@@ -44,11 +45,12 @@ exported deliberately, with production TypeScript generating their declarations.
 interface/type contracts may precede their runtime implementations; executable factories enter
 the public root only when they actually exist. Type availability and runtime availability must
 be documented separately.
+
 No subpath, wildcard, second package, source alias or unavailable value is added by this decision.
 
 ## Contract-led development
 
-Begin with a bounded joint review of Button, Modal and Sidebar before implementing the families:
+The bounded joint review starts from each family's cases before implementing the families:
 
 1. Establish representative cases and each original family's purpose and exclusions.
 2. Define actions, state authority, construction, ownership, observation, lifecycle and failures.
@@ -72,7 +74,8 @@ cleanup or accessible host behaviour.
 
 ## Construction contracts and factories
 
-Start with family-specific contracts such as ButtonFactory and contextual create operations.
+The current family-specific contracts are ButtonFactory, ModalFactory and SidebarFactory, with
+contextual create operations.
 Their parameter, result and lifetime relationships must be defined before a corresponding runtime
 factory is advertised. A type describing construction does not supply an executable factory.
 
@@ -85,13 +88,35 @@ lookup, a manager or a query API.
 
 ## Initial families and evidence
 
-[Button](button/index.md) has an initial contract baseline: an independently owned lifetime,
-observable application-set availability and discrete activation. Review it alongside Modal's
-opening/collaboration and Sidebar's visibility/interaction cases before implementing runtime.
-That review will establish bounded contracts for all three and justify capability composition.
-Original families precede variants; the old static/floating Sidebar classification is not restored.
+The reviewed cases and responsibility map are:
 
-Family runtime/type tests and public consumers must exercise actual built/packed artefacts.
+| Case or requirement | Contract owner and decision |
+| --- | --- |
+| A Save control becomes enabled and accepts a discrete action. | [Button](button/index.md) owns observable availability and combines Component with Activatable. No click, pressed or selected state is added. |
+| A dialogue is opened and closed, including an application-controlled source. | [Modal](modal/index.md) combines Component with Openable; the model owns lifetime, while a future host supplies actual modality. |
+| A lateral region can be opened and closed independently of its visual positioning. | [Sidebar](sidebar/index.md) combines Component with Openable for this changeable-presence case. Permanently invariant visibility is outside this bounded contract. |
+| Each created family has an independent identity and finalisation authority. | Each family factory contract promises a private scope per model; no public scope argument, cleanup method or capability instance escapes. |
+| Modal/Sidebar choose internal or synchronous external control. | Their feature-owned options aliases reuse OpenableOptionsType without a second authority or state/result vocabulary. Options are required to make that choice explicit. |
+| Button needs observable disabled changes. | Family-owned state, setter and snapshots; one current consumer does not justify a new shared availability capability. |
+| Button activation requests Modal closure. | Application-owned connection through public operations, with separate activation and closing results; no closeControl part or manager. |
+| Consumers need host input, naming, focus or layout. | Future host responsibility, with its own implementation and evidence; neither capability supplies these effects. |
+
+Button's initial availability/activation baseline is retained. Openable and Activatable fit the
+selected cases without a core-contract change. There is no new reusable capability or common
+factory abstraction: existing consumers need family-specific construction, not a polymorphic
+factory collection. No common family class has demonstrated shared runtime work yet.
+
+The current Modal and Sidebar types are structurally compatible; their purposes and host obligations
+differ, but no nominal brand or runtime identity test is invented to distinguish them. Neither
+interface proves that an arbitrary structurally matching object obeys its semantics. Original
+families precede variants; the old static/floating Sidebar classification is not restored.
+
+The non-executed [family type consumer](../../../../../tests/distribution/family-consumer.test.ts)
+checks valid and invalid public consumption against fresh installed declarations under NodeNext
+and Bundler resolution. Construction contracts are supplied as typed inputs, not unavailable
+library values. The package's runtime namespace remains its seven implemented values.
+
+Later family runtime tests and public consumers must exercise actual built/packed artefacts.
 For the selected one-package boundary, extend existing core consumers with family cases and
 intentional exports; keep the current guarded producer, host-free compiler and focused lint/format
 scope. Existing passing tests prove no unimplemented family contract.

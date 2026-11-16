@@ -18,11 +18,12 @@ The [component guide](packages/core/component/index.md) owns logical lifetime an
 [capability guides](packages/core/capabilities/index.md) own composition, requests, state authority,
 outcomes and observations.
 
-[Family ownership](packages/core/components/index.md) selects the existing core for the first
-portable models and contract-led workflow; the [Button guide](packages/core/components/button/index.md)
-records the initial baseline for joint family review without claiming an implementation.
-[Component direction](project/component-direction.md)
-records vocabulary, later original-family questions and reopened Sidebar axes.
+[Families](packages/core/components/index.md) own the reviewed contract-led workflow, capability map
+and public type contracts for [Button](packages/core/components/button/index.md),
+[Modal](packages/core/components/modal/index.md) and [Sidebar](packages/core/components/sidebar/index.md).
+Their implementations and executable factories remain future work.
+[Component direction](project/component-direction.md) records vocabulary, original-family boundaries
+and independent Sidebar axes.
 [Integration boundaries](project/integration-boundaries.md) own future hosts and optional providers.
 Neither is a second API catalogue or a compatibility claim.
 Software and documentation follow the repository's [ISC licence](../../LICENSE).
