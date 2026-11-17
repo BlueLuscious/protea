@@ -1,6 +1,6 @@
 # Component Direction
 
-Status: **Portable capabilities implemented; bounded family contracts reviewed and typed**
+Status: **Portable capabilities and Button implemented; Modal/Sidebar contracts reviewed and typed**
 
 Protea will build original Button, Modal and Sidebar families before selecting variants. Their
 initial portable models will belong to the existing core, in the
@@ -13,10 +13,11 @@ implementation still needs concrete state, behaviour and consumers before a comm
 A [Button](../packages/core/components/button/index.md) combines owned lifetime, observable
 application-set availability and discrete activation. The reviewed
 [contract-led workflow](../packages/core/components/index.md#contract-led-development) maps these
-requirements to Component, Activatable and family-owned availability. [Modal](../packages/core/components/modal/index.md)
+requirements to Component, Activatable and family-owned availability, now implemented through
+buttonFactory. [Modal](../packages/core/components/modal/index.md)
 and [Sidebar](../packages/core/components/sidebar/index.md) combine owned lifetime with logical
-opening for their selected cases. Production types are exported; runtime factories and family
-behaviour remain unimplemented. Persistent pressed or selected state is not assumed.
+opening for their selected cases. Their production types are exported; Modal/Sidebar factory
+values and runtime remain unimplemented. Persistent pressed or selected state is not assumed.
 
 Sidebar must be designed as a family first. The previous StaticSidebar/FloatingSidebar pilot
 is retired as a production classification: floating presentation and static state or interaction

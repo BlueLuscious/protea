@@ -1,7 +1,7 @@
 import type { ComponentScope } from "../../../component/contracts/component-scope.contract.js";
 import { componentLifecycleStates } from "../../../component/constants/component-lifecycle-states.constant.js";
 import { capabilityRejectionReasons } from "../../shared/constants/capability-rejection-reasons.constant.js";
-import { CapabilityListeners } from "../../shared/runtime/capability-listeners.js";
+import { ObservationListeners } from "../../../shared/runtime/observation-listeners.js";
 import type { CapabilityUnsubscribeType } from "../../shared/types/capability-unsubscribe.type.js";
 import type { Openable as OpenableContract } from "../contracts/openable.contract.js";
 import type { OpenStateAuthority } from "../contracts/open-state-authority.contract.js";
@@ -15,7 +15,7 @@ export class Openable implements OpenableContract {
   /** @description The fixed borrowed lifetime and cleanup owner. */
   readonly #scope: ComponentScope;
   /** @description Observation registrations guarded by both setup and owner lifetime. */
-  readonly #listeners: CapabilityListeners<[OpenableChangeType]>;
+  readonly #listeners: ObservationListeners<[OpenableChangeType]>;
   /** @description The internal state or last externally observed value. */
   #value = false;
   /** @description The retained external authority, released from this projection at finalisation. */
@@ -50,7 +50,7 @@ export class Openable implements OpenableContract {
     }
 
     this.#scope = scope;
-    this.#listeners = new CapabilityListeners(() => this.#isActive());
+    this.#listeners = new ObservationListeners(() => this.#isActive());
     let subscribe: OpenStateAuthority["subscribeOpenChange"] | undefined;
 
     const control = options.control;

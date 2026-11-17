@@ -1,6 +1,6 @@
 # Repository Tooling
 
-Status: **Portable lifetime/capability runtime and family type consumers configured**
+Status: **Portable lifetime/capability and Button runtime with public-consumer checks**
 
 This guide owns contributor tools, actual commands and checking coverage. The
 [project guide](../project/index.md) owns product responsibility; the
@@ -16,7 +16,7 @@ format-check subcommands are read-only. The separate build command produces repo
 outputs when requested.
 
 These checks cover declarations, bounded output production, package inclusion, public module/type
-resolution and actual lifetime/opening/activation behaviour. Public runtime suites exercise the
+resolution and actual lifetime/opening/activation and Button availability. Public runtime suites exercise the
 built package through its root; they do not depend on an experimental source workspace. Type
 consumers remain non-executed fixtures and prove their checked restrictions, not runtime semantics.
 
@@ -87,8 +87,8 @@ Node-specific contributor tooling stays outside portable production contracts.
 Public type fixtures are checked against fresh installed artefacts under NodeNext and Bundler
 resolution. They cover component ownership, capability construction/options, results, vocabularies,
 readonly views and unsupported operations. The family fixture additionally checks Button,
-Modal and Sidebar construction interfaces, type-only availability and public composition,
-without executing those unimplemented models. `@ts-expect-error` establishes that a diagnostic
+Modal and Sidebar construction interfaces, the real Button factory and public composition.
+It does not execute its synthetic Modal/Sidebar inputs. `@ts-expect-error` establishes that a diagnostic
 occurred, not its intended cause; each retained negative case still needs review. Type
 assignability cannot prove a state authority's synchrony, cleanup or semantic conformance.
 
@@ -106,8 +106,12 @@ Opening/activation cases require both state modes, refusal/no-op distinctions, g
 nested requests, source-driven changes, subscription mutation, callback errors, disposal during
 requests/delivery, partial setup and independent or intentionally shared state.
 
-The runtime selection includes component-scope, opening, activation and capability-composition
-suites. Composition covers one lifetime with independent occupation/state, activation acceptance
+The runtime selection includes component-scope, opening, activation, Button and capability-composition
+suites. Button checks configuration capture/validation, observable availability, independent
+lifetimes, activation precedence, subscription mutation, cross-operation reentrancy, callback
+failures and terminal behaviour. Its public configuration-getter failure occurs before resource
+acquisition; post-acquisition cleanup is reviewed in source without exposing a test-only scope.
+Composition covers one lifetime with independent occupation/state, activation acceptance
 versus a borrowed target's result, and terminal checks when another required release fails. These
 are public workflow consumers, not concrete component-family implementations.
 

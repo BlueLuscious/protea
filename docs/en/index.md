@@ -21,7 +21,7 @@ outcomes and observations.
 [Families](packages/core/components/index.md) own the reviewed contract-led workflow, capability map
 and public type contracts for [Button](packages/core/components/button/index.md),
 [Modal](packages/core/components/modal/index.md) and [Sidebar](packages/core/components/sidebar/index.md).
-Their implementations and executable factories remain future work.
+Button has an executable factory and portable runtime; Modal and Sidebar remain type-only contracts.
 [Component direction](project/component-direction.md) records vocabulary, original-family boundaries
 and independent Sidebar axes.
 [Integration boundaries](project/integration-boundaries.md) own future hosts and optional providers.

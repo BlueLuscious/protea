@@ -1,7 +1,7 @@
 import type { ButtonOptionsType } from "../types/button-options.type.js";
 import type { Button } from "./button.contract.js";
 
-/** @description The construction contract for independent Button models, without a runtime value. */
+/** @description Creates independent Button models with caller-owned lifetimes. */
 export interface ButtonFactory {
   /**
    * @description Creates an active Button with its own private lifetime and captured availability.

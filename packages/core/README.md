@@ -22,9 +22,10 @@ commands, coverage and contributor prerequisites.
 
 The core root also exports type contracts for Button, Modal and Sidebar and their specific
 construction interfaces. Their reviewed responsibilities and ownership are documented in the
-[family guide](../../docs/en/packages/core/components/index.md). Family runtime implementations,
-constructors and factory values do not exist yet; the seven implemented runtime exports remain
-unchanged. Static examples do not execute these family contracts.
+[family guide](../../docs/en/packages/core/components/index.md). buttonFactory creates a Button
+with a private lifetime, observable availability and activation. Its implementation constructor
+stays private. Modal/Sidebar factories and runtime remain future work; their static examples
+consume types without executing those models.
 
 The package builds ES2022 ESM and declarations. Its initial `0.0.0` remains private and
 unpublished. Host bindings, icons and motion remain future work.

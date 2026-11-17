@@ -1,6 +1,6 @@
 # Protea Project
 
-Status: **Private foundation/capability runtime and original-family type contracts**
+Status: **Private foundation/capability and Button runtime; Modal/Sidebar type contracts**
 
 ## Purpose and authority
 
@@ -24,10 +24,11 @@ and activation beneath the same package, with contextual factories and a borrowe
 State, occupation and listeners remain independent; individual teardown/replacement is deferred.
 The first portable [families](../packages/core/components/index.md) are selected for the same core
 package. The reviewed Button, Modal and Sidebar contracts select compatible capabilities after
-their cases and expose production types; family runtime remains unimplemented. Their parallel
+their cases and expose production types. Button's runtime and buttonFactory are implemented;
+Modal and Sidebar remain type-only. Their parallel
 guides own state, construction, ownership and static-versus-runtime limits.
 [Component direction](component-direction.md) owns independent Sidebar axes and wider composition
-questions. No executable family factory is exported.
+questions.
 [Integration boundaries](integration-boundaries.md) own future hosts, icons and motion.
 No renderer, concrete framework adapter, manager or optional provider is implemented.
 

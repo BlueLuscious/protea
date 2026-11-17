@@ -1,11 +1,12 @@
 # Component Families
 
-Status: **Original family type contracts defined; no family runtime implemented**
+Status: **Button runtime implemented; Modal and Sidebar remain reviewed type contracts**
 
 The first original Button, Modal and Sidebar contracts live in the existing
 [core package](../index.md), under `src/components/<family>/`. Their guides follow the same
 feature ownership here. The package exports their interfaces/types, including construction
-contracts; family implementations and executable factories do not exist yet.
+contracts. Button also supplies its executable buttonFactory; Modal and Sidebar have no runtime
+implementation or factory value yet.
 
 ## Package decision
 
@@ -34,11 +35,18 @@ host consumers. Internal feature imports must not pass through an aggregate root
 the importing family and introduces a cycle. No family imports a capability implementation class
 to bypass its public contract.
 
-The current family sources have real `api/`, `contracts/` and `types/` owners. Runtime owners will
-be added with executable behaviour.
+The current family sources have real `api/`, `contracts/` and `types/` owners; Button also has a
+`runtime/` owner for its executable behaviour.
 Internal interfaces and type aliases follow Garden's `contracts/internal/` and `types/internal/`
 rules; implementation classes remain private behind contextual factories. A conceptual family
 or variant does not require a base class, manager or shared family layer.
+
+Concrete family implementation classes use the Component role: ButtonComponent lives in
+runtime/button.component.ts and implements the public Button contract. This product convention
+distinguishes executable component models from their public interfaces, following
+[Garden's symbol and role naming](https://github.com/BlueLuscious/garden/blob/master/docs/en/project-rules.md#symbols-and-files).
+Apply it to concrete family models; component scopes, capabilities and observation helpers retain
+their own responsibility names. The role introduces no extra class, layer or public constructor.
 
 The existing package root remains the intended consumer boundary. Family additions will be
 exported deliberately, with production TypeScript generating their declarations. Reviewed
@@ -104,7 +112,10 @@ The reviewed cases and responsibility map are:
 Button's initial availability/activation baseline is retained. Openable and Activatable fit the
 selected cases without a core-contract change. There is no new reusable capability or common
 factory abstraction: existing consumers need family-specific construction, not a polymorphic
-factory collection. No common family class has demonstrated shared runtime work yet.
+factory collection. No common family class has demonstrated shared runtime work yet. The internal
+ordered-observation helper is shared by Button, opening and activation under src/shared/runtime;
+it owns registration delivery mechanics, without becoming a family base, public event bus or
+state authority.
 
 The current Modal and Sidebar types are structurally compatible; their purposes and host obligations
 differ, but no nominal brand or runtime identity test is invented to distinguish them. Neither
@@ -113,10 +124,12 @@ families precede variants; the old static/floating Sidebar classification is not
 
 The non-executed [family type consumer](../../../../../tests/distribution/family-consumer.test.ts)
 checks valid and invalid public consumption against fresh installed declarations under NodeNext
-and Bundler resolution. Construction contracts are supplied as typed inputs, not unavailable
-library values. The package's runtime namespace remains its seven implemented values.
+and Bundler resolution. It uses the real Button factory and supplies Modal/Sidebar construction
+contracts as typed inputs, not unavailable library values. The package's runtime namespace now
+includes buttonFactory among eight implemented values.
 
-Later family runtime tests and public consumers must exercise actual built/packed artefacts.
+The [Button runtime suite](../../../../../tests/runtime/button.test.mjs) exercises actual fresh
+packed artefacts; Modal and Sidebar still require their own implementations and runtime evidence.
 For the selected one-package boundary, extend existing core consumers with family cases and
 intentional exports; keep the current guarded producer, host-free compiler and focused lint/format
 scope. Existing passing tests prove no unimplemented family contract.

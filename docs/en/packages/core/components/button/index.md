@@ -1,13 +1,13 @@
 # Button
 
-Status: **Public type contracts defined; Button runtime and factory value not implemented**
+Status: **Portable Button runtime, availability and public factory implemented**
 
 Button models a discrete application action with its own lifetime and explicit, observable
 availability. Its reviewed contract combines [Component](../../component/index.md) and
 [Activatable](../../capabilities/activatable/index.md). Activation fits the request/acceptance case;
 availability remains family-owned because a per-call guard cannot publish disabled changes.
 No implementation inheritance is required. Production interfaces/types and their generated
-declarations own signatures; the behaviour specified here still requires a runtime implementation.
+declarations own signatures; the runtime implements the behaviour specified here.
 
 For example, an application keeps a Save button disabled while its input is invalid. It later
 enables the same model, observes accepted activations and owns the resulting save operation.
@@ -20,12 +20,11 @@ for an isolated activation capability.
 The core root exports `Button`, `ButtonFactory`, `ButtonOptionsType` and
 `ButtonDisabledChangeType` as types. The
 [Button contract](../../../../../../packages/core/src/components/button/contracts/button.contract.ts)
-owns its family operations. `buttonFactory` remains a future runtime value and cannot be imported
-or called from the current package. The construction interface describes the implementation's
-obligations without supplying an executable factory; the
+owns its family operations. The root also exports the frozen, stateless `buttonFactory` value;
+its contextual `create` supplies the executable construction described by ButtonFactory. The
 [family factory boundary](../index.md#construction-contracts-and-factories) owns that distinction
 and the conditional possibility of a common factory interface.
-The contextual factory's `create` operation will accept optional initial configuration and return
+The contextual factory's `create` operation accepts optional initial configuration and returns
 a new active Button. When present, configuration must be a non-null, non-array object; omission
 or undefined selects the defaults. Every instance owns a private scope, independent disabled state and its
 observation registrations. The caller owns that model's disposal authority.
@@ -46,6 +45,23 @@ report failures opaquely without promising an error class or aggregation shape. 
 performs no application action, initial change notification or host effect.
 
 ## Activation and input
+
+```ts
+import { buttonFactory } from "@luscious-garden/protea-core";
+
+const save = buttonFactory.create({ initialDisabled: true });
+const disconnect = save.subscribeActivation(() => {
+  save.setDisabled(true);
+});
+
+save.setDisabled(false);
+save.activate();
+disconnect();
+save.dispose();
+```
+
+The activation result reports acceptance; the application owns its actual save work and connection.
+The observer can disable later requests without undoing acceptance of this one.
 
 `activate` and `subscribeActivation` preserve the existing Activatable meanings, results, rejection
 vocabulary and subscription protocol. Internal activation authorisation reads the Button's
@@ -130,18 +146,30 @@ The [APG Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/) infor
 naming and interaction work. Native submit/reset behaviour, DOM events and their cancellation,
 tab order, gestures, rendering, icons and motion are not supplied by this model.
 
-## Static evidence and runtime handover
+## Implementation and evidence
 
 The fresh packed-package type consumer checks construction contracts, readonly availability,
-activation results, opposite-direction snapshots and absence of public scope or factory values.
-It uses typed collaborators in non-executed examples; no working Button follows from those checks.
+activation results, opposite-direction snapshots, the real factory and absence of public scope
+or implementation constructors. Modal and Sidebar examples still use typed collaborators;
+their runtime implementations are not supplied by this package.
 
-Implementation must verify independent lifetimes/state, configuration capture/validation,
-activation precedence, repeated writes, immutable opposite-direction snapshots, subscription
-mutation, cross-operation reentrancy, callback failures, setup cleanup and terminal behaviour.
-Public type consumers must protect readonly members, available operations, initial configuration,
-transition shapes and absence of public scope/private constructors. Fresh built/package consumers
-must verify intentional exports and portable consumption in the existing supported modes.
-The joint review retains the initial baseline without changing an accepted core contract.
-These runtime obligations remain future checks; existing capability evidence does not establish
-their family composition, availability delivery or host behaviour.
+The [public runtime suite](../../../../../../tests/runtime/button.test.mjs) exercises fresh packed
+Button instances: independent lifetimes/state, captured and invalid configuration, activation
+precedence, repeated writes, frozen opposite-direction snapshots, subscription mutation,
+cross-operation reentrancy, callback failures and terminal behaviour. A throwing configuration
+getter exercises failure before resource acquisition while preserving existing models. The
+post-acquisition cleanup path is reviewed in source; the public API has no injected scope or
+collaborator that exposes it for fault injection.
+
+Internally Button creates its private lifetime through componentScopeFactory and obtains
+Activatable through activatableFactory. Disabled state and delivery occupation stay family-owned.
+The internal [ButtonComponent](../../../../../../packages/core/src/components/button/runtime/button.component.ts)
+class implements the public Button contract; buttonFactory constructs it without exporting its
+constructor. This follows the [family implementation naming](../index.md#module-and-public-boundaries).
+The existing ordered-listener mechanism now belongs to shared/runtime as ObservationListeners,
+serving Button and both capabilities without a public event bus, new availability capability or
+family base class. Public contracts and existing capability protocols are unchanged.
+
+Fresh package consumers verify the actual factory, root exports and strict NodeNext/Bundler types.
+The [tooling guide](../../../../tooling/index.md) owns those checks and their limits. Portable
+Button evidence establishes no rendered button, browser input or accessible host interaction.

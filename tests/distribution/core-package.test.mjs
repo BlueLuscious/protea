@@ -111,20 +111,29 @@ test("packed core exposes production contracts and available runtime values", as
       import assert from "node:assert/strict";
       const core = await import("@luscious-garden/protea-core");
       assert.deepEqual(Object.keys(core).sort(), [
-        "activatableFactory", "activatableResultStatuses", "capabilityRejectionReasons",
+        "activatableFactory", "activatableResultStatuses", "buttonFactory", "capabilityRejectionReasons",
         "componentLifecycleStates", "componentScopeFactory", "openableFactory", "openableResultStatuses",
       ]);
       assert.deepEqual(core.componentLifecycleStates, { active: "active", disposed: "disposed" });
       assert.equal(Object.isFrozen(core.componentLifecycleStates), true);
       assert.equal(typeof core.componentScopeFactory.create, "function");
       assert.equal(Object.isFrozen(core.componentScopeFactory), true);
+      assert.equal(typeof core.buttonFactory.create, "function");
+      assert.equal(Object.isFrozen(core.buttonFactory), true);
+      const button = core.buttonFactory.create({ initialDisabled: true });
+      assert.equal(button.lifecycle, core.componentLifecycleStates.active);
+      assert.deepEqual(button.activate(), { status: "rejected", reason: "denied" });
+      button.setDisabled(false);
+      assert.deepEqual(button.activate(), { status: "activated" });
+      button.dispose();
+      assert.deepEqual(button.activate(), { status: "rejected", reason: "disposed" });
       assert.deepEqual(core.openableResultStatuses, { changed: "changed", unchanged: "unchanged", rejected: "rejected" });
       assert.deepEqual(core.activatableResultStatuses, { activated: "activated", rejected: "rejected" });
       assert.deepEqual(core.capabilityRejectionReasons, { disposed: "disposed", busy: "busy", denied: "denied" });
       for (const value of [core.openableFactory, core.activatableFactory, core.openableResultStatuses, core.activatableResultStatuses, core.capabilityRejectionReasons]) {
         assert.equal(Object.isFrozen(value), true);
       }
-      for (const suffix of ["component", "capabilities", "capabilities/openable", "components", "components/button", "components/modal", "components/sidebar", "package.json", "dist/index.js", "dist/component/runtime/component-scope.js", "dist/capabilities/shared/runtime/capability-listeners.js", "dist/components/button/contracts/button.contract.js"]) {
+      for (const suffix of ["component", "capabilities", "capabilities/openable", "components", "components/button", "components/modal", "components/sidebar", "shared", "package.json", "dist/index.js", "dist/component/runtime/component-scope.js", "dist/shared/runtime/observation-listeners.js", "dist/components/button/contracts/button.contract.js", "dist/components/button/runtime/button.component.js"]) {
         await assert.rejects(import("@luscious-garden/protea-core/" + suffix), { code: "ERR_PACKAGE_PATH_NOT_EXPORTED" });
       }
     `], consumer);

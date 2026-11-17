@@ -1,18 +1,16 @@
-import type { CapabilityUnsubscribeType } from "../types/capability-unsubscribe.type.js";
-
 /**
- * @description Owns ordered, independent capability observation registrations.
+ * @description Owns ordered, independent synchronous observation registrations.
  * @typeParam Arguments - The exact argument tuple delivered to each borrowed listener.
  */
-export class CapabilityListeners<Arguments extends unknown[]> {
-  /** @description Reports whether this capability may still accept or deliver observations. */
+export class ObservationListeners<Arguments extends unknown[]> {
+  /** @description Reports whether the owning model or capability may accept or deliver observations. */
   readonly #isActive: () => boolean;
 
   /** @description Distinct registrations, including repeated references to one listener. */
   readonly #registrations = new Set<(...arguments_: Arguments) => void>();
 
   /**
-   * @description Creates an empty observation owner bound to the capability's eligibility.
+   * @description Creates an empty observation owner bound to its owner's eligibility.
    * @param isActive - Borrowed predicate checked before registration and each delivery attempt.
    */
   constructor(isActive: () => boolean) {
@@ -24,13 +22,13 @@ export class CapabilityListeners<Arguments extends unknown[]> {
    * @param listener - Borrowed synchronous observer of later deliveries.
    * @returns A function releasing only this registration.
    */
-  subscribe(listener: (...arguments_: Arguments) => void): CapabilityUnsubscribeType {
+  subscribe(listener: (...arguments_: Arguments) => void): () => void {
     if (!this.#isActive()) {
-      throw new Error("Cannot subscribe after capability finalisation.");
+      throw new Error("Cannot subscribe after observation finalisation.");
     }
 
     if (typeof listener !== "function") {
-      throw new TypeError("A capability listener must be a function.");
+      throw new TypeError("An observation listener must be a function.");
     }
 
     const registration = (...arguments_: Arguments): void => listener(...arguments_);
@@ -68,7 +66,7 @@ export class CapabilityListeners<Arguments extends unknown[]> {
     }
 
     if (failures.length > 0) {
-      throw new AggregateError(failures, "Capability notification failed.");
+      throw new AggregateError(failures, "Observation notification failed.");
     }
   }
 

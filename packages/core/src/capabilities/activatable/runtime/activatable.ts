@@ -2,7 +2,7 @@ import { componentLifecycleStates } from "../../../component/api/index.js";
 import type { ComponentScope } from "../../../component/api/index.js";
 import { capabilityRejectionReasons } from "../../shared/api/index.js";
 import type { CapabilityRejectionReasonType, CapabilityUnsubscribeType } from "../../shared/api/index.js";
-import { CapabilityListeners } from "../../shared/runtime/capability-listeners.js";
+import { ObservationListeners } from "../../../shared/runtime/observation-listeners.js";
 import { activatableResultStatuses } from "../constants/activatable-result-statuses.constant.js";
 import type { Activatable as ActivatableContract } from "../contracts/activatable.contract.js";
 import type { ActivatableOptionsType } from "../types/activatable-options.type.js";
@@ -19,7 +19,7 @@ export class Activatable implements ActivatableContract {
   readonly #canActivate: (() => boolean) | undefined;
 
   /** @description Owned registrations observing accepted activations without a payload. */
-  readonly #listeners: CapabilityListeners<[]>;
+  readonly #listeners: ObservationListeners<[]>;
 
   /** @description Whether this capability has invalidated its owned work. */
   #released = false;
@@ -51,7 +51,7 @@ export class Activatable implements ActivatableContract {
 
     this.#scope = scope;
     this.#canActivate = canActivate;
-    this.#listeners = new CapabilityListeners<[]>(() => this.#isActive());
+    this.#listeners = new ObservationListeners<[]>(() => this.#isActive());
 
     try {
       if (!this.#isActive()) {

@@ -1,6 +1,6 @@
 # Core Package Tooling
 
-Status: **Private lifetime/capability runtime and type-only families with public consumers**
+Status: **Private lifetime/capability and Button runtime with fresh public consumers**
 
 This guide owns the actual package/build boundary and its qualification requirements. The
 [core guide](../packages/core/index.md) owns current scope and the
@@ -11,7 +11,7 @@ This guide owns the actual package/build boundary and its qualification requirem
 
 | Subject | Current selection |
 | --- | --- |
-| Owner | `packages/core/`, with component lifetime, grouped opening/activation capabilities and original-family contracts. |
+| Owner | `packages/core/`, with lifetime, grouped capabilities, Button runtime and reviewed Modal/Sidebar contracts. |
 | Identity | `@luscious-garden/protea-core`, version `0.0.0`, `private: true`. |
 | Runtime format | ESM only with `type: "module"`; ES2022 output and standard libraries. |
 | TypeScript resolution | NodeNext modules/resolution with explicit relative `.js` specifiers, strict checking, `types: []` and checked declarations. |
@@ -21,10 +21,10 @@ This guide owns the actual package/build boundary and its qualification requirem
 | Inclusion | Current built output plus manifest, package README and ISC licence. Sources, tests, local plans, caches and build metadata are excluded. |
 | Dependencies | No production dependency or intrinsic Node engine requirement. Contributor tooling stays outside portable contracts. |
 
-The root intentionally exports seven runtime values and twenty-eight contracts/types, mapped by
+The root intentionally exports eight runtime values and twenty-eight contracts/types, mapped by
 the [core guide](../packages/core/index.md). Implementation classes, helpers and constructors
 remain internal. Feature grouping creates no public subpath or additional package; concrete
-family implementations/factory values, a public state store and host bindings are not exported.
+Modal/Sidebar factory values, a public state store and host bindings are not exported.
 
 ## Canonical producer and ownership
 
@@ -61,7 +61,7 @@ consumers use both NodeNext and Bundler resolution without source aliases or pri
 The emitted runtime module must resolve while exposing no unavailable values.
 
 These checks establish build/distribution boundaries and present type restrictions. Separate
-public runtime tests exercise lifetime, opening, activation, state authority and observations;
+public runtime tests exercise lifetime, opening, activation, Button availability and observations;
 they establish no accessible host interaction or published release.
 Every independently runnable consumer suite owns fresh prerequisites rather than inspect stale
 repository output. Owned temporary directories must be precisely identified, contained and cleaned
@@ -101,22 +101,28 @@ values, companion packages or source aliases in public consumers.
 
 ## Selected family extension
 
-The [first family contracts](../packages/core/components/index.md) extend this core package, after
-a joint requirement/semantics review of Button, Modal and Sidebar.
+The [first families](../packages/core/components/index.md) extend this core package after a joint
+requirement/semantics review. Button supplies real construction and runtime; Modal/Sidebar remain
+type-only contracts.
 No second workspace member, package identity, dependency or producer is needed for that selection.
-Their thirteen production contract/type/barrel sources emit declarations and empty ESM modules;
-they add no executable family behaviour or root runtime values. The current forty-seven TypeScript
-sources produce ninety-four owned output files.
+The current forty-nine TypeScript sources produce ninety-eight owned output files. Button adds
+its factory/runtime sources; its typed factory export keeps the implementation constructor
+private. Family interfaces/types still emit declarations and empty ESM modules. The internal
+ordered-listener helper moves to shared/runtime for Button and the two existing capabilities,
+with its delivery algorithm unchanged and no new public export.
 
 The [family consumer](../../../tests/distribution/family-consumer.test.ts) checks public types from
 fresh installed declarations under strict NodeNext and Bundler resolution. It receives typed
-model/factory inputs rather than declaring missing library values. Positive and negative cases
+Modal/Sidebar inputs rather than declaring missing library values, and imports the real Button
+factory. Positive and negative cases
 cover required authority modes, excluded mixed options, readonly members, unavailable operations,
 factory contracts, owned-lifetime views and separate activation/opening results. Modal and Sidebar
 remain structurally compatible; no nominal distinction or runtime compliance is proved.
-The runtime namespace assertion still requires exactly the seven implemented values.
+The runtime namespace assertion requires exactly eight implemented values, including buttonFactory;
+its packed smoke case creates, enables, activates and disposes an actual Button.
 
-When each family is implemented, extend runtime and packed-consumer cases, review intentional
+The Button runtime suite owns public behaviour/composition checks. When each later family is
+implemented, extend runtime and packed-consumer cases, review intentional
 root value exports and verify fresh declaration/file inclusion from its production sources.
 Retain the guarded producer, strict host-free baseline, contributor pins and focused lint/format
 policy. No new generic workspace engine or shared tooling extraction is required. Manual review

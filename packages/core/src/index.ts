@@ -34,5 +34,6 @@ export type {
   ButtonDisabledChangeType,
   ButtonOptionsType,
 } from "./components/button/api/index.js";
+export { buttonFactory } from "./components/button/api/index.js";
 export type { Modal, ModalFactory, ModalOptionsType } from "./components/modal/api/index.js";
 export type { Sidebar, SidebarFactory, SidebarOptionsType } from "./components/sidebar/api/index.js";

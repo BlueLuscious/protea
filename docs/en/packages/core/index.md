@@ -1,6 +1,6 @@
 # Core
 
-Status: **Private lifetime/capability runtime and reviewed family type contracts**
+Status: **Private lifetime/capability and Button runtime; reviewed Modal/Sidebar type contracts**
 
 `@luscious-garden/protea-core` owns Protea's portable component foundation and reusable
 capabilities. Its one public root exports current contracts, factories and immutable vocabularies.
@@ -13,10 +13,11 @@ ownership and limitations.
 | [Opening](capabilities/openable/index.md) | OpenableFactory and openableFactory create Openable against one scope and selected state authority. OpenStateAuthority is a consumer-provided contract; opening options, changes, results and status types remain feature-owned. |
 | [Activation](capabilities/activatable/index.md) | ActivatableFactory and activatableFactory create Activatable with an optional synchronous eligibility guard; activation options, results and status types remain feature-owned. |
 | [Shared capability rules](capabilities/index.md) | CapabilityUnsubscribeType and CapabilityRejectionReasonType, with capabilityRejectionReasons; opening and activation each own their result-status vocabulary. |
-| [Families](components/index.md) | Button, ButtonFactory, ButtonOptionsType and ButtonDisabledChangeType; Modal, ModalFactory and ModalOptionsType; Sidebar, SidebarFactory and SidebarOptionsType. These are type-only exports, without executable family factories. |
+| [Families](components/index.md) | buttonFactory creates an independent Button with observable availability and activation; its contracts are Button, ButtonFactory, ButtonOptionsType and ButtonDisabledChangeType. Modal/ModalFactory/ModalOptionsType and Sidebar/SidebarFactory/SidebarOptionsType remain type-only exports. |
 
 The runtime values are componentScopeFactory, componentLifecycleStates, openableFactory,
-activatableFactory, openableResultStatuses, activatableResultStatuses and capabilityRejectionReasons.
+activatableFactory, openableResultStatuses, activatableResultStatuses, capabilityRejectionReasons
+and buttonFactory.
 No public constructor, implementation class, generic manager or capability base is exported.
 
 ## Package boundary
@@ -36,9 +37,9 @@ qualification and supported-evidence boundaries.
 
 The first portable [component families](components/index.md) have reviewed production interfaces
 and types under `src/components/` in this same package. The root exports their ten type contracts
-and retains the existing seven runtime values; no Button/Modal/Sidebar constructor or factory value
-is present. Family behaviour is specified for subsequent implementation, with current static
-evidence limited to the public type surface.
+and eight runtime values. Button is implemented; Modal/Sidebar factory values and all public family
+constructors remain absent. Static evidence for those two families is limited to their public
+type surface. The [Button guide](components/button/index.md) owns its actual runtime guarantees.
 
 ## Composition and limits
 

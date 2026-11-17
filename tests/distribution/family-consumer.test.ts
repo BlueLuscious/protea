@@ -1,4 +1,5 @@
 import * as core from "@luscious-garden/protea-core";
+import { buttonFactory } from "@luscious-garden/protea-core";
 import type {
   Activatable,
   ActivatableResultType,
@@ -21,11 +22,12 @@ import type {
 } from "@luscious-garden/protea-core";
 
 function consumeFamilies(
-  buttonFactory: ButtonFactory,
   modalFactory: ModalFactory,
   sidebarFactory: SidebarFactory,
   authority: OpenStateAuthority,
 ): void {
+  const construction: ButtonFactory = buttonFactory;
+  void construction;
   const buttonOptions: ButtonOptionsType = { initialDisabled: undefined };
   const button: Button = buttonFactory.create(buttonOptions);
   buttonFactory.create();
@@ -165,8 +167,6 @@ function consumeFamilies(
   const activationFromOpening: ActivatableResultType = openingOutcome;
   void [openingFromActivation, activationFromOpening];
 
-  // @ts-expect-error A construction interface does not export a Button factory value.
-  core.buttonFactory;
   // @ts-expect-error A construction interface does not export a Modal factory value.
   core.modalFactory;
   // @ts-expect-error A construction interface does not export a Sidebar factory value.
