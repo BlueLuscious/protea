@@ -13,29 +13,16 @@ Separate the portable component foundation from the portable family catalogue. T
 the intended `packages/components` boundary supplies families and reusable capabilities, including
 opening and activation. A separate capability package remains conditional.
 
-The agreed authoring model uses a definition for every created component, with explicit creation
-from a definition and convenient family creation that selects its definition internally.
-`ComponentInstance` is the agreed name for the live model contract. Public API organisation and
-naming follow Aster's concept objects and `*Api` contracts. Core will supply Component.define
-and Component.create; Components will supply family APIs such as Button.create and their
-incorporated definitions. Applications may author types under their own optional namespace.
-Definition identity describes the type and does not authenticate its author or identify each
-instance. The definition carries a typed construction recipe, with descriptive information and
-family-specific defaults where needed; per-instance state, resources and collaborators stay separate.
+The [construction design](project/component-construction.md) owns the agreed definition preparation,
+setup/context signature, Core-owned flat instance, lifetime protection and failure protocol. Every
+created component has a definition; explicit Core creation and family convenience creation use the
+same path. API organisation follows concept objects and `*Api` contracts. Applications may author
+their own types without importing the family catalogue.
 
-Core will construct the public instance with its own definition, lifecycle and dispose members.
-The author supplies an explicit flat surface of operations and properties. Common members cannot
-be replaced, collisions must be rejected in types and at construction, and dynamic reads must
-remain dynamic. A readonly instance.definition will identify the definition actually used.
-The shared lifetime protocol will distinguish a resource-owning scope from a live component model;
-a scope does not need an artificial component definition. Construction must complete before the
-instance is returned; failure must finalise resources registered in its scope. Each behaviour still
-defines and implements its permitted operations after finalisation.
-
-The exact setup signature, surface representation and generic typing remain to be refined during
-implementation. The new definition APIs and composed instance model are not implemented yet. The
-current source still places its foundation, capabilities and initial families in the
-[existing core package](packages/core/index.md).
+The protocol is specified, but its runtime and package migration are not implemented. Current
+sources still place their foundation, capabilities and initial families in the
+[existing core package](packages/core/index.md). Descriptive metadata, family defaults and other
+extensions remain conditional on useful consumers rather than mandatory definition fields.
 
 ## Conditional and deferred work
 

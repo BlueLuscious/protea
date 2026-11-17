@@ -6,7 +6,7 @@ Protea develops original Button, Modal and Sidebar families before selecting var
 source places their portable models and contracts in the existing core's
 [family modules](../packages/core/components/index.md). The accepted next direction separates the
 foundation from families and capabilities and introduces definition-based creation with flat public
-instances, as recorded in [future capabilities](../future-capabilities.md#accepted-direction-awaiting-implementation).
+instances, specified by the [construction design](component-construction.md).
 That migration is not implemented; further family implementation waits for the foundation review.
 Shared family implementation still needs concrete state, behaviour and consumers before a common
 layer is chosen.
@@ -70,7 +70,7 @@ now borrow that fixed scope within core; sharing it shares lifetime rather than 
 Independent capability teardown and replacement remain deferred. The current Component and
 ComponentScope contracts retain their distinct consumer and resource-owner roles. Their accepted
 successor model separates lifetime, scope and definition-associated instances; the
-[next architecture](../future-capabilities.md#accepted-direction-awaiting-implementation) is not
+[next architecture](component-construction.md) is not
 an alias or implemented replacement for the current exports.
 
 Consider a future Modal whose opening capability can be replaced while the Modal remains alive.

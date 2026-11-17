@@ -29,6 +29,8 @@ Modal and Sidebar remain type-only. Their parallel
 guides own state, construction, ownership and static-versus-runtime limits.
 [Component direction](component-direction.md) owns independent Sidebar axes and wider composition
 questions.
+[Component construction](component-construction.md) specifies the accepted definition/instance
+protocol and package migration; those successor APIs are not implemented yet.
 [Integration boundaries](integration-boundaries.md) own future hosts, icons and motion.
 No renderer, concrete framework adapter, manager or optional provider is implemented.
 
