@@ -10,6 +10,7 @@ English under `docs/en/` is canonical. Future translations should preserve its r
 | [Project](project/index.md) | Product direction, shared-rule adoption, contribution and ownership. |
 | [Repository tooling](tooling/index.md) | Contributor environment, actual commands, output ownership and checking limits. |
 | [Repository automation](tooling/automation/index.md) | CI orchestration and Discord execution/receipt boundaries. |
+| [Future capabilities](future-capabilities.md) | Accepted design direction and conditional opportunities, separate from implemented guarantees. |
 
 The [repository introduction](../../README.md) summarises current source. The private
 [core package](packages/core/index.md) implements the component foundation and reusable opening

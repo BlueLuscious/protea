@@ -2,11 +2,14 @@
 
 Status: **Portable capabilities and Button implemented; Modal/Sidebar contracts reviewed and typed**
 
-Protea will build original Button, Modal and Sidebar families before selecting variants. Their
-initial portable models will belong to the existing core, in the
-[family modules](../packages/core/components/index.md). That owner records the package comparison,
-costs and reasons to reconsider extraction; no second component package is selected. Shared family
-implementation still needs concrete state, behaviour and consumers before a common layer is chosen.
+Protea develops original Button, Modal and Sidebar families before selecting variants. The current
+source places their portable models and contracts in the existing core's
+[family modules](../packages/core/components/index.md). The accepted next direction separates the
+foundation from families and capabilities and introduces definition-based creation with flat public
+instances, as recorded in [future capabilities](../future-capabilities.md#accepted-direction-awaiting-implementation).
+That migration is not implemented; further family implementation waits for the foundation review.
+Shared family implementation still needs concrete state, behaviour and consumers before a common
+layer is chosen.
 
 ## Families and independent axes
 
@@ -64,8 +67,11 @@ guarantees at their actual owners.
 The current [foundation](../packages/core/component/index.md) supplies one terminal component
 lifetime and explicit cleanup registration. [Opening and activation](../packages/core/capabilities/index.md)
 now borrow that fixed scope within core; sharing it shares lifetime rather than state or listeners.
-Independent capability teardown and replacement remain deferred. Component and ComponentScope
-retain their distinct consumer and resource-owner roles; no definition/instance alias replaces them.
+Independent capability teardown and replacement remain deferred. The current Component and
+ComponentScope contracts retain their distinct consumer and resource-owner roles. Their accepted
+successor model separates lifetime, scope and definition-associated instances; the
+[next architecture](../future-capabilities.md#accepted-direction-awaiting-implementation) is not
+an alias or implemented replacement for the current exports.
 
 Consider a future Modal whose opening capability can be replaced while the Modal remains alive.
 Closing it would change logical openness; disposing the Modal would end its model lifetime.

@@ -10,18 +10,23 @@ implementation or factory value yet.
 
 ## Package decision
 
+The table records the initial decision reflected in current source. The accepted next direction
+separates the foundation from the family catalogue and capabilities; see the
+[migration direction](../../../future-capabilities.md#accepted-direction-awaiting-implementation).
+The new package boundary is not implemented yet.
+
 | Consideration | Selection and consequence |
 | --- | --- |
 | Responsibility | Families give a component purpose, selected state and composition over the minimum component lifetime and reusable capabilities. Feature modules express that distinction within core. |
 | Platform and dependencies | The selected models use the same portable ES2022 ESM baseline and existing core contracts. They require no DOM, framework or additional production dependency. |
-| Consumers | Application code can construct a family and compose it with other models through one public package. There is no current independent foundation-only distribution requirement or separate family release policy. |
+| Consumers | Application code currently constructs families and composes them through one public package. The initial choice did not target independent foundation-only distribution; the next direction explicitly supports consuming the foundation without the catalogue. |
 | Cost retained | The package archive will include implemented family modules, and root imports load modules re-exported there. A shared package does not establish smaller bundles or automatic elimination by a consumer's tooling. |
-| Alternative | A dependent family package would require another identity, dependency/build order, owned output set and clean installation of both archives. The current consumers do not justify that additional distribution boundary. |
+| Alternative | The accepted dependent family package requires its own identity, dependency/build order, owned output set and clean installation of both archives. Those costs belong to the forthcoming migration. |
 
-Revisit extraction if real consumers need independent foundation installation, measured loading or
-bundle costs warrant it, or dependencies, supported environments or release policy diverge. Once
-family names are public, moving them requires an explicit compatibility decision. This selection
-does not promise effortless extraction or prescribe the distribution of future host adapters.
+The accepted migration enables independent foundation consumption and custom component authoring.
+Existing family exports still need an explicit migration and compatibility decision, qualified
+package consumers and repaired documentation. Package separation alone establishes no loading or
+bundle-size benefit and does not prescribe the distribution of future host adapters.
 
 ## Module and public boundaries
 
@@ -54,7 +59,7 @@ interface/type contracts may precede their runtime implementations; executable f
 the public root only when they actually exist. Type availability and runtime availability must
 be documented separately.
 
-No subpath, wildcard, second package, source alias or unavailable value is added by this decision.
+The current implementation adds no subpath, wildcard, second package, source alias or unavailable value.
 
 ## Contract-led development
 
@@ -130,9 +135,10 @@ includes buttonFactory among eight implemented values.
 
 The [Button runtime suite](../../../../../tests/runtime/button.test.mjs) exercises actual fresh
 packed artefacts; Modal and Sidebar still require their own implementations and runtime evidence.
-For the selected one-package boundary, extend existing core consumers with family cases and
-intentional exports; keep the current guarded producer, host-free compiler and focused lint/format
-scope. Existing passing tests prove no unimplemented family contract.
+Current one-package qualification extends core consumers with family cases and intentional exports,
+retaining the guarded producer, host-free compiler and focused lint/format scope. The migration
+must qualify its changed package boundaries separately. Existing passing tests prove no
+unimplemented family contract.
 
 The [tooling guide](../../../tooling/core-package.md) owns actual build/distribution checks.
 [Product direction](../../../project/component-direction.md) owns wider concepts and deferred
