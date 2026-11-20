@@ -1,5 +1,5 @@
-import { componentLifecycleStates } from "../../../component/api/index.js";
-import type { ComponentScope } from "../../../component/api/index.js";
+import { componentLifecycleStates } from "../../../component/constants/component-lifecycle-states.constant.js";
+import type { ComponentScope } from "../../../component/contracts/component-scope.contract.js";
 import { capabilityRejectionReasons } from "../../shared/api/index.js";
 import type { CapabilityRejectionReasonType, CapabilityUnsubscribeType } from "../../shared/api/index.js";
 import { ObservationListeners } from "../../../shared/runtime/observation-listeners.js";

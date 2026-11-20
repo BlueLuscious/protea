@@ -9,7 +9,8 @@ import type {
   ButtonOptionsType,
   CapabilityRejectionReasonType,
   CapabilityUnsubscribeType,
-  Component,
+  ComponentInstance,
+  ComponentLifetime,
   Modal,
   ModalFactory,
   ModalOptionsType,
@@ -44,9 +45,9 @@ function consumeFamilies(
   const sidebar: Sidebar = sidebarFactory.create(sidebarInternal);
   sidebarFactory.create(sidebarExternal);
 
-  const component: Component = button;
-  const modalComponent: Component = modal;
-  const sidebarComponent: Component = sidebar;
+  const component: ComponentLifetime = button;
+  const modalComponent: ComponentLifetime = modal;
+  const sidebarComponent: ComponentLifetime = sidebar;
   const activation: Activatable = button;
   const modalOpening: Openable = modal;
   const sidebarOpening: Openable = sidebar;
@@ -122,6 +123,9 @@ function consumeFamilies(
   button.click();
   // @ts-expect-error Opening is not part of the Button contract.
   button.open();
+  // @ts-expect-error The transitional Button has no definition-based instance contract.
+  const definitionInstance: ComponentInstance = button;
+  void definitionInstance;
 
   // @ts-expect-error Modal construction requires an explicit state-authority mode.
   modalFactory.create();

@@ -1,4 +1,4 @@
-import type { ComponentScope } from "../../../component/api/index.js";
+import type { ComponentScope } from "../../../component/contracts/component-scope.contract.js";
 import type { ActivatableOptionsType } from "../types/activatable-options.type.js";
 import type { Activatable } from "./activatable.contract.js";
 

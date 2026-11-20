@@ -3,7 +3,7 @@
 Status: **Portable Button runtime, availability and public factory implemented**
 
 Button models a discrete application action with its own lifetime and explicit, observable
-availability. Its reviewed contract combines [Component](../../component/index.md) and
+availability. Its reviewed contract combines [ComponentLifetime](../../component/index.md) and
 [Activatable](../../capabilities/activatable/index.md). Activation fits the request/acceptance case;
 availability remains family-owned because a per-call guard cannot publish disabled changes.
 No implementation inheritance is required. Production interfaces/types and their generated
@@ -161,8 +161,8 @@ getter exercises failure before resource acquisition while preserving existing m
 post-acquisition cleanup path is reviewed in source; the public API has no injected scope or
 collaborator that exposes it for fault injection.
 
-Internally Button creates its private lifetime through componentScopeFactory and obtains
-Activatable through activatableFactory. Disabled state and delivery occupation stay family-owned.
+Internally Button creates its private lifetime through `Scope.create()` and obtains
+`Activatable` through `activatableFactory`. Disabled state and delivery occupation stay family-owned.
 The internal [ButtonComponent](../../../../../../packages/core/src/components/button/runtime/button.component.ts)
 class implements the public Button contract; buttonFactory constructs it without exporting its
 constructor. This follows the [family implementation naming](../index.md#module-and-public-boundaries).

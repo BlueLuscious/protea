@@ -8,7 +8,7 @@ closes it when that task ends. The model owns an independent lifetime and openin
 it does not measure rendered visibility or perform layout.
 
 The type-only contracts are Sidebar, SidebarFactory and SidebarOptionsType. For these selected
-cases, Sidebar composes [Component](../../component/index.md) and
+cases, Sidebar composes [ComponentLifetime](../../component/index.md) and
 [Openable](../../capabilities/openable/index.md). This does not establish that every possible
 sidebar must be Openable. Production source and generated declarations own signatures; no
 executable Sidebar factory, implementation constructor or working Sidebar is supplied yet.
@@ -91,7 +91,7 @@ when the owner ends before or after an observed commitment; no external rollback
 
 ## Structural types and host evidence
 
-Sidebar's interface expresses a structural Component/Openable surface, not nominal family
+Sidebar's interface expresses a structural `ComponentLifetime` and `Openable` surface, not nominal family
 identity. The reviewed [Modal](../modal/index.md) surface may therefore be assignable where the
 same shape is required. This does not establish shared object identity, interchangeable domain
 purpose or equivalent host semantics. No family brand or runtime discriminator is introduced.

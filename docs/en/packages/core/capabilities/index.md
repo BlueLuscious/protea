@@ -2,15 +2,16 @@
 
 Status: **Portable opening and activation runtime implemented within core**
 
-Capabilities supply narrow behaviour to a model that needs it. [Opening](openable/index.md) owns
-logical openness and its state authority; [activation](activatable/index.md) owns acceptance of
-an action. Both borrow the existing [ComponentScope](../component/index.md), sharing its logical
-lifetime without adding opening or activation members to every Component.
+Capabilities supply narrow behaviour to a model and borrow a [ComponentScope](../component/index.md)
+for lifetime and release registration. Each capability retains its own state and registrations.
 
-The source groups these responsibilities under `src/capabilities/{openable,activatable,shared}`.
-The group is an organising boundary, not another npm package, facade or mandatory base class.
-Public consumption uses the [core package root](../index.md). Production source owns signatures
-and emits declarations; these guides own semantics, ownership and limitations.
+## Documentation
+
+| Page | Owns |
+| --- | --- |
+| [Openable](openable/index.md) | Logical opening, state authority, changes and request results. |
+| [Activatable](activatable/index.md) | Discrete action acceptance, guards and observation. |
+| [Shared](shared/index.md) | Rejection vocabulary and observation release contracts. |
 
 ## Construction and composition
 
@@ -30,11 +31,11 @@ The following application-owned composition uses only public contracts and value
 ```ts
 import {
   activatableFactory,
-  componentScopeFactory,
+  Scope,
   openableFactory,
 } from "@luscious-garden/protea-core";
 
-const scope = componentScopeFactory.create();
+const scope = Scope.create();
 
 try {
   const opening = openableFactory.create(scope, { control: "internal" });
@@ -83,13 +84,7 @@ authority. `openableResultStatuses` contains changed, unchanged and rejected;
 status members, including the required reason on rejection. Opening's no-op and activation's
 acceptance do not become a generic success status or resource discriminator.
 
-The shared `capabilityRejectionReasons` vocabulary supplies `CapabilityRejectionReasonType`:
-
-| Reason | Meaning |
-| --- | --- |
-| `disposed` | The captured owner has ended its logical lifetime. |
-| `busy` | This capability is already processing a request or delivering a notification. |
-| `denied` | The relevant external authority or activation guard refused authorisation. |
+Rejected results use the [shared rejection vocabulary](shared/index.md#rejection-reasons).
 
 Public requests check disposed before busy, then their operation-specific conditions. A satisfied
 opening target does not bypass those first checks. Occupation lasts through guard/source calls,
@@ -110,21 +105,10 @@ Activation subscribers receive acceptance without a universal payload. Neither n
 reports rejected or unchanged requests as effective changes. Their operation results carry
 those distinctions.
 
-Capability notifications and conforming external-authority notifications obey these rules:
-
-- Subscribing while active registers one observation without initial replay or notification.
-  Every registration is independent, including duplicate callback references.
-- Delivery is synchronous in registration order. A registration added during delivery starts
-  with the next delivery. Unsubscribing before its turn prevents invocation; a callback already
-  executing may finish.
-- The returned `CapabilityUnsubscribeType` function removes only that registration. It is
-  idempotent, including after finalisation, and confers no authority to dispose the source,
-  listener, target or owner.
-- Subscribing after the owner is disposed throws opaquely without registration. Finalisation
-  cancels remaining capability deliveries and prevents later callbacks reviving model work.
-- One callback failure does not cancel other callbacks still eligible for that delivery. Attempt
-  them before throwing an opaque failure, without promising an error class, aggregation shape
-  or failure order. Disposal can make pending callbacks ineligible even during that error path.
+Both capabilities use [Core's shared observation runtime](../shared/index.md#runtime) for
+independent registrations, ordered delivery and terminal checks. Conforming external authorities
+follow these delivery rules for their own notifications. The [release contract](shared/index.md#observation-release)
+defines what a returned unsubscribe owns.
 
 Callbacks and guards must satisfy their synchronous protocols. TypeScript can accept a
 Promise-returning callback in a void-return position; no returned promise is awaited and its

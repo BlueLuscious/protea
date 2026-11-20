@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
-import { access, mkdir, readFile, symlink, unlink, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { access, mkdir, readFile, readdir, symlink, unlink, writeFile } from "node:fs/promises";
+import { join, relative, sep } from "node:path";
 import test from "node:test";
 import { withTemporaryDirectory } from "../../tooling/shared/runtime/temporary-directory.mjs";
 import { buildCore } from "../../tooling/workspace/runtime/core-build.mjs";
@@ -22,7 +22,15 @@ test("build replaces only unchanged owned output and removes retired emitted fil
     const previous = await readFile(manifest, "utf8");
     await buildCore(root);
     assert.equal(await readFile(manifest, "utf8"), previous);
-    assert.equal(JSON.parse(previous).files.length, 98);
+    const source = join(packageRoot, "src");
+    const inputs = await readdir(source, { recursive: true, withFileTypes: true });
+    const expected = inputs
+      .filter((entry) => entry.isFile() && entry.name.endsWith(".ts") && !entry.name.endsWith(".d.ts"))
+      .flatMap((entry) => {
+        const stem = relative(source, join(entry.parentPath, entry.name)).split(sep).join("/").slice(0, -3);
+        return [`${stem}.js`, `${stem}.d.ts`];
+      });
+    assert.deepEqual(JSON.parse(previous).files.map(({ path }) => path).sort(), expected.sort());
   });
 });
 

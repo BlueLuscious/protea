@@ -4,7 +4,7 @@ Status: **One private package with portable foundation, capability and Button ru
 
 | Package | Current responsibility |
 | --- | --- |
-| [Core](core/index.md) | Portable lifetime, cleanup, reusable opening/activation, Button runtime and reviewed Modal/Sidebar type contracts, with an ESM/declaration build and one public root. |
+| [Core](core/index.md) | Portable definitions and instances, lifetime, cleanup, reusable opening and activation, Button runtime and reviewed Modal/Sidebar type contracts. The package emits ESM and declarations with one public root. |
 
 The package set follows implemented responsibilities. Logical features do not allocate separate
 npm packages. Core is private and its local version is not a published release. The

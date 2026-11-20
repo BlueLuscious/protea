@@ -10,27 +10,25 @@ implementation or factory value yet.
 
 ## Package decision
 
-The table records the initial decision reflected in current source. The accepted next direction
-separates the foundation from the family catalogue and capabilities; see the
-[migration direction](../../../future-capabilities.md#accepted-direction-awaiting-implementation).
-The new package boundary is not implemented yet.
+The table records the current one-package boundary. The accepted migration moves the family
+catalogue and capabilities to Components. See the
+[Components migration](../../../future-capabilities.md#pending-components-migration).
 
 | Consideration | Selection and consequence |
 | --- | --- |
 | Responsibility | Families give a component purpose, selected state and composition over the minimum component lifetime and reusable capabilities. Feature modules express that distinction within core. |
 | Platform and dependencies | The selected models use the same portable ES2022 ESM baseline and existing core contracts. They require no DOM, framework or additional production dependency. |
-| Consumers | Application code currently constructs families and composes them through one public package. The initial choice did not target independent foundation-only distribution; the next direction explicitly supports consuming the foundation without the catalogue. |
+| Consumers | Application code constructs custom components, built-in Button and reusable capabilities through one public package. The migration will make the foundation independently distributable. |
 | Cost retained | The package archive will include implemented family modules, and root imports load modules re-exported there. A shared package does not establish smaller bundles or automatic elimination by a consumer's tooling. |
 | Alternative | The accepted dependent family package requires its own identity, dependency/build order, owned output set and clean installation of both archives. Those costs belong to the forthcoming migration. |
 
-The accepted migration enables independent foundation consumption and custom component authoring.
-Existing family exports still need an explicit migration and compatibility decision, qualified
-package consumers and repaired documentation. Package separation alone establishes no loading or
-bundle-size benefit and does not prescribe the distribution of future host adapters.
+The accepted migration enables consuming the foundation independently. It will update the family
+exports and documentation, then verify consumers of both packages. Loading and bundle size
+require separate measurements, and host adapters retain their own distribution decisions.
 
 ## Module and public boundaries
 
-`component/` owns the minimum shared lifetime contract; `components/` groups concrete family
+`component/` owns the shared lifetime and definition-based construction. `components/` groups concrete family
 models such as Button and Sidebar. A portable component model remains a component responsibility
 before it has a rendered host. The plural group does not claim a completed visual implementation.
 
@@ -105,9 +103,9 @@ The reviewed cases and responsibility map are:
 
 | Case or requirement | Contract owner and decision |
 | --- | --- |
-| A Save control becomes enabled and accepts a discrete action. | [Button](button/index.md) owns observable availability and combines Component with Activatable. No click, pressed or selected state is added. |
-| A dialogue is opened and closed, including an application-controlled source. | [Modal](modal/index.md) combines Component with Openable; the model owns lifetime, while a future host supplies actual modality. |
-| A lateral region can be opened and closed independently of its visual positioning. | [Sidebar](sidebar/index.md) combines Component with Openable for this changeable-presence case. Permanently invariant visibility is outside this bounded contract. |
+| A Save control becomes enabled and accepts a discrete action. | [Button](button/index.md) owns observable availability and combines `ComponentLifetime` with `Activatable`. |
+| A dialogue is opened and closed, including an application-controlled source. | [Modal](modal/index.md) combines `ComponentLifetime` with `Openable`. The model owns lifetime, and a future host supplies actual modality. |
+| A lateral region can be opened and closed independently of its visual positioning. | [Sidebar](sidebar/index.md) combines `ComponentLifetime` with `Openable` for changeable presence. Permanently invariant visibility is outside this bounded contract. |
 | Each created family has an independent identity and finalisation authority. | Each family factory contract promises a private scope per model; no public scope argument, cleanup method or capability instance escapes. |
 | Modal/Sidebar choose internal or synchronous external control. | Their feature-owned options aliases reuse OpenableOptionsType without a second authority or state/result vocabulary. Options are required to make that choice explicit. |
 | Button needs observable disabled changes. | Family-owned state, setter and snapshots; one current consumer does not justify a new shared availability capability. |
@@ -131,7 +129,7 @@ The non-executed [family type consumer](../../../../../tests/distribution/family
 checks valid and invalid public consumption against fresh installed declarations under NodeNext
 and Bundler resolution. It uses the real Button factory and supplies Modal/Sidebar construction
 contracts as typed inputs, not unavailable library values. The package's runtime namespace now
-includes buttonFactory among eight implemented values.
+includes `buttonFactory` among the implemented root values.
 
 The [Button runtime suite](../../../../../tests/runtime/button.test.mjs) exercises actual fresh
 packed artefacts; Modal and Sidebar still require their own implementations and runtime evidence.
@@ -140,7 +138,7 @@ retaining the guarded producer, host-free compiler and focused lint/format scope
 must qualify its changed package boundaries separately. Existing passing tests prove no
 unimplemented family contract.
 
-The [tooling guide](../../../tooling/core-package.md) owns actual build/distribution checks.
+The [Core quality guide](../quality.md) owns consumer and distribution checks.
 [Product direction](../../../project/component-direction.md) owns wider concepts and deferred
 families; [integration boundaries](../../../project/integration-boundaries.md) own future hosts,
 icons and motion. Portable models alone establish no rendered or accessible component support.

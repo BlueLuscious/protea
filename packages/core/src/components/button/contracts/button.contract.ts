@@ -1,6 +1,6 @@
 import type { Activatable } from "../../../capabilities/activatable/api/index.js";
 import type { CapabilityUnsubscribeType } from "../../../capabilities/shared/api/index.js";
-import type { Component } from "../../../component/api/index.js";
+import type { ComponentLifetime } from "../../../component/contracts/component-lifetime.contract.js";
 import type { ButtonDisabledChangeType } from "../types/button-disabled-change.type.js";
 
 /**
@@ -9,7 +9,7 @@ import type { ButtonDisabledChangeType } from "../types/button-disabled-change.t
  * Its private scope and capability are not exposed. See
  * [Button](https://github.com/BlueLuscious/protea/blob/master/docs/en/packages/core/components/button/index.md).
  */
-export interface Button extends Component, Activatable {
+export interface Button extends ComponentLifetime, Activatable {
   /** @description The current disabled policy, retaining its last value after finalisation. */
   readonly isDisabled: boolean;
 

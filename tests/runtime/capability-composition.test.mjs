@@ -7,7 +7,7 @@ test("capabilities compose through public operations and explicit lifetime owner
     function check(source) {
       const result = runNode(["--input-type=module", "--eval", `
         import assert from "node:assert/strict";
-        import { activatableFactory, componentScopeFactory, openableFactory } from "@luscious-garden/protea-core";
+        import { Scope, activatableFactory, openableFactory } from "@luscious-garden/protea-core";
         ${source}
       `], consumer);
       assert.equal(result.status, 0, result.stdout + result.stderr);
@@ -17,7 +17,7 @@ test("capabilities compose through public operations and explicit lifetime owner
 
     await context.test("one lifetime does not share request occupation or opening state", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const opening = openableFactory.create(scope, { control: "internal" });
         const otherOpening = openableFactory.create(scope, { control: "internal" });
         const activation = activatableFactory.create(scope);
@@ -41,8 +41,8 @@ test("capabilities compose through public operations and explicit lifetime owner
 
     await context.test("accepting a trigger remains distinct from the borrowed target outcome", () => {
       check(`
-        const triggerScope = componentScopeFactory.create();
-        const targetScope = componentScopeFactory.create();
+        const triggerScope = Scope.create();
+        const targetScope = Scope.create();
         const activation = activatableFactory.create(triggerScope);
         const opening = openableFactory.create(targetScope, { control: "internal" });
         const outcomes = [];
@@ -64,7 +64,7 @@ test("capabilities compose through public operations and explicit lifetime owner
 
     await context.test("terminal lifetime blocks every capability even when another release fails", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const observed = [];
         scope.addCleanup(() => { throw undefined; });
         let opening;

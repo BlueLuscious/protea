@@ -8,7 +8,7 @@ The model keeps that opening state and lifetime distinct from application work a
 host's actual modality, focus and representation.
 
 The type-only contracts are Modal, ModalFactory and ModalOptionsType. Modal composes the
-[Component](../../component/index.md) and [Openable](../../capabilities/openable/index.md)
+[ComponentLifetime](../../component/index.md) and [Openable](../../capabilities/openable/index.md)
 contracts; this selects their semantic obligations without requiring implementation inheritance.
 Production TypeScript and its generated declarations own signatures. There is no executable
 Modal factory, implementation constructor or working Modal instance supplied by these types.
@@ -85,7 +85,7 @@ own disposal before or after observed commitment, including already delegated so
 
 ## Structural types and host evidence
 
-Modal is a structural contract, not a nominal family identifier. Its Component/Openable surface
+Modal is a structural contract, not a nominal family identifier. Its `ComponentLifetime` and `Openable` surface
 may be type-compatible with the reviewed [Sidebar](../sidebar/index.md) surface. Compatibility
 does not make two objects the same instance or establish the same application purpose, ownership
 or host guarantees. No hidden brand or runtime family discriminator is promised.

@@ -1,8 +1,8 @@
 import {
+  Scope,
   activatableFactory,
   activatableResultStatuses,
   capabilityRejectionReasons,
-  componentScopeFactory,
   openableFactory,
   openableResultStatuses,
 } from "@luscious-garden/protea-core";
@@ -14,7 +14,7 @@ import type {
   ActivatableResultType,
   CapabilityRejectionReasonType,
   CapabilityUnsubscribeType,
-  Component,
+  ComponentLifetime,
   Openable,
   OpenableChangeType,
   OpenableFactory,
@@ -25,8 +25,8 @@ import type {
 } from "@luscious-garden/protea-core";
 
 declare const authority: OpenStateAuthority;
-declare const owner: Component & Openable & Activatable;
-declare const minimumComponent: Component;
+declare const owner: ComponentLifetime & Openable & Activatable;
+declare const minimumComponent: ComponentLifetime;
 declare const asynchronousGuard: () => Promise<boolean>;
 declare const asynchronousAuthority: Omit<OpenStateAuthority, "requestOpen"> & {
   requestOpen(nextOpen: boolean): Promise<boolean>;
@@ -39,7 +39,7 @@ declare const undefinedExternalInitial: { readonly control: "external"; readonly
 
 declare function consumeOpening(value: Openable): void;
 declare function consumeActivation(value: Activatable): void;
-declare function consumeComponent(value: Component): void;
+declare function consumeComponent(value: ComponentLifetime): void;
 declare function consumeAuthority(value: OpenStateAuthority): void;
 declare function consumeOpeningResult(value: OpenableResultType): void;
 declare function consumeActivationResult(value: ActivatableResultType): void;
@@ -49,7 +49,7 @@ declare function consumeReason(value: CapabilityRejectionReasonType): void;
 declare function consumeChange(value: OpenableChangeType): void;
 declare function consumeVoid(value: void): void;
 
-const scope = componentScopeFactory.create();
+const scope = Scope.create();
 const openingFactory: OpenableFactory = openableFactory;
 const activationFactory: ActivatableFactory = activatableFactory;
 const internalOptions: OpenableOptionsType = { control: "internal", initialOpen: true };

@@ -1,5 +1,5 @@
 import type { Openable } from "../../../capabilities/openable/api/index.js";
-import type { Component } from "../../../component/api/index.js";
+import type { ComponentLifetime } from "../../../component/contracts/component-lifetime.contract.js";
 
 /**
  * @description A lateral-region model with owned lifetime and changeable logical opening.
@@ -7,4 +7,4 @@ import type { Component } from "../../../component/api/index.js";
  * request, observation and terminal-projection semantics; positioning and host visibility are
  * independent. See [Sidebar](https://github.com/BlueLuscious/protea/blob/master/docs/en/packages/core/components/sidebar/index.md).
  */
-export interface Sidebar extends Component, Openable {}
+export interface Sidebar extends ComponentLifetime, Openable {}

@@ -1,11 +1,11 @@
 import type { ComponentLifecycleType } from "../types/component-lifecycle.type.js";
 
 /**
- * @description The minimum lifetime contract shared by Protea component models.
+ * @description The terminal lifetime contract shared by component instances and scopes.
  * @remarks Identity is the object reference. See
  * [Component foundation](https://github.com/BlueLuscious/protea/blob/master/docs/en/packages/core/component/index.md#identity-and-lifetime).
  */
-export interface Component {
+export interface ComponentLifetime {
   /**
    * @description The model's logical lifetime, readable after finalisation.
    */
@@ -18,5 +18,5 @@ export interface Component {
    * Release failures are thrown opaquely after all attempts.
    * @returns No value.
    */
-  dispose(): void;
+  readonly dispose: () => void;
 }

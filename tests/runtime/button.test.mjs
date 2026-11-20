@@ -7,7 +7,7 @@ test("Button composes owned lifetime, observable availability and activation thr
     function check(source) {
       const result = runNode(["--input-type=module", "--eval", `
         import assert from "node:assert/strict";
-        import { buttonFactory, componentScopeFactory, openableFactory } from "@luscious-garden/protea-core";
+        import { Scope, buttonFactory, openableFactory } from "@luscious-garden/protea-core";
         function mustFail(operation) {
           let failed = false;
           try { operation(); } catch { failed = true; }
@@ -270,7 +270,7 @@ test("Button composes owned lifetime, observable availability and activation thr
     await context.test("application-owned connections preserve independent target and Button lifetimes", () => {
       check(`
         const trigger = buttonFactory.create();
-        const targetScope = componentScopeFactory.create();
+        const targetScope = Scope.create();
         const target = openableFactory.create(targetScope, { control: "internal" });
         const outcomes = [];
         const disconnect = trigger.subscribeActivation(() => { outcomes.push(target.open()); });
@@ -286,7 +286,7 @@ test("Button composes owned lifetime, observable availability and activation thr
         trigger.dispose();
 
         const otherTrigger = buttonFactory.create();
-        const borrowedScope = componentScopeFactory.create();
+        const borrowedScope = Scope.create();
         const borrowed = openableFactory.create(borrowedScope, { control: "internal" });
         let requests = 0;
         const release = otherTrigger.subscribeActivation(() => { requests += 1; borrowed.open(); });

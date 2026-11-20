@@ -8,11 +8,11 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
       const result = runNode(["--input-type=module", "--eval", `
         import assert from "node:assert/strict";
         import {
+          Scope,
           activatableFactory,
           activatableResultStatuses,
           capabilityRejectionReasons,
           componentLifecycleStates,
-          componentScopeFactory,
         } from "@luscious-garden/protea-core";
         ${source}
       `], consumer);
@@ -26,7 +26,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
         assert.equal(Object.isFrozen(activatableFactory), true);
         assert.equal(Object.isFrozen(activatableResultStatuses), true);
         assert.deepEqual(activatableResultStatuses, { activated: "activated", rejected: "rejected" });
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const activation = activatableFactory.create(scope);
         let calls = 0;
         activation.subscribeActivation(function (...arguments_) {
@@ -47,7 +47,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
 
     await context.test("creation captures one guard reference while each request rechecks its live eligibility", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         let allowed = false;
         let reads = 0;
         let guardCalls = 0;
@@ -74,7 +74,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
 
     await context.test("occupation rejects a guard's nested request without invoking the guard again", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         let activation;
         let nested;
         let guards = 0;
@@ -97,7 +97,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
 
     await context.test("guard disposal wins over denial and occupation before any activation is accepted", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         let activation;
         let nested;
         let notifications = 0;
@@ -117,7 +117,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
     await context.test("guard failures and invalid synchronous results throw without acceptance or retained occupation", () => {
       check(`
         for (const failure of [undefined, null, false, 0, ""]) {
-          const scope = componentScopeFactory.create();
+          const scope = Scope.create();
           let fail = true;
           let notifications = 0;
           const activation = activatableFactory.create(scope, { canActivate() {
@@ -135,7 +135,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
           scope.dispose();
         }
         for (const invalid of [undefined, null, 0, "true", {}, Promise.resolve(true)]) {
-          const scope = componentScopeFactory.create();
+          const scope = Scope.create();
           let notifications = 0;
           const activation = activatableFactory.create(scope, { canActivate: () => invalid });
           activation.subscribeActivation(() => { notifications += 1; });
@@ -150,7 +150,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
 
     await context.test("acceptance delivers synchronously before returning and stays occupied throughout notification", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const events = [];
         let guardCalls = 0;
         const activation = activatableFactory.create(scope, { canActivate() {
@@ -174,7 +174,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
 
     await context.test("duplicates, removals and additions obey independent registration and next-delivery rules", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const activation = activatableFactory.create(scope);
         const calls = [];
         let first = true;
@@ -207,7 +207,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
 
     await context.test("every eligible observer is attempted after falsey failures without selecting a public error shape", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const activation = activatableFactory.create(scope);
         const attempted = [];
         const releases = [];
@@ -228,7 +228,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
 
     await context.test("observer disposal preserves accepted activation while cancelling remaining callbacks", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const activation = activatableFactory.create(scope);
         const calls = [];
         const unsubscribe = activation.subscribeActivation(() => {
@@ -251,7 +251,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
 
     await context.test("invalid construction neither invokes guards nor disposes an otherwise active scope", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         for (const options of [null, false, 0, "options", [], () => true, { canActivate: null }, { canActivate: false }]) {
           let failed = false;
           try { activatableFactory.create(scope, options); } catch { failed = true; }
@@ -265,7 +265,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
         catch { failed = true; }
         assert.equal(failed, true);
         assert.equal(guardCalls, 0);
-        const endingScope = componentScopeFactory.create();
+        const endingScope = Scope.create();
         let published;
         failed = false;
         try { published = activatableFactory.create(endingScope, { get canActivate() { endingScope.dispose(); return () => true; } }); }
@@ -277,7 +277,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
 
     await context.test("failed cleanup registration invalidates only its attempt and preserves borrowed owners and existing capabilities", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const existing = activatableFactory.create(scope);
         let retained;
         let borrowedDisposals = 0;
@@ -302,8 +302,8 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
 
     await context.test("sharing a lifetime does not share guards, occupation or observation", () => {
       check(`
-        const scope = componentScopeFactory.create();
-        const independentScope = componentScopeFactory.create();
+        const scope = Scope.create();
+        const independentScope = Scope.create();
         const calls = [];
         const second = activatableFactory.create(scope);
         const independent = activatableFactory.create(independentScope);
@@ -327,7 +327,7 @@ test("activation capabilities honour acceptance, observation and borrowed lifeti
 
     await context.test("a returned observer promise is not awaited or interpreted as business completion", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const activation = activatableFactory.create(scope);
         let continued = false;
         const returned = Promise.resolve();

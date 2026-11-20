@@ -9,7 +9,7 @@ test("opening preserves authority, observation and lifetime through the packed p
     function check(source) {
       const result = runNode(["--input-type=module", "--eval", `
         import assert from "node:assert/strict";
-        import { componentScopeFactory, openableFactory, openableResultStatuses, capabilityRejectionReasons } from "@luscious-garden/protea-core";
+        import { Scope, openableFactory, openableResultStatuses, capabilityRejectionReasons } from "@luscious-garden/protea-core";
         import { createOpenStateAuthority } from ${JSON.stringify(authorityFixture)};
         ${source}
       `], consumer);
@@ -20,7 +20,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("internal control captures configuration and commits before notifying", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const options = { control: "internal", initialOpen: true };
         const model = openableFactory.create(scope, options);
         const closed = openableFactory.create(scope, { control: "internal" });
@@ -47,7 +47,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("notification mutation respects independent registrations and ordered snapshots", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const model = openableFactory.create(scope, { control: "internal" });
         const calls = [];
         let added = false;
@@ -78,7 +78,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("local busy and disposed checks precede satisfaction without cancelling commitment", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const model = openableFactory.create(scope, { control: "internal" });
         const results = [];
         let pending = 0;
@@ -103,7 +103,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("callback failures attempt remaining observers without rollback or a stuck busy flag", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const model = openableFactory.create(scope, { control: "internal" });
         const calls = [];
         const first = model.subscribeOpenChange(() => { calls.push("first"); throw undefined; });
@@ -122,7 +122,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("external control distinguishes no-ops, refusals and application-driven state", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const hooks = { allow: () => false };
         const source = createOpenStateAuthority(false, hooks);
         const options = { control: "external", authority: source.authority };
@@ -157,8 +157,8 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("source-driven delivery occupies only its own capability and shared source refusals stay denied", () => {
       check(`
-        const firstScope = componentScopeFactory.create();
-        const secondScope = componentScopeFactory.create();
+        const firstScope = Scope.create();
+        const secondScope = Scope.create();
         const source = createOpenStateAuthority();
         const first = openableFactory.create(firstScope, { control: "external", authority: source.authority });
         const second = openableFactory.create(secondScope, { control: "external", authority: source.authority });
@@ -179,7 +179,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("disposal before delegated commitment freezes projection without rolling back the source", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const source = createOpenStateAuthority(false, { beforeCommit: () => scope.dispose() });
         let unrelated = 0;
         source.authority.subscribeOpenChange(() => { unrelated += 1; });
@@ -198,7 +198,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("a public observation before source forwarding retains changed after disposal", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const hooks = {};
         const source = createOpenStateAuthority(false, hooks);
         const model = openableFactory.create(scope, { control: "external", authority: source.authority });
@@ -216,7 +216,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("external commitment remains effective when observation disposes its owner or throws", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const source = createOpenStateAuthority();
         const model = openableFactory.create(scope, { control: "external", authority: source.authority });
         const observed = [];
@@ -226,7 +226,7 @@ test("opening preserves authority, observation and lifetime through the packed p
         assert.deepEqual(observed, [{ previous: false, current: true }]);
         assert.equal(model.isOpen, true);
 
-        const otherScope = componentScopeFactory.create();
+        const otherScope = Scope.create();
         const otherSource = createOpenStateAuthority(false, { afterNotify: () => { throw undefined; } });
         const other = openableFactory.create(otherScope, { control: "external", authority: otherSource.authority });
         let failed = false;
@@ -239,7 +239,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("owner guards freeze state even when another release mutates the source before disconnection", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const source = createOpenStateAuthority();
         scope.addCleanup(() => { source.setOpen(true); });
         const model = openableFactory.create(scope, { control: "external", authority: source.authority });
@@ -254,7 +254,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("failed physical release leaves dead callbacks inert and preserves unrelated source observers", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const source = createOpenStateAuthority(false, { release: () => { throw 0; } });
         let unrelated = 0;
         source.authority.subscribeOpenChange(() => { unrelated += 1; });
@@ -277,7 +277,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("setup captures changes during subscription before exposing the capability", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const hooks = {};
         const source = createOpenStateAuthority(false, hooks);
         hooks.afterSubscribe = () => { source.setOpen(true); };
@@ -295,7 +295,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("partial setup releases only its own connection and leaves existing capabilities live", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const existing = openableFactory.create(scope, { control: "internal" });
         let reads = 0;
         const source = createOpenStateAuthority(false, { onRead: () => { reads += 1; if (reads === 2) { throw undefined; } } });
@@ -317,7 +317,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("a subscription acquired after setup disposal is still released once", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const source = createOpenStateAuthority(false, { afterSubscribe: () => scope.dispose() });
         let exposed;
         let failed = false;
@@ -335,7 +335,7 @@ test("opening preserves authority, observation and lifetime through the packed p
 
     await context.test("invalid configuration and subscription inputs create no usable partial capability", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         for (const options of [undefined, null, {}, { control: "unknown" },
           { control: "internal", initialOpen: undefined }, { control: "internal", initialOpen: 1 },
           { control: "internal", authority: undefined }, { control: "external", authority: {} },

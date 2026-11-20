@@ -6,9 +6,12 @@ component behaviour, accessibility and composition with optional presentation an
 ## Current status
 
 The private [core package](docs/en/packages/core/index.md), `@luscious-garden/protea-core`,
-implements portable component lifetime, cleanup ownership, logical opening and activation.
+implements portable component construction, lifetime, cleanup, logical opening and activation.
 It builds ESM JavaScript and declarations with one public package root.
 
+Use `Component.define` and `Component.create` for your own component types. Each instance has
+its own lifetime and keeps a reference to its definition. See the
+[Core API guide](docs/en/packages/core/api/index.md#usage).
 The [component guide](docs/en/packages/core/component/index.md) owns lifetime and finalisation.
 [Reusable capabilities](docs/en/packages/core/capabilities/index.md) share that lifetime while
 keeping state and listeners independent. Opening supports internal state or a borrowed synchronous

@@ -1,8 +1,10 @@
 import { activatableFactory } from "../../../capabilities/activatable/api/index.js";
 import type { Activatable, ActivatableResultType } from "../../../capabilities/activatable/api/index.js";
 import type { CapabilityUnsubscribeType } from "../../../capabilities/shared/api/index.js";
-import { componentLifecycleStates, componentScopeFactory } from "../../../component/api/index.js";
-import type { ComponentLifecycleType, ComponentScope } from "../../../component/api/index.js";
+import { Scope } from "../../../api/scope.api.js";
+import { componentLifecycleStates } from "../../../component/constants/component-lifecycle-states.constant.js";
+import type { ComponentScope } from "../../../component/contracts/component-scope.contract.js";
+import type { ComponentLifecycleType } from "../../../component/types/component-lifecycle.type.js";
 import { ObservationListeners } from "../../../shared/runtime/observation-listeners.js";
 import type { Button } from "../contracts/button.contract.js";
 import type { ButtonDisabledChangeType } from "../types/button-disabled-change.type.js";
@@ -43,7 +45,7 @@ export class ButtonComponent implements Button {
     }
 
     this.#isDisabled = initialDisabled ?? false;
-    this.#scope = componentScopeFactory.create();
+    this.#scope = Scope.create();
 
     try {
       this.#disabledListeners = new ObservationListeners(() => this.#isActive());

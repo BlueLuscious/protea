@@ -16,10 +16,11 @@ and releases; a Garden summary does not establish an implemented or published pr
 
 ## Current scope
 
-The private [core package](../packages/core/index.md) provides componentScopeFactory and its
-production component/scope contracts, with JavaScript/declaration emission and one root export.
-Its [component guide](../packages/core/component/index.md) owns actual creation, lifetime and
-cleanup registration. [Capabilities](../packages/core/capabilities/index.md) implement opening
+The private [core package](../packages/core/index.md) provides `Component.define`,
+`Component.create` and `Scope.create` through one root export with JavaScript and declarations.
+Its [API guide](../packages/core/api/index.md) owns usage and exports. Its
+[component guide](../packages/core/component/index.md) owns the contracts, lifetime
+and cleanup registration. [Capabilities](../packages/core/capabilities/index.md) implement opening
 and activation beneath the same package, with contextual factories and a borrowed shared lifetime.
 State, occupation and listeners remain independent; individual teardown/replacement is deferred.
 The first portable [families](../packages/core/components/index.md) are selected for the same core
@@ -29,14 +30,14 @@ Modal and Sidebar remain type-only. Their parallel
 guides own state, construction, ownership and static-versus-runtime limits.
 [Component direction](component-direction.md) owns independent Sidebar axes and wider composition
 questions.
-[Component construction](component-construction.md) specifies the accepted definition/instance
-protocol and package migration; those successor APIs are not implemented yet.
+The [Components migration](../future-capabilities.md#pending-components-migration) describes the
+upcoming package boundary for families and capabilities.
 [Integration boundaries](integration-boundaries.md) own future hosts, icons and motion.
 No renderer, concrete framework adapter, manager or optional provider is implemented.
 
 The [tooling guide](../tooling/index.md) owns contributor pins, actual scripts and checking limits;
-the [package baseline](../tooling/core-package.md) owns production resolution, output ownership
-and consumer qualification. Source/build presence is distinct from registry publication.
+[workspace tooling](../tooling/workspace/index.md) owns output production, and
+[Core quality](../packages/core/quality.md) describes packed consumer evidence.
 
 ## Shared rules adoption
 

@@ -6,23 +6,30 @@ This document records prospective work and the evidence needed to reconsider it.
 direction is distinct from implemented contracts, package availability and publication. The
 [package guides](packages/index.md) own the actual source; proposals here do not add runtime APIs.
 
-## Accepted direction awaiting implementation
+## Pending Components migration
 
-Separate the portable component foundation from the portable family catalogue. The intended
-`packages/core` boundary supplies instance lifetime and the agreed definition/construction model;
-the intended `packages/components` boundary supplies families and reusable capabilities, including
-opening and activation. A separate capability package remains conditional.
+The current Core package implements [definition-based construction](packages/core/api/index.md).
+The next boundary moves family contracts, the Button runtime, capability factories, result
+vocabularies and shared observation helpers to Components. Components will consume public Core
+contracts. Definition preparation, instance construction and resource-owning scopes stay with Core.
 
-The [construction design](project/component-construction.md) owns the agreed definition preparation,
-setup/context signature, Core-owned flat instance, lifetime protection and failure protocol. Every
-created component has a definition; explicit Core creation and family convenience creation use the
-same path. API organisation follows concept objects and `*Api` contracts. Applications may author
-their own types without importing the family catalogue.
+| Intended Components API and contract | Operation or status |
+| --- | --- |
+| `Opening: OpeningApi` | `create(scope, options)` returns `Openable`, borrowing the active scope. |
+| `Activation: ActivationApi` | `create(scope, options?)` returns `Activatable`, borrowing the active scope. |
+| `Button: ButtonApi` | Exposes readonly `definition` and `create(options?)` returning `ButtonInstance`. |
+| `ModalApi`, `SidebarApi` | Construction types for `ModalInstance` and `SidebarInstance`. The API values and definitions await their family runtimes. |
 
-The protocol is specified, but its runtime and package migration are not implemented. Current
-sources still place their foundation, capabilities and initial families in the
-[existing core package](packages/core/index.md). Descriptive metadata, family defaults and other
-extensions remain conditional on useful consumers rather than mandatory definition fields.
+The migration replaces the current capability and family factories with the listed APIs. Built-in
+Button will use the definition identity `{ namespace: "protea", name: "button" }`. Its
+`create(options)` will delegate to `Component.create(Button.definition, options)`. Both routes
+will return independent instances that share the definition reference.
+
+Each package will own its build output and declarations. The migration requires a real
+Components-to-Core dependency, dependency-ordered builds and fresh consumers of both archives.
+See [workspace tooling](tooling/workspace/index.md) for the current producer. A separate
+capability package remains conditional. Descriptive metadata, family defaults and other
+definition extensions need a demonstrated consumer.
 
 ## Conditional and deferred work
 

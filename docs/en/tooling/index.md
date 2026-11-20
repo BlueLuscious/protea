@@ -1,10 +1,16 @@
 # Repository Tooling
 
-Status: **Portable lifetime/capability and Button runtime with public-consumer checks**
+Status: **Portable construction, lifetime, capability and Button runtime with public-consumer checks**
 
-This guide owns contributor tools, actual commands and checking coverage. The
-[project guide](../project/index.md) owns product responsibility; the
-[core package tooling guide](core-package.md) owns production outputs and their filesystem boundary.
+`tooling/` contains private contributor infrastructure for building and verifying the Protea
+workspace. The [project guide](../project/index.md) owns product responsibility.
+
+## Features
+
+| Feature | Responsibility |
+| --- | --- |
+| [Shared](shared/index.md) | Provides bounded temporary directories for builds and isolated tests. |
+| [Workspace](workspace/index.md) | Builds Core and checks ownership of generated package output. |
 
 ## Current verification
 
@@ -15,10 +21,8 @@ Verification therefore has filesystem effects even though lint, no-emit type che
 format-check subcommands are read-only. The separate build command produces repository package
 outputs when requested.
 
-These checks cover declarations, bounded output production, package inclusion, public module/type
-resolution and actual lifetime/opening/activation and Button availability. Public runtime suites exercise the
-built package through its root; they do not depend on an experimental source workspace. Type
-consumers remain non-executed fixtures and prove their checked restrictions, not runtime semantics.
+The [workspace guide](workspace/index.md#tests) covers output ownership checks. [Core Quality](../packages/core/quality.md#checks)
+covers runtime and packed-consumer checks through the public package root.
 
 Links, fragments, terminology, semantic architecture, complete JSDoc, British English, source/text
 hygiene and prose truth retain manual review. [Repository automation](automation/index.md) invokes
@@ -58,7 +62,7 @@ pnpm run verify
 
 | Command | Current responsibility |
 | --- | --- |
-| `pnpm run build` | Produce core JavaScript/declarations through the bounded output owner. |
+| `pnpm run build` | Produce Core JavaScript and declarations through the [workspace tooling](workspace/index.md). |
 | `pnpm run typecheck` | Strict no-emit checking of production contracts and runtime. |
 | `pnpm run lint` | Check actual package, tooling, test and ESLint inputs with zero warnings. |
 | `pnpm run format` | Format root/package manifests, Prettier configuration and ESLint configuration. |
@@ -78,52 +82,14 @@ The shared [strict baseline](../../../tsconfig.base.json) has explicit ES2022 li
 unused-member checks and verbatim module syntax. Production configuration selects NodeNext
 module/resolution rules and relative `.js` specifiers. Build configuration explicitly enables
 JavaScript/declaration emission with `noEmitOnError`; checking remains a no-emit operation.
-The [package guide](core-package.md) owns the producer and included files.
+The [workspace guide](workspace/index.md) owns the producer and included files.
 
 No automatic host ambient environment is included. Explicit imports and reference directives
 still require review: library choices do not by themselves prohibit host dependencies.
 Node-specific contributor tooling stays outside portable production contracts.
 
-Public type fixtures are checked against fresh installed artefacts under NodeNext and Bundler
-resolution. They cover component ownership, capability construction/options, results, vocabularies,
-readonly views and unsupported operations. The family fixture additionally checks Button,
-Modal and Sidebar construction interfaces, the real Button factory and public composition.
-It does not execute its synthetic Modal/Sidebar inputs. `@ts-expect-error` establishes that a diagnostic
-occurred, not its intended cause; each retained negative case still needs review. Type
-assignability cannot prove a state authority's synchrony, cleanup or semantic conformance.
-
-## Runtime and distribution evidence
-
-[Runtime suites](../../../tests/runtime/) exercise actual public factory results rather than
-private implementation classes. The [component guide](../packages/core/component/index.md)
-owns lifetime and cleanup guarantees; [capability guides](../packages/core/capabilities/index.md)
-own request, authority, observation and setup rules.
-
-Lifetime cases cover independent creation, deferred/duplicate obligations, invalid/terminal
-registration, terminal-before-release observation, all attempts, opaque failure, repetition,
-reentrancy, borrowing, early idempotent release and application-owned setup failure.
-Opening/activation cases require both state modes, refusal/no-op distinctions, guard rechecks,
-nested requests, source-driven changes, subscription mutation, callback errors, disposal during
-requests/delivery, partial setup and independent or intentionally shared state.
-
-The runtime selection includes component-scope, opening, activation, Button and capability-composition
-suites. Button checks configuration capture/validation, observable availability, independent
-lifetimes, activation precedence, subscription mutation, cross-operation reentrancy, callback
-failures and terminal behaviour. Its public configuration-getter failure occurs before resource
-acquisition; post-acquisition cleanup is reviewed in source without exposing a test-only scope.
-Composition covers one lifetime with independent occupation/state, activation acceptance
-versus a borrowed target's result, and terminal checks when another required release fails. These
-are public workflow consumers, not concrete component-family implementations.
-
-Each independently runnable consumer suite owns fresh build/package prerequisites and precisely
-identified temporary roots. [Distribution checks](../../../tests/distribution/core-package.test.mjs)
-pack actual included files, install offline and consume only the public manifest boundary.
-Test-owned collaborators exercise borrowed contracts without introducing a public state store,
-fake component family, framework adapter or manager.
-
-Static, runtime, build and distribution evidence are separate. The suites establish no accessible
-host interaction, rendered state, animation completion, SSR or framework compatibility.
-Hosted results require exact-source readback.
+Public type fixtures use fresh installed artefacts under NodeNext and Bundler resolution.
+Package-specific type, runtime and distribution evidence belongs to [Core Quality](../packages/core/quality.md).
 
 ## Lint and formatting coverage
 
