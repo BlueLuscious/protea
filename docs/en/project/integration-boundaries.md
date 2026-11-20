@@ -41,7 +41,7 @@ connections.
 
 ## Requests and observations
 
-The [capability guides](../packages/core/capabilities/index.md) distinguish requests, effective
+The [capability guides](../packages/components/capabilities/index.md) distinguish requests, effective
 changes, accepted activation and rejection. An adapter must preserve those actual public results
 and failure semantics. Acceptance is not
 proof of application-work completion, rendering, DOM event cancellation or animation completion.

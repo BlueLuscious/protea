@@ -1,49 +1,58 @@
 import * as core from "@luscious-garden/protea-core";
-import { buttonFactory } from "@luscious-garden/protea-core";
+import { Component, type ComponentInstance, type ComponentLifetime } from "@luscious-garden/protea-core";
+import * as components from "@luscious-garden/protea-components";
+import { Button } from "@luscious-garden/protea-components";
 import type {
   Activatable,
   ActivatableResultType,
-  Button,
+  ButtonApi,
   ButtonDisabledChangeType,
-  ButtonFactory,
+  ButtonInstance,
   ButtonOptionsType,
   CapabilityRejectionReasonType,
   CapabilityUnsubscribeType,
-  ComponentInstance,
-  ComponentLifetime,
-  Modal,
-  ModalFactory,
+  ModalApi,
+  ModalInstance,
   ModalOptionsType,
   Openable,
   OpenableResultType,
   OpenStateAuthority,
-  Sidebar,
-  SidebarFactory,
+  SidebarApi,
+  SidebarInstance,
   SidebarOptionsType,
-} from "@luscious-garden/protea-core";
+} from "@luscious-garden/protea-components";
+
+// @ts-expect-error Internal family implementation modules are not public TypeScript entrypoints.
+import { ButtonComponent } from "@luscious-garden/protea-components/dist/components/button/runtime/button.component.js";
+void ButtonComponent;
 
 function consumeFamilies(
-  modalFactory: ModalFactory,
-  sidebarFactory: SidebarFactory,
+  modalApi: ModalApi,
+  sidebarApi: SidebarApi,
   authority: OpenStateAuthority,
 ): void {
-  const construction: ButtonFactory = buttonFactory;
+  const construction: ButtonApi = Button;
   void construction;
   const buttonOptions: ButtonOptionsType = { initialDisabled: undefined };
-  const button: Button = buttonFactory.create(buttonOptions);
-  buttonFactory.create();
-  buttonFactory.create(undefined);
-  buttonFactory.create({ initialDisabled: false });
+  const button: ButtonInstance = Button.create(buttonOptions);
+  const explicit: ButtonInstance = Component.create(Button.definition, buttonOptions);
+  const inferred = Component.create(Button.definition);
+  const inferredDisabled: boolean = inferred.isDisabled;
+  const definition: typeof Button.definition = explicit.definition;
+  void [inferredDisabled, definition];
+  Button.create();
+  Button.create(undefined);
+  Button.create({ initialDisabled: false });
 
   const modalInternal: ModalOptionsType = { control: "internal", initialOpen: true };
   const modalExternal: ModalOptionsType = { control: "external", authority };
-  const modal: Modal = modalFactory.create(modalInternal);
-  modalFactory.create(modalExternal);
+  const modal: ModalInstance = modalApi.create(modalInternal);
+  modalApi.create(modalExternal);
 
   const sidebarInternal: SidebarOptionsType = { control: "internal" };
   const sidebarExternal: SidebarOptionsType = { control: "external", authority };
-  const sidebar: Sidebar = sidebarFactory.create(sidebarInternal);
-  sidebarFactory.create(sidebarExternal);
+  const sidebar: SidebarInstance = sidebarApi.create(sidebarInternal);
+  sidebarApi.create(sidebarExternal);
 
   const component: ComponentLifetime = button;
   const modalComponent: ComponentLifetime = modal;
@@ -56,8 +65,8 @@ function consumeFamilies(
   void [component, modalComponent, sidebarComponent, activation, modalOpening, sidebarOpening, disabled, update];
 
   // Structural compatibility supplies no nominal family identity or ownership proof.
-  const modalFromSidebar: Modal = sidebar;
-  const sidebarFromModal: Sidebar = modal;
+  const modalFromSidebar: ModalInstance = sidebar;
+  const sidebarFromModal: SidebarInstance = modal;
   void [modalFromSidebar, sidebarFromModal];
 
   const disabling: ButtonDisabledChangeType = { previous: false, current: true };
@@ -102,17 +111,17 @@ function consumeFamilies(
   // @ts-expect-error Family options are read-only configuration.
   buttonOptions.initialDisabled = false;
   // @ts-expect-error Button configuration accepts no non-boolean initial value.
-  buttonFactory.create({ initialDisabled: "disabled" });
+  Button.create({ initialDisabled: "disabled" });
   // @ts-expect-error Null is not Button configuration.
-  buttonFactory.create(null);
+  Button.create(null);
   // @ts-expect-error An array is not Button configuration.
-  buttonFactory.create([]);
+  Button.create([]);
   // @ts-expect-error Button does not expose a second authorisation configuration.
-  buttonFactory.create({ canActivate: () => true });
-  // @ts-expect-error The factory operation is read-only.
-  buttonFactory.create = () => button;
-  // @ts-expect-error A contextual factory is not a callable function.
-  buttonFactory();
+  Button.create({ canActivate: () => true });
+  // @ts-expect-error The construction operation is read-only.
+  Button.create = () => button;
+  // @ts-expect-error The public API is not a callable function.
+  Button();
   // @ts-expect-error Button exposes no public resource-owner extension.
   button.addCleanup(() => {});
   // @ts-expect-error The family's private scope is not part of the public contract.
@@ -123,47 +132,54 @@ function consumeFamilies(
   button.click();
   // @ts-expect-error Opening is not part of the Button contract.
   button.open();
-  // @ts-expect-error The transitional Button has no definition-based instance contract.
   const definitionInstance: ComponentInstance = button;
-  void definitionInstance;
+  const modalInstance: ComponentInstance = modal;
+  const sidebarInstance: ComponentInstance = sidebar;
+  void [definitionInstance, modalInstance, sidebarInstance];
+  // @ts-expect-error The built-in definition is read-only on its API.
+  Button.definition = button.definition;
+  // @ts-expect-error The definition is read-only on the instance as well.
+  button.definition = Button.definition;
+  // @ts-expect-error Explicit construction checks the same options as the Button API.
+  Component.create(Button.definition, { initialDisabled: "disabled" });
 
   // @ts-expect-error Modal construction requires an explicit state-authority mode.
-  modalFactory.create();
+  modalApi.create();
   // @ts-expect-error A control mode is required in Modal options.
-  modalFactory.create({});
+  modalApi.create({});
   // @ts-expect-error Internal Modal state excludes an external authority.
-  modalFactory.create({ control: "internal", authority });
+  modalApi.create({ control: "internal", authority });
   // @ts-expect-error External Modal state excludes a second initial value.
-  modalFactory.create({ control: "external", authority, initialOpen: false });
+  modalApi.create({ control: "external", authority, initialOpen: false });
   // @ts-expect-error Modal construction does not consume Button options.
-  modalFactory.create(buttonOptions);
+  modalApi.create(buttonOptions);
   // @ts-expect-error Modal does not acquire activation merely by being a component.
   modal.activate();
   // @ts-expect-error Modal projects its selected opening authority through a read-only view.
   modal.isOpen = true;
   // @ts-expect-error Modal owns cleanup privately rather than exposing a resource-owner extension.
   modal.addCleanup(() => {});
-  // @ts-expect-error The Modal factory operation cannot be replaced.
-  modalFactory.create = () => modal;
+  // @ts-expect-error The Modal construction operation cannot be replaced.
+  modalApi.create = () => modal;
 
   // @ts-expect-error Sidebar construction requires explicit options.
-  sidebarFactory.create();
+  sidebarApi.create();
   // @ts-expect-error External Sidebar control requires its sole authority.
-  sidebarFactory.create({ control: "external" });
+  sidebarApi.create({ control: "external" });
   // @ts-expect-error Explicit undefined does not introduce an initial value for external control.
-  sidebarFactory.create({ control: "external", authority, initialOpen: undefined });
+  sidebarApi.create({ control: "external", authority, initialOpen: undefined });
   // @ts-expect-error Internal initialOpen accepts omission rather than explicit undefined.
-  sidebarFactory.create({ control: "internal", initialOpen: undefined });
+  sidebarApi.create({ control: "internal", initialOpen: undefined });
   // @ts-expect-error The reviewed Sidebar contract has no presentation-based control mode.
-  sidebarFactory.create({ control: "floating" });
+  sidebarApi.create({ control: "floating" });
   // @ts-expect-error Sidebar has no inherited activation operation.
   sidebar.activate();
   // @ts-expect-error Sidebar projects its selected opening authority through a read-only view.
   sidebar.isOpen = true;
   // @ts-expect-error Sidebar owns cleanup privately rather than exposing a resource-owner extension.
   sidebar.addCleanup(() => {});
-  // @ts-expect-error The Sidebar factory operation cannot be replaced.
-  sidebarFactory.create = () => sidebar;
+  // @ts-expect-error The Sidebar construction operation cannot be replaced.
+  sidebarApi.create = () => sidebar;
 
   // @ts-expect-error Activation acceptance is not an opening result.
   const openingFromActivation: OpenableResultType = accepted;
@@ -171,16 +187,14 @@ function consumeFamilies(
   const activationFromOpening: ActivatableResultType = openingOutcome;
   void [openingFromActivation, activationFromOpening];
 
-  // @ts-expect-error A construction interface does not export a Modal factory value.
-  core.modalFactory;
-  // @ts-expect-error A construction interface does not export a Sidebar factory value.
-  core.sidebarFactory;
-  // @ts-expect-error The Button interface is not a public runtime constructor.
+  // @ts-expect-error Core no longer exports a family API.
   core.Button;
-  // @ts-expect-error The Modal interface is not a public runtime constructor.
-  core.Modal;
-  // @ts-expect-error The Sidebar interface is not a public runtime constructor.
-  core.Sidebar;
+  // @ts-expect-error The Button API is not an implementation constructor.
+  new Button();
+  // @ts-expect-error A type-only Modal API has no runtime value.
+  components.Modal;
+  // @ts-expect-error A type-only Sidebar API has no runtime value.
+  components.Sidebar;
 }
 
 void consumeFamilies;

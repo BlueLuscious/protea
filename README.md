@@ -5,33 +5,24 @@ component behaviour, accessibility and composition with optional presentation an
 
 ## Current status
 
-The private [core package](docs/en/packages/core/index.md), `@luscious-garden/protea-core`,
-implements portable component construction, lifetime, cleanup, logical opening and activation.
-It builds ESM JavaScript and declarations with one public package root.
-
-Use `Component.define` and `Component.create` for your own component types. Each instance has
-its own lifetime and keeps a reference to its definition. See the
+The private [Core package](docs/en/packages/core/index.md), `@luscious-garden/protea-core`,
+provides definition-based construction, independent lifetimes and cleanup. Use `Component.define`
+and `Component.create` to build your own component types. See the
 [Core API guide](docs/en/packages/core/api/index.md#usage).
-The [component guide](docs/en/packages/core/component/index.md) owns lifetime and finalisation.
-[Reusable capabilities](docs/en/packages/core/capabilities/index.md) share that lifetime while
-keeping state and listeners independent. Opening supports internal state or a borrowed synchronous
-authority; activation represents an accepted action. Named immutable vocabularies own lifecycle,
-request statuses and rejection reasons.
 
-The first portable [families](docs/en/packages/core/components/index.md) live inside core.
-[Button](docs/en/packages/core/components/button/index.md) is implemented through buttonFactory,
-combining owned lifetime, observable availability and activation. [Modal](docs/en/packages/core/components/modal/index.md)
-and [Sidebar](docs/en/packages/core/components/sidebar/index.md) combine owned lifetime and logical
-opening; the current Sidebar case has changeable presence, with positioning independent.
-Modal and Sidebar currently expose reviewed type contracts; their runtime remains future work.
-Optional hosts, Icon/Aster and motion remain
-[future integrations](docs/en/project/integration-boundaries.md), without mandatory
-runtime dependencies or support claims.
+The private [Components package](docs/en/packages/components/index.md),
+`@luscious-garden/protea-components`, uses Core to provide built-in component families and
+[reusable capabilities](docs/en/packages/components/capabilities/index.md). `Button.create()`
+supplies independent instances with observable availability and activation.
+[Modal](docs/en/packages/components/components/modal/index.md) and
+[Sidebar](docs/en/packages/components/components/sidebar/index.md) expose reviewed type contracts
+with logical opening. Their runtimes and [host integrations](docs/en/project/integration-boundaries.md)
+remain future work.
 
 Repository verification covers focused lint, strict production types, manifest/configuration
 formatting, bounded builds, public runtime regressions and fresh package consumers. Component
 and capability evidence establishes no accessible host interaction or framework compatibility.
-The initial package remains private and unpublished.
+Both packages build ES2022 ESM with declarations and remain private and unpublished.
 
 ## Development
 

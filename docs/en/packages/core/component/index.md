@@ -138,10 +138,8 @@ unregistered release obligation. Once registered, finalisation attempts it even 
 throws. A release failure propagates opaquely; no particular aggregation of simultaneous
 application and cleanup failures is promised by this example.
 
-The [capability construction protocol](../capabilities/index.md#failed-setup) applies those
-ownership rules to actual opening/activation setup: failure cleans only its own acquisitions
-and preserves the borrowed scope. Effects already performed by collaborators are not rolled
-back.
+The [Components capability construction protocol](../../components/capabilities/index.md#failed-setup)
+describes how opening and activation borrow a scope and release their own acquisitions.
 
 The contracts remain independent of implementation classes. A conforming structural owner is
 permitted, but its shape alone proves neither atomic registration, synchronous finalisation nor

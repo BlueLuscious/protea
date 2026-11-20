@@ -61,13 +61,9 @@ The public `"."` entry of `@luscious-garden/protea-core` exposes these runtime v
 
 - `Component`
 - `Scope`
-- `activatableFactory`
-- `activatableResultStatuses`
-- `buttonFactory`
-- `capabilityRejectionReasons`
 - `componentLifecycleStates`
-- `openableFactory`
-- `openableResultStatuses`
 
 The same entry exposes public feature contracts and types, as documented by the
 [feature map](../index.md#documentation). Package feature and runtime imports are private.
+The [Components API guide](../../components/api/index.md) covers the built-in Button and
+capability entry points.

@@ -1,13 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { runNode, withCoreConsumer } from "../shared/core-candidate.mjs";
+import { runNode, withComponentsConsumer } from "../shared/core-candidate.mjs";
 
 test("Button composes owned lifetime, observable availability and activation through the packed public API", async (context) => {
-  await withCoreConsumer("protea-button-runtime-test", async ({ consumer }) => {
+  await withComponentsConsumer("protea-button-runtime-test", async ({ consumer }) => {
     function check(source) {
       const result = runNode(["--input-type=module", "--eval", `
         import assert from "node:assert/strict";
-        import { Scope, buttonFactory, openableFactory } from "@luscious-garden/protea-core";
+        import { Scope } from "@luscious-garden/protea-core";
+        import { Button, Opening } from "@luscious-garden/protea-components";
         function mustFail(operation) {
           let failed = false;
           try { operation(); } catch { failed = true; }
@@ -22,9 +23,9 @@ test("Button composes owned lifetime, observable availability and activation thr
 
     await context.test("creation captures configuration and keeps independent private lifetimes", () => {
       check(`
-        assert.equal(Object.isFrozen(buttonFactory), true);
-        const defaults = [buttonFactory.create(), buttonFactory.create(undefined),
-          buttonFactory.create({}), buttonFactory.create({ initialDisabled: undefined })];
+        assert.equal(Object.isFrozen(Button), true);
+        const defaults = [Button.create(), Button.create(undefined),
+          Button.create({}), Button.create({ initialDisabled: undefined })];
         for (const button of defaults) {
           assert.equal(button.lifecycle, "active");
           assert.equal(button.isDisabled, false);
@@ -34,13 +35,13 @@ test("Button composes owned lifetime, observable availability and activation thr
         }
         assert.equal(new Set(defaults).size, defaults.length);
         const options = { initialDisabled: true };
-        const disabled = buttonFactory.create(options);
+        const disabled = Button.create(options);
         options.initialDisabled = false;
         assert.equal(disabled.isDisabled, true);
         assert.equal(Object.isFrozen(options), false);
         let reads = 0;
         let initial = true;
-        const captured = buttonFactory.create({ get initialDisabled() {
+        const captured = Button.create({ get initialDisabled() {
           reads += 1;
           return initial;
         } });
@@ -57,14 +58,14 @@ test("Button composes owned lifetime, observable availability and activation thr
         let notifications = 0;
         defaults[1].subscribeActivation(() => { notifications += 1; });
         for (const invalid of [null, [], false, 0, "options", () => {}]) {
-          mustFail(() => buttonFactory.create(invalid));
+          mustFail(() => Button.create(invalid));
         }
         for (const invalid of [null, 0, "false", {}, [], () => {}]) {
-          mustFail(() => buttonFactory.create({ initialDisabled: invalid }));
+          mustFail(() => Button.create({ initialDisabled: invalid }));
         }
         for (const failure of [undefined, null, false, 0, ""]) {
           let reads = 0;
-          mustFail(() => buttonFactory.create({ get initialDisabled() {
+          mustFail(() => Button.create({ get initialDisabled() {
             reads += 1;
             throw failure;
           } }));
@@ -80,7 +81,7 @@ test("Button composes owned lifetime, observable availability and activation thr
 
     await context.test("activation checks occupation before disabled authorisation and preserves observer failures", () => {
       check(`
-        const button = buttonFactory.create();
+        const button = Button.create();
         const delivered = [];
         let nested;
         const release = button.subscribeActivation(() => {
@@ -107,7 +108,7 @@ test("Button composes owned lifetime, observable availability and activation thr
 
     await context.test("availability commits frozen opposite-direction snapshots and ignores idle repeats", () => {
       check(`
-        const button = buttonFactory.create();
+        const button = Button.create();
         const changes = [];
         button.subscribeDisabledChange((change) => {
           assert.equal(button.isDisabled, change.current);
@@ -139,7 +140,7 @@ test("Button composes owned lifetime, observable availability and activation thr
 
     await context.test("availability registrations retain independent duplicates and ordered mutation", () => {
       check(`
-        const button = buttonFactory.create();
+        const button = Button.create();
         const delivered = [];
         let mutate = true;
         let releaseSkipped;
@@ -170,7 +171,7 @@ test("Button composes owned lifetime, observable availability and activation thr
 
     await context.test("availability delivery rejects every nested write while allowing idle activation", () => {
       check(`
-        const button = buttonFactory.create({ initialDisabled: true });
+        const button = Button.create({ initialDisabled: true });
         const delivered = [];
         button.subscribeActivation(() => {
           delivered.push("activation");
@@ -199,7 +200,7 @@ test("Button composes owned lifetime, observable availability and activation thr
     await context.test("falsey availability failures do not undo commitment or cancel eligible observers", () => {
       check(`
         for (const failure of [undefined, null, false, 0, ""]) {
-          const button = buttonFactory.create();
+          const button = Button.create();
           const delivered = [];
           const release = button.subscribeDisabledChange(() => {
             delivered.push("failure");
@@ -223,7 +224,7 @@ test("Button composes owned lifetime, observable availability and activation thr
 
     await context.test("finalisation cancels pending delivery and retains terminal state without synthetic changes", () => {
       check(`
-        const button = buttonFactory.create();
+        const button = Button.create();
         const delivered = [];
         let terminalObservation;
         const releaseFailure = button.subscribeDisabledChange(() => {
@@ -250,7 +251,7 @@ test("Button composes owned lifetime, observable availability and activation thr
         button.dispose();
         assert.deepEqual(delivered, ["failure", "dispose"]);
 
-        const accepting = buttonFactory.create();
+        const accepting = Button.create();
         let changes = 0;
         let skipped = 0;
         accepting.subscribeDisabledChange(() => { changes += 1; });
@@ -269,9 +270,9 @@ test("Button composes owned lifetime, observable availability and activation thr
 
     await context.test("application-owned connections preserve independent target and Button lifetimes", () => {
       check(`
-        const trigger = buttonFactory.create();
+        const trigger = Button.create();
         const targetScope = Scope.create();
-        const target = openableFactory.create(targetScope, { control: "internal" });
+        const target = Opening.create(targetScope, { control: "internal" });
         const outcomes = [];
         const disconnect = trigger.subscribeActivation(() => { outcomes.push(target.open()); });
         assert.deepEqual(trigger.activate(), { status: "activated" });
@@ -285,9 +286,9 @@ test("Button composes owned lifetime, observable availability and activation thr
         assert.equal(outcomes.length, 2);
         trigger.dispose();
 
-        const otherTrigger = buttonFactory.create();
+        const otherTrigger = Button.create();
         const borrowedScope = Scope.create();
-        const borrowed = openableFactory.create(borrowedScope, { control: "internal" });
+        const borrowed = Opening.create(borrowedScope, { control: "internal" });
         let requests = 0;
         const release = otherTrigger.subscribeActivation(() => { requests += 1; borrowed.open(); });
         otherTrigger.dispose();

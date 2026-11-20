@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
-import { createRequire } from "node:module";
-import { access, readFile, readdir, writeFile } from "node:fs/promises";
+import { access, readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import test from "node:test";
 import { runNode, withCoreConsumer } from "../shared/core-candidate.mjs";
+import { checkConsumerTypes } from "../shared/consumer-types.mjs";
 
 const source = `import { Scope, componentLifecycleStates } from "@luscious-garden/protea-core";
 import type { ComponentLifetime, ComponentLifecycleType, ComponentScope, ScopeApi } from "@luscious-garden/protea-core";
@@ -96,25 +96,25 @@ componentLifecycleStates.active = "active";
 componentLifecycleStates.mounted;
 `;
 
-test("packed core exposes production contracts and available runtime values", async () => {
+test("packed Core stands alone and exposes only its foundational surface", async () => {
   await withCoreConsumer("protea-core-consumer-test", async ({ consumer, installed }) => {
     const entries = (await readdir(installed)).sort();
     assert.deepEqual(entries, ["LICENSE", "README.md", "dist", "package.json"]);
     await assert.rejects(access(join(installed, "src")), { code: "ENOENT" });
+    await assert.rejects(access(join(installed, "..", "protea-components")), { code: "ENOENT" });
     const manifest = JSON.parse(await readFile(join(installed, "package.json"), "utf8"));
     assert.deepEqual(Object.keys(manifest.exports), ["."]);
     assert.equal(manifest.type, "module");
     assert.equal(manifest.private, true);
     assert.equal(manifest.dependencies, undefined);
+    assert.equal(manifest.peerDependencies, undefined);
+    assert.equal(manifest.optionalDependencies, undefined);
+    assert.deepEqual((await readdir(join(installed, "dist"))).sort(), ["api", "component", "index.d.ts", "index.js"]);
 
     const runtime = runNode(["--input-type=module", "--eval", `
       import assert from "node:assert/strict";
       const core = await import("@luscious-garden/protea-core");
-      assert.deepEqual(Object.keys(core).sort(), [
-        "Component", "Scope",
-        "activatableFactory", "activatableResultStatuses", "buttonFactory", "capabilityRejectionReasons",
-        "componentLifecycleStates", "openableFactory", "openableResultStatuses",
-      ]);
+      assert.deepEqual(Object.keys(core).sort(), ["Component", "Scope", "componentLifecycleStates"]);
       assert.deepEqual(core.componentLifecycleStates, { active: "active", disposed: "disposed" });
       assert.equal(Object.isFrozen(core.componentLifecycleStates), true);
       assert.equal(typeof core.Component.define, "function");
@@ -122,21 +122,6 @@ test("packed core exposes production contracts and available runtime values", as
       assert.equal(Object.isFrozen(core.Component), true);
       assert.equal(typeof core.Scope.create, "function");
       assert.equal(Object.isFrozen(core.Scope), true);
-      assert.equal(typeof core.buttonFactory.create, "function");
-      assert.equal(Object.isFrozen(core.buttonFactory), true);
-      const button = core.buttonFactory.create({ initialDisabled: true });
-      assert.equal(button.lifecycle, core.componentLifecycleStates.active);
-      assert.deepEqual(button.activate(), { status: "rejected", reason: "denied" });
-      button.setDisabled(false);
-      assert.deepEqual(button.activate(), { status: "activated" });
-      button.dispose();
-      assert.deepEqual(button.activate(), { status: "rejected", reason: "disposed" });
-      assert.deepEqual(core.openableResultStatuses, { changed: "changed", unchanged: "unchanged", rejected: "rejected" });
-      assert.deepEqual(core.activatableResultStatuses, { activated: "activated", rejected: "rejected" });
-      assert.deepEqual(core.capabilityRejectionReasons, { disposed: "disposed", busy: "busy", denied: "denied" });
-      for (const value of [core.openableFactory, core.activatableFactory, core.openableResultStatuses, core.activatableResultStatuses, core.capabilityRejectionReasons]) {
-        assert.equal(Object.isFrozen(value), true);
-      }
       const privatePaths = [
         "api", "component", "capabilities", "capabilities/openable", "components", "components/button",
         "components/modal", "components/sidebar", "shared", "package.json", "dist/index.js",
@@ -153,27 +138,9 @@ test("packed core exposes production contracts and available runtime values", as
     assert.equal(runtime.stdout, "");
     assert.equal(runtime.stderr, "");
 
-    await writeFile(join(consumer, "consumer.ts"), source);
-    const fixtures = ["component-consumer", "capability-consumer", "family-consumer"];
-    for (const name of fixtures) {
-      const fixture = await readFile(new URL(`./${name}.test.ts`, import.meta.url), "utf8");
-      await writeFile(join(consumer, `${name}.ts`), fixture);
-    }
-    const compiler = createRequire(import.meta.url).resolve("typescript/bin/tsc");
-
-    for (const resolution of ["NodeNext", "Bundler"]) {
-      const options = {
-        target: "ES2022", lib: ["ES2022"], types: [], strict: true, skipLibCheck: false,
-        exactOptionalPropertyTypes: true, noUncheckedIndexedAccess: true,
-        noUnusedLocals: true, noUnusedParameters: true, verbatimModuleSyntax: true,
-        noEmit: true, module: resolution === "NodeNext" ? "NodeNext" : "ESNext", moduleResolution: resolution,
-      };
-      await writeFile(join(consumer, "tsconfig.json"), JSON.stringify({
-        compilerOptions: options,
-        files: ["consumer.ts", ...fixtures.map((name) => `${name}.ts`)],
-      }));
-      const checked = runNode([compiler, "--project", join(consumer, "tsconfig.json"), "--pretty", "false"], consumer);
-      assert.equal(checked.status, 0, `${resolution}\n${checked.stdout}\n${checked.stderr}`);
-    }
+    await checkConsumerTypes(consumer, {
+      "consumer.ts": source,
+      "component-consumer.ts": await readFile(new URL("./component-consumer.test.ts", import.meta.url), "utf8"),
+    });
   });
 });

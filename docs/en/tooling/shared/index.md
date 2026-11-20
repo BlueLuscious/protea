@@ -9,7 +9,7 @@ its tests. The consumers choose what to create in each temporary directory.
 
 | Function | Responsibility | Consumers |
 | --- | --- | --- |
-| `withTemporaryDirectory(prefix, operation)` | Creates one fresh directory under the resolved system temporary parent, runs the operation and releases the owned directory in `finally`. | [Workspace build](../../../../tooling/workspace/runtime/core-build.mjs), [build tests](../../../../tests/tooling/core-build.test.mjs) and [fresh package consumers](../../../../tests/shared/core-candidate.mjs). |
+| `withTemporaryDirectory(prefix, operation)` | Creates one fresh directory under the resolved system temporary parent, runs the operation and releases the owned directory in `finally`. | [Workspace build](../../../../tooling/workspace/runtime/package-build.mjs), [build tests](../../../../tests/tooling/core-build.test.mjs) and [fresh package consumers](../../../../tests/shared/core-candidate.mjs). |
 
 The [helper](../../../../tooling/shared/runtime/temporary-directory.mjs) accepts a semantic
 lowercase prefix. The callback owns the directory and all entries it creates. Cleanup checks

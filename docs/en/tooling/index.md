@@ -1,6 +1,6 @@
 # Repository Tooling
 
-Status: **Portable construction, lifetime, capability and Button runtime with public-consumer checks**
+Status: **Core and Components build and verification commands**
 
 `tooling/` contains private contributor infrastructure for building and verifying the Protea
 workspace. The [project guide](../project/index.md) owns product responsibility.
@@ -10,19 +10,20 @@ workspace. The [project guide](../project/index.md) owns product responsibility.
 | Feature | Responsibility |
 | --- | --- |
 | [Shared](shared/index.md) | Provides bounded temporary directories for builds and isolated tests. |
-| [Workspace](workspace/index.md) | Builds Core and checks ownership of generated package output. |
+| [Workspace](workspace/index.md) | Builds Core before Components and checks package output ownership. |
 
 ## Current verification
 
 `pnpm run verify` runs six steps: focused lint, strict production type checking,
 manifest/configuration formatting, tooling tests, runtime tests and fresh package consumers.
-The tests build isolated candidates and use exactly owned system-temporary directories.
-Verification therefore has filesystem effects even though lint, no-emit type checking and
-format-check subcommands are read-only. The separate build command produces repository package
-outputs when requested.
+The tests build isolated candidates in owned system-temporary directories. Root `typecheck`
+prepares Core's package output so Components can resolve its declarations, then checks both
+packages without emission. Lint and format checks read source and manifests. The separate build
+command also produces Components output.
 
-The [workspace guide](workspace/index.md#tests) covers output ownership checks. [Core Quality](../packages/core/quality.md#checks)
-covers runtime and packed-consumer checks through the public package root.
+The [workspace guide](workspace/index.md#tests) covers output ownership checks.
+[Core quality](../packages/core/quality.md#checks) covers the Core-only consumer, and
+[Components quality](../packages/components/quality.md#checks) covers consumers of both archives.
 
 Links, fragments, terminology, semantic architecture, complete JSDoc, British English, source/text
 hygiene and prose truth retain manual review. [Repository automation](automation/index.md) invokes
@@ -44,7 +45,7 @@ success, live notification receipt nor registry publication.
 The private root [manifest](../../../package.json) owns contributor scripts and development
 dependencies. [pnpm-lock.yaml](../../../pnpm-lock.yaml) owns generated resolution.
 [pnpm-workspace.yaml](../../../pnpm-workspace.yaml) and root `workspaces` both select
-`packages/*`; their one actual member is the private core package.
+`packages/*`. The two private package members are Core and Components.
 
 There is no production Node/DOM/framework dependency. Node's built-in runner executes current
 `.mjs` tooling, runtime and distribution tests; they need neither `tsx` nor Node ambient types.
@@ -62,18 +63,18 @@ pnpm run verify
 
 | Command | Current responsibility |
 | --- | --- |
-| `pnpm run build` | Produce Core JavaScript and declarations through the [workspace tooling](workspace/index.md). |
-| `pnpm run typecheck` | Strict no-emit checking of production contracts and runtime. |
+| `pnpm run build` | Produce JavaScript and declarations for Core, then Components through [workspace tooling](workspace/index.md). |
+| `pnpm run typecheck` | Build Core, then run strict no-emit checking for both production projects. |
 | `pnpm run lint` | Check actual package, tooling, test and ESLint inputs with zero warnings. |
 | `pnpm run format` | Format root/package manifests, Prettier configuration and ESLint configuration. |
 | `pnpm run format:check` | Check that same explicit scope without writing. |
 | `pnpm run test:tooling` | Exercise build ownership and failure boundaries using isolated candidates. |
 | `pnpm run test:runtime` | Run `node --test tests/runtime/*.test.mjs` against freshly built public packages. |
-| `pnpm run test:consumer` | Check fresh archives, inclusion, exports and clean runtime/type consumers. |
+| `pnpm run test:consumer` | Run the Core-only and Components-plus-Core packed consumer suites. |
 | `pnpm run verify` | Run lint, type checking, format checking, tooling tests, runtime tests and package consumers. |
 
-The package build script invokes the same repository producer. No empty recursive gate, release
-command or publication gate is advertised.
+The Core package build script can build the foundation by itself. The Components package build
+script invokes the same dependency-ordered build as the repository command.
 
 ## Production type checking
 
@@ -81,7 +82,8 @@ The shared [strict baseline](../../../tsconfig.base.json) has explicit ES2022 li
 `types: []`, `skipLibCheck: false`, exact optional properties, checked indexed access,
 unused-member checks and verbatim module syntax. Production configuration selects NodeNext
 module/resolution rules and relative `.js` specifiers. Build configuration explicitly enables
-JavaScript/declaration emission with `noEmitOnError`; checking remains a no-emit operation.
+JavaScript and declaration emission with `noEmitOnError`. The two compiler checks run without
+emission after the Core build prerequisite.
 The [workspace guide](workspace/index.md) owns the producer and included files.
 
 No automatic host ambient environment is included. Explicit imports and reference directives
@@ -89,7 +91,8 @@ still require review: library choices do not by themselves prohibit host depende
 Node-specific contributor tooling stays outside portable production contracts.
 
 Public type fixtures use fresh installed artefacts under NodeNext and Bundler resolution.
-Package-specific type, runtime and distribution evidence belongs to [Core Quality](../packages/core/quality.md).
+Package-specific type, runtime and distribution evidence belongs to
+[Core quality](../packages/core/quality.md) and [Components quality](../packages/components/quality.md).
 
 ## Lint and formatting coverage
 

@@ -6,30 +6,10 @@ This document records prospective work and the evidence needed to reconsider it.
 direction is distinct from implemented contracts, package availability and publication. The
 [package guides](packages/index.md) own the actual source; proposals here do not add runtime APIs.
 
-## Pending Components migration
-
-The current Core package implements [definition-based construction](packages/core/api/index.md).
-The next boundary moves family contracts, the Button runtime, capability factories, result
-vocabularies and shared observation helpers to Components. Components will consume public Core
-contracts. Definition preparation, instance construction and resource-owning scopes stay with Core.
-
-| Intended Components API and contract | Operation or status |
-| --- | --- |
-| `Opening: OpeningApi` | `create(scope, options)` returns `Openable`, borrowing the active scope. |
-| `Activation: ActivationApi` | `create(scope, options?)` returns `Activatable`, borrowing the active scope. |
-| `Button: ButtonApi` | Exposes readonly `definition` and `create(options?)` returning `ButtonInstance`. |
-| `ModalApi`, `SidebarApi` | Construction types for `ModalInstance` and `SidebarInstance`. The API values and definitions await their family runtimes. |
-
-The migration replaces the current capability and family factories with the listed APIs. Built-in
-Button will use the definition identity `{ namespace: "protea", name: "button" }`. Its
-`create(options)` will delegate to `Component.create(Button.definition, options)`. Both routes
-will return independent instances that share the definition reference.
-
-Each package will own its build output and declarations. The migration requires a real
-Components-to-Core dependency, dependency-ordered builds and fresh consumers of both archives.
-See [workspace tooling](tooling/workspace/index.md) for the current producer. A separate
-capability package remains conditional. Descriptive metadata, family defaults and other
-definition extensions need a demonstrated consumer.
+The [Core](packages/core/index.md) and [Components](packages/components/index.md) guides own
+the implemented package boundary. The [Modal](packages/components/components/modal/index.md)
+and [Sidebar](packages/components/components/sidebar/index.md) guides own their remaining runtime
+work. Descriptive definition metadata and family defaults need a demonstrated consumer.
 
 ## Conditional and deferred work
 
@@ -63,7 +43,7 @@ Review ownership, initial reads, effective changes, update ordering, feedback lo
 cleanup before choosing a public binding contract. Borrowing a shared source must not transfer
 authority to dispose it. This proposal creates no theme store, generic state engine or automatic
 binding in Core. Existing opening authority remains governed by the
-[opening contract](packages/core/capabilities/openable/index.md).
+[opening contract](packages/components/capabilities/openable/index.md).
 
 ## Responsive representation and family conversion
 
@@ -79,7 +59,7 @@ No current conversion operation or compatibility matrix is promised.
 
 ## Independent capability distribution
 
-Keep capabilities separate from family implementations within the intended Components package,
+The Components package keeps capabilities separate from family implementations,
 depending on the public Core foundation. Requiring a Components import is not by itself evidence
 that another distribution is needed.
 

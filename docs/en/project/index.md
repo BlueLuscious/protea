@@ -1,6 +1,6 @@
 # Protea Project
 
-Status: **Private foundation/capability and Button runtime; Modal/Sidebar type contracts**
+Status: **Private Core and Components packages with a portable Button runtime**
 
 ## Purpose and authority
 
@@ -19,25 +19,20 @@ and releases; a Garden summary does not establish an implemented or published pr
 The private [core package](../packages/core/index.md) provides `Component.define`,
 `Component.create` and `Scope.create` through one root export with JavaScript and declarations.
 Its [API guide](../packages/core/api/index.md) owns usage and exports. Its
-[component guide](../packages/core/component/index.md) owns the contracts, lifetime
-and cleanup registration. [Capabilities](../packages/core/capabilities/index.md) implement opening
-and activation beneath the same package, with contextual factories and a borrowed shared lifetime.
-State, occupation and listeners remain independent; individual teardown/replacement is deferred.
-The first portable [families](../packages/core/components/index.md) are selected for the same core
-package. The reviewed Button, Modal and Sidebar contracts select compatible capabilities after
-their cases and expose production types. Button's runtime and buttonFactory are implemented;
-Modal and Sidebar remain type-only. Their parallel
-guides own state, construction, ownership and static-versus-runtime limits.
+[component guide](../packages/core/component/index.md) owns the contracts, lifetime and cleanup
+registration. The [Components package](../packages/components/index.md) uses Core to implement
+opening and activation over borrowed scopes and to build Button instances from one prepared
+definition. The [family guides](../packages/components/components/index.md) own their state,
+construction and ownership. Modal and Sidebar remain type-only.
 [Component direction](component-direction.md) owns independent Sidebar axes and wider composition
 questions.
-The [Components migration](../future-capabilities.md#pending-components-migration) describes the
-upcoming package boundary for families and capabilities.
 [Integration boundaries](integration-boundaries.md) own future hosts, icons and motion.
 No renderer, concrete framework adapter, manager or optional provider is implemented.
 
-The [tooling guide](../tooling/index.md) owns contributor pins, actual scripts and checking limits;
-[workspace tooling](../tooling/workspace/index.md) owns output production, and
-[Core quality](../packages/core/quality.md) describes packed consumer evidence.
+The [tooling guide](../tooling/index.md) owns contributor pins, scripts and checking limits.
+[Workspace tooling](../tooling/workspace/index.md) owns output production. Package evidence
+lives with [Core quality](../packages/core/quality.md) and
+[Components quality](../packages/components/quality.md).
 
 ## Shared rules adoption
 

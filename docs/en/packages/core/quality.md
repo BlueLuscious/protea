@@ -13,9 +13,7 @@ the output producer and its filesystem checks.
 | --- | --- | --- |
 | [Construction runtime](../../../../tests/runtime/component-construction.test.mjs) | Definition preparation and identity, independent instances, reserved members, flat descriptors and receivers, and cleanup when setup or composition fails. | [Component runtime](component/runtime/index.md). |
 | [Scope runtime](../../../../tests/runtime/component-scope.test.mjs) | Cleanup registration, terminal ordering, repeated and reentrant disposal, ownership, borrowed lifetimes and failures. | [Component lifetime](component/index.md). |
-| [Opening](../../../../tests/runtime/openable.test.mjs), [activation](../../../../tests/runtime/activatable.test.mjs) and [composition](../../../../tests/runtime/capability-composition.test.mjs) | State authority, request results, observations, reentrancy, failed setup, and independence or explicit sharing across capabilities. | [Capabilities](capabilities/index.md). |
-| [Button runtime](../../../../tests/runtime/button.test.mjs) | Private lifetime, availability, activation, listener changes, terminal behaviour and borrowed control connections. | [Button](components/button/index.md). |
-| [Type and distribution checks](../../../../tests/distribution/core-package.test.mjs) | Archive inclusion, exact runtime exports, private subpaths, and portable declarations compiled in clean consumers under NodeNext and Bundler. | [API](api/index.md) and [package boundary](index.md#boundary). |
+| [Type and distribution checks](../../../../tests/distribution/core-package.test.mjs) | Standalone Core installation, archive inclusion, exact runtime exports, private subpaths, and portable declarations compiled under NodeNext and Bundler. | [API](api/index.md) and [package boundary](index.md#boundary). |
 
 The runtime and distribution suites build fresh local archives, install them offline in isolated
 consumers and load the public package root. Each suite owns its build prerequisites and temporary
@@ -26,17 +24,13 @@ checks separately from build-output ownership tests.
 
 The [construction fixture](../../../../tests/distribution/component-consumer.test.ts) checks
 required, optional and absent options, inferred methods and getters, readonly lifetime and
-definition association, and rejected surface members. The
-[capability fixture](../../../../tests/distribution/capability-consumer.test.ts) checks state
-authority modes, request results, named vocabularies and scope ownership. The
-[family fixture](../../../../tests/distribution/family-consumer.test.ts) imports the real Button
-factory and supplies typed Modal and Sidebar inputs. It checks family options, borrowed lifetime
-views and separate activation and opening results. The runtime smoke case creates, enables,
-activates and disposes a Button.
+definition association, and rejected surface members. The clean consumer installs the Core
+archive on its own. It checks that Core declares no runtime dependencies and that its packed
+root surface contains only the foundation. The [Components quality guide](../components/quality.md)
+owns family and capability evidence.
 
 An expected error in a type fixture records a compiler diagnostic. Review its cause independently.
-Structural assignment neither verifies a collaborator's synchrony and cleanup behaviour nor
-establishes that two structurally compatible family contracts have the same semantics.
+Structural assignment alone cannot verify synchrony or cleanup behaviour.
 
 ## Support and evidence
 
