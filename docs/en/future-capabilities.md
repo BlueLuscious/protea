@@ -9,7 +9,7 @@ direction is distinct from implemented contracts, package availability and publi
 The [Core](packages/core/index.md) and [Components](packages/components/index.md) guides own
 the implemented package boundary. The [Modal](packages/components/components/modal/index.md)
 and [Sidebar](packages/components/components/sidebar/index.md) guides own their remaining runtime
-work. Descriptive definition metadata and family defaults need a demonstrated consumer.
+work. Family defaults need a demonstrated consumer.
 
 ## Conditional and deferred work
 
@@ -20,6 +20,9 @@ current delivery commitment. Importance does not establish implementation order.
 
 | Importance | Opportunity | Evidence needed |
 | --- | --- | --- |
+| `P2` | Resolve component definitions by logical identity. | A consumer needs to select a definition by name and optional namespace. Its lookup scope and handling of duplicate identities can be defined. |
+| `P2` | Identify component instances outside their in-memory references. | A consumer needs to correlate the same instance across a boundary where its object reference is unavailable. |
+| `P2` | Inspect shared descriptive metadata on component definitions. | A consumer such as a catalogue or authoring tool needs specific descriptive fields across multiple definitions. |
 | `P2` | Shared application state across independent components. | Two real controls need to observe and request changes to the same application-owned state. |
 | `P2` | Responsive representation or control replacement. | A concrete host needs different controls at different breakpoints while preserving application state and correct interaction semantics. |
 | `P4` | Conversion between component families. | A case cannot reasonably be served by representation changes, composition or replacement. |
