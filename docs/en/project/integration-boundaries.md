@@ -25,6 +25,9 @@ Unmounting a representation does not authorise disposing a borrowed model. An ad
 connections it acquires and only owns a model's lifetime when its construction or an explicit
 transfer gives it that authority. Supplied controls and state authorities retain their own owners.
 
+Adapters primarily consume live instances. An adapter that accepts a definition and creates its
+own instance takes responsibility for disposing that instance.
+
 Bindings must be logically invalidated before failed setup or teardown can leave retained
 callbacks able to perform work. Required cleanup attempts must continue after another release
 fails. Physical release failure cannot revive an invalidated binding. The concrete integration
@@ -38,7 +41,7 @@ connections.
 
 ## Requests and observations
 
-The [capability guides](../packages/core/capabilities/index.md) distinguish requests, effective
+The [capability guides](../packages/components/capabilities/index.md) distinguish requests, effective
 changes, accepted activation and rejection. An adapter must preserve those actual public results
 and failure semantics. Acceptance is not
 proof of application-work completion, rendering, DOM event cancellation or animation completion.

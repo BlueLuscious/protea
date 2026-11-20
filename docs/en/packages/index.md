@@ -1,12 +1,13 @@
 # Protea Packages
 
-Status: **One private package with portable foundation, capability and Button runtime**
+Status: **Private Core and Components packages**
 
 | Package | Current responsibility |
 | --- | --- |
-| [Core](core/index.md) | Portable lifetime, cleanup, reusable opening/activation, Button runtime and reviewed Modal/Sidebar type contracts, with an ESM/declaration build and one public root. |
+| [Core](core/index.md) | Portable definitions and instances, standalone scopes, lifetime and cleanup. |
+| [Components](components/index.md) | Built-in Button, reusable opening and activation, and reviewed Modal and Sidebar type contracts. |
 
-The package set follows implemented responsibilities. Logical features do not allocate separate
-npm packages. Core is private and its local version is not a published release. The
-[project guide](../project/index.md) owns the wider component-library direction;
-[repository tooling](../tooling/index.md) owns actual commands and qualification coverage.
+Components depends on the public Core root. Core has no runtime dependencies. Each package
+emits ES2022 ESM and declarations with one public root. Their local versions identify private,
+unpublished workspace packages. The [project guide](../project/index.md) owns product direction.
+The [tooling guide](../tooling/index.md) owns build and verification commands.

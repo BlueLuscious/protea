@@ -1,7 +1,7 @@
 {
   "name": "@luscious-garden/protea-core",
   "version": "0.0.0",
-  "description": "Portable component foundations and reusable capabilities for Protea.",
+  "description": "Portable component definition, instance and lifetime foundations for Protea.",
   "private": true,
   "type": "module",
   "license": "ISC",

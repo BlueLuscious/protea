@@ -1,6 +1,8 @@
 # Protea Documentation
 
 English under `docs/en/` is canonical. Future translations should preserve its relative structure.
+Each package guide mirrors the authored feature roots under its package's `src/` directory.
+Tooling feature guides follow the corresponding `tooling/` directories.
 
 ## Guides and ownership
 
@@ -10,19 +12,19 @@ English under `docs/en/` is canonical. Future translations should preserve its r
 | [Project](project/index.md) | Product direction, shared-rule adoption, contribution and ownership. |
 | [Repository tooling](tooling/index.md) | Contributor environment, actual commands, output ownership and checking limits. |
 | [Repository automation](tooling/automation/index.md) | CI orchestration and Discord execution/receipt boundaries. |
-| [Future capabilities](future-capabilities.md) | Accepted design direction and conditional opportunities, separate from implemented guarantees. |
+| [Future capabilities](future-capabilities.md) | Deferred capabilities and the evidence they need. |
 
 The [repository introduction](../../README.md) summarises current source. The private
-[core package](packages/core/index.md) implements the component foundation and reusable opening
-and activation, with production contracts and generated declarations.
-The [component guide](packages/core/component/index.md) owns logical lifetime and cleanup;
-[capability guides](packages/core/capabilities/index.md) own composition, requests, state authority,
-outcomes and observations.
-
-[Families](packages/core/components/index.md) own the reviewed contract-led workflow, capability map
-and public type contracts for [Button](packages/core/components/button/index.md),
-[Modal](packages/core/components/modal/index.md) and [Sidebar](packages/core/components/sidebar/index.md).
-Button has an executable factory and portable runtime; Modal and Sidebar remain type-only contracts.
+[core package](packages/core/index.md) implements definition-based construction, component
+lifetime and cleanup, with production contracts and generated declarations.
+The [Core API guide](packages/core/api/index.md) owns usage and exports.
+The [component guide](packages/core/component/index.md) owns logical lifetime and cleanup.
+[Components](packages/components/index.md) uses Core for its built-in families. Its
+[capability guides](packages/components/capabilities/index.md) own composition, requests, state
+authority, outcomes and observations. Its [families](packages/components/components/index.md)
+own the reviewed development workflow and contracts. [Button](packages/components/components/button/index.md)
+has an incorporated definition and portable runtime. [Modal](packages/components/components/modal/index.md)
+and [Sidebar](packages/components/components/sidebar/index.md) remain type-only.
 [Component direction](project/component-direction.md) records vocabulary, original-family boundaries
 and independent Sidebar axes.
 [Integration boundaries](project/integration-boundaries.md) own future hosts and optional providers.

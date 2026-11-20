@@ -2,25 +2,24 @@
 
 Status: **Portable capabilities and Button implemented; Modal/Sidebar contracts reviewed and typed**
 
-Protea develops original Button, Modal and Sidebar families before selecting variants. The current
-source places their portable models and contracts in the existing core's
-[family modules](../packages/core/components/index.md). The accepted next direction separates the
-foundation from families and capabilities and introduces definition-based creation with flat public
-instances, as recorded in [future capabilities](../future-capabilities.md#accepted-direction-awaiting-implementation).
-That migration is not implemented; further family implementation waits for the foundation review.
+Protea develops original Button, Modal and Sidebar families before selecting variants. Their
+[family modules](../packages/components/components/index.md) live in Components. The package
+consumes public Core contracts for definition-based creation and lifetime.
 Shared family implementation still needs concrete state, behaviour and consumers before a common
 layer is chosen.
 
 ## Families and independent axes
 
-A [Button](../packages/core/components/button/index.md) combines owned lifetime, observable
+A [Button](../packages/components/components/button/index.md) combines owned lifetime, observable
 application-set availability and discrete activation. The reviewed
-[contract-led workflow](../packages/core/components/index.md#contract-led-development) maps these
-requirements to Component, Activatable and family-owned availability, now implemented through
-buttonFactory. [Modal](../packages/core/components/modal/index.md)
-and [Sidebar](../packages/core/components/sidebar/index.md) combine owned lifetime with logical
-opening for their selected cases. Their production types are exported; Modal/Sidebar factory
-values and runtime remain unimplemented. Persistent pressed or selected state is not assumed.
+[contract-led workflow](../packages/components/components/index.md#contract-led-development) maps
+these requirements to `ComponentInstance`, `Activatable` and family-owned availability.
+`Button.create()` delegates to Core with its incorporated definition.
+[Modal](../packages/components/components/modal/index.md) and
+[Sidebar](../packages/components/components/sidebar/index.md) combine owned lifetime with logical
+opening for their selected cases. Their instance and construction types are public. Their
+definitions, API values and runtime remain future work. Persistent pressed or selected state is
+outside these contracts.
 
 Sidebar must be designed as a family first. The previous StaticSidebar/FloatingSidebar pilot
 is retired as a production classification: floating presentation and static state or interaction
@@ -43,7 +42,7 @@ These concepts distinguish product responsibilities without requiring matching c
 | --- | --- |
 | Component | An individual model with a defined purpose and contract; the [foundation](../packages/core/component/index.md) owns identity and lifetime. |
 | Family and variant | Related purposes and justified behavioural/structural differences; their actual component owner selects obligations and composition. |
-| Capability | A narrow reusable behaviour; [capability guides](../packages/core/capabilities/index.md) own opening, activation and their resource boundaries. |
+| Capability | A narrow reusable behaviour. The [capability guides](../packages/components/capabilities/index.md) own opening, activation and their resource boundaries. |
 | Behaviour and controller | Behaviour is promised observable meaning. A controller is a possible implementation mechanism needing real responsibility, state and consumers; the two terms do not require parallel abstractions. |
 | Manager and coordination | A manager may own justified scoped membership/lookup. Family/application coordination policy uses public operations; neither automatically owns member state or lifetime. |
 | Part | A composition role with explicitly selected representation, retention, borrowing, replacement and cleanup. |
@@ -53,8 +52,8 @@ These concepts distinguish product responsibilities without requiring matching c
 | Request and effective change | Asking an owner for work is distinct from authorisation, commitment and any subsequent visual completion. |
 
 Contracts remain independent of concrete implementation classes. Capabilities consume the
-component lifetime/resource boundary; Component imports no capability, family, manager or host
-consumer. Families choose capabilities by real responsibilities, not inherited names. Optional
+component lifetime and resource boundary. The construction feature depends only on that
+foundation. Families choose capabilities according to the responsibilities they need. Optional
 hosts consume public model and host contracts without introducing reverse dependencies.
 
 Every composition identifies what is owned, copied, borrowed, retained or exposed. Registration
@@ -65,13 +64,12 @@ guarantees at their actual owners.
 ## Capability lifetime and replacement
 
 The current [foundation](../packages/core/component/index.md) supplies one terminal component
-lifetime and explicit cleanup registration. [Opening and activation](../packages/core/capabilities/index.md)
-now borrow that fixed scope within core; sharing it shares lifetime rather than state or listeners.
-Independent capability teardown and replacement remain deferred. The current Component and
-ComponentScope contracts retain their distinct consumer and resource-owner roles. Their accepted
-successor model separates lifetime, scope and definition-associated instances; the
-[next architecture](../future-capabilities.md#accepted-direction-awaiting-implementation) is not
-an alias or implemented replacement for the current exports.
+lifetime and explicit cleanup registration. [Opening and activation](../packages/components/capabilities/index.md)
+borrow that fixed scope. Capabilities sharing a scope retain independent state and listeners.
+Independent capability teardown and replacement remain deferred. `ComponentLifetime` and
+`ComponentScope` retain distinct consumer and resource-owner roles. `ComponentInstance`
+adds the definition association for models created by the new Core runtime. See the
+[component foundation](../packages/core/component/index.md#identity-and-lifetime).
 
 Consider a future Modal whose opening capability can be replaced while the Modal remains alive.
 Closing it would change logical openness; disposing the Modal would end its model lifetime.

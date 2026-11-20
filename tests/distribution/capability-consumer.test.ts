@@ -1,32 +1,31 @@
+import { Scope, type ComponentLifetime } from "@luscious-garden/protea-core";
 import {
-  activatableFactory,
+  Activation,
+  Opening,
   activatableResultStatuses,
   capabilityRejectionReasons,
-  componentScopeFactory,
-  openableFactory,
   openableResultStatuses,
-} from "@luscious-garden/protea-core";
+} from "@luscious-garden/protea-components";
 import type {
   Activatable,
-  ActivatableFactory,
+  ActivationApi,
   ActivatableOptionsType,
   ActivatableResultStatusType,
   ActivatableResultType,
   CapabilityRejectionReasonType,
   CapabilityUnsubscribeType,
-  Component,
   Openable,
   OpenableChangeType,
-  OpenableFactory,
+  OpeningApi,
   OpenableOptionsType,
   OpenableResultStatusType,
   OpenableResultType,
   OpenStateAuthority,
-} from "@luscious-garden/protea-core";
+} from "@luscious-garden/protea-components";
 
 declare const authority: OpenStateAuthority;
-declare const owner: Component & Openable & Activatable;
-declare const minimumComponent: Component;
+declare const owner: ComponentLifetime & Openable & Activatable;
+declare const minimumComponent: ComponentLifetime;
 declare const asynchronousGuard: () => Promise<boolean>;
 declare const asynchronousAuthority: Omit<OpenStateAuthority, "requestOpen"> & {
   requestOpen(nextOpen: boolean): Promise<boolean>;
@@ -39,7 +38,7 @@ declare const undefinedExternalInitial: { readonly control: "external"; readonly
 
 declare function consumeOpening(value: Openable): void;
 declare function consumeActivation(value: Activatable): void;
-declare function consumeComponent(value: Component): void;
+declare function consumeComponent(value: ComponentLifetime): void;
 declare function consumeAuthority(value: OpenStateAuthority): void;
 declare function consumeOpeningResult(value: OpenableResultType): void;
 declare function consumeActivationResult(value: ActivatableResultType): void;
@@ -49,18 +48,18 @@ declare function consumeReason(value: CapabilityRejectionReasonType): void;
 declare function consumeChange(value: OpenableChangeType): void;
 declare function consumeVoid(value: void): void;
 
-const scope = componentScopeFactory.create();
-const openingFactory: OpenableFactory = openableFactory;
-const activationFactory: ActivatableFactory = activatableFactory;
+const scope = Scope.create();
+const openingApi: OpeningApi = Opening;
+const activationApi: ActivationApi = Activation;
 const internalOptions: OpenableOptionsType = { control: "internal", initialOpen: true };
 const externalOptions: OpenableOptionsType = { control: "external", authority };
 const activationOptions: ActivatableOptionsType = { canActivate: () => true };
-const opening = openingFactory.create(scope, internalOptions);
-consumeOpening(openingFactory.create(scope, { control: "internal" }));
-consumeOpening(openingFactory.create(scope, externalOptions));
-const activation = activationFactory.create(scope, activationOptions);
-consumeActivation(activationFactory.create(scope));
-consumeActivation(activationFactory.create(scope, {}));
+const opening = openingApi.create(scope, internalOptions);
+consumeOpening(openingApi.create(scope, { control: "internal" }));
+consumeOpening(openingApi.create(scope, externalOptions));
+const activation = activationApi.create(scope, activationOptions);
+consumeActivation(activationApi.create(scope));
+consumeActivation(activationApi.create(scope, {}));
 const unsubscribeOpening: CapabilityUnsubscribeType = opening.subscribeOpenChange((value) => consumeChange(value));
 const unsubscribeActivation: CapabilityUnsubscribeType = activation.subscribeActivation(() => {});
 consumeVoid(unsubscribeOpening());
@@ -105,17 +104,17 @@ if (activationResult.status === activatableResultStatuses.rejected) {
 }
 
 // @ts-expect-error Internal control excludes a borrowed authority through variables too.
-openingFactory.create(scope, mixedInternal);
+openingApi.create(scope, mixedInternal);
 // @ts-expect-error External control excludes a separate initial value through variables too.
-openingFactory.create(scope, mixedExternal);
+openingApi.create(scope, mixedExternal);
 // @ts-expect-error An excluded initial value cannot be present as undefined.
-openingFactory.create(scope, undefinedExternalInitial);
+openingApi.create(scope, undefinedExternalInitial);
 // @ts-expect-error External control requires its authority.
-openingFactory.create(scope, { control: "external" });
+openingApi.create(scope, { control: "external" });
 // @ts-expect-error Opening construction requires the selected control options.
-openingFactory.create(scope);
+openingApi.create(scope);
 // @ts-expect-error A component consumer does not have cleanup-registration authority.
-openingFactory.create(minimumComponent, internalOptions);
+openingApi.create(minimumComponent, internalOptions);
 // @ts-expect-error The opening view is readonly.
 opening.isOpen = false;
 // @ts-expect-error The borrowed authority view is readonly.
@@ -135,7 +134,7 @@ consumeActivationResult(missingReason);
 // @ts-expect-error Activation does not expose an unchanged outcome.
 consumeActivationResult({ status: "unchanged" });
 // @ts-expect-error A guard must synchronously return a boolean.
-activationFactory.create(scope, { canActivate: asynchronousGuard });
+activationApi.create(scope, { canActivate: asynchronousGuard });
 // @ts-expect-error An authority must synchronously commit its request.
 consumeAuthority(asynchronousAuthority);
 // @ts-expect-error Opening grants no activation operation.
@@ -160,7 +159,7 @@ openableResultStatuses.changed = "changed";
 activatableResultStatuses.activated = "activated";
 // @ts-expect-error Named rejection reasons cannot be replaced.
 capabilityRejectionReasons.busy = "busy";
-// @ts-expect-error A factory creation operation cannot be replaced.
-openingFactory.create = openingFactory.create;
-// @ts-expect-error A factory creation operation cannot be replaced.
-activationFactory.create = activationFactory.create;
+// @ts-expect-error A creation operation cannot be replaced.
+openingApi.create = openingApi.create;
+// @ts-expect-error A creation operation cannot be replaced.
+activationApi.create = activationApi.create;

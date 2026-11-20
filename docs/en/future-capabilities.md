@@ -6,36 +6,10 @@ This document records prospective work and the evidence needed to reconsider it.
 direction is distinct from implemented contracts, package availability and publication. The
 [package guides](packages/index.md) own the actual source; proposals here do not add runtime APIs.
 
-## Accepted direction awaiting implementation
-
-Separate the portable component foundation from the portable family catalogue. The intended
-`packages/core` boundary supplies instance lifetime and the agreed definition/construction model;
-the intended `packages/components` boundary supplies families and reusable capabilities, including
-opening and activation. A separate capability package remains conditional.
-
-The agreed authoring model uses a definition for every created component, with explicit creation
-from a definition and convenient family creation that selects its definition internally.
-`ComponentInstance` is the agreed name for the live model contract. Public API organisation and
-naming follow Aster's concept objects and `*Api` contracts. Core will supply Component.define
-and Component.create; Components will supply family APIs such as Button.create and their
-incorporated definitions. Applications may author types under their own optional namespace.
-Definition identity describes the type and does not authenticate its author or identify each
-instance. The definition carries a typed construction recipe, with descriptive information and
-family-specific defaults where needed; per-instance state, resources and collaborators stay separate.
-
-Core will construct the public instance with its own definition, lifecycle and dispose members.
-The author supplies an explicit flat surface of operations and properties. Common members cannot
-be replaced, collisions must be rejected in types and at construction, and dynamic reads must
-remain dynamic. A readonly instance.definition will identify the definition actually used.
-The shared lifetime protocol will distinguish a resource-owning scope from a live component model;
-a scope does not need an artificial component definition. Construction must complete before the
-instance is returned; failure must finalise resources registered in its scope. Each behaviour still
-defines and implements its permitted operations after finalisation.
-
-The exact setup signature, surface representation and generic typing remain to be refined during
-implementation. The new definition APIs and composed instance model are not implemented yet. The
-current source still places its foundation, capabilities and initial families in the
-[existing core package](packages/core/index.md).
+The [Core](packages/core/index.md) and [Components](packages/components/index.md) guides own
+the implemented package boundary. The [Modal](packages/components/components/modal/index.md)
+and [Sidebar](packages/components/components/sidebar/index.md) guides own their remaining runtime
+work. Family defaults need a demonstrated consumer.
 
 ## Conditional and deferred work
 
@@ -46,6 +20,9 @@ current delivery commitment. Importance does not establish implementation order.
 
 | Importance | Opportunity | Evidence needed |
 | --- | --- | --- |
+| `P2` | Resolve component definitions by logical identity. | A consumer needs to select a definition by name and optional namespace. Its lookup scope and handling of duplicate identities can be defined. |
+| `P2` | Identify component instances outside their in-memory references. | A consumer needs to correlate the same instance across a boundary where its object reference is unavailable. |
+| `P2` | Inspect shared descriptive metadata on component definitions. | A consumer such as a catalogue or authoring tool needs specific descriptive fields across multiple definitions. |
 | `P2` | Shared application state across independent components. | Two real controls need to observe and request changes to the same application-owned state. |
 | `P2` | Responsive representation or control replacement. | A concrete host needs different controls at different breakpoints while preserving application state and correct interaction semantics. |
 | `P4` | Conversion between component families. | A case cannot reasonably be served by representation changes, composition or replacement. |
@@ -69,7 +46,7 @@ Review ownership, initial reads, effective changes, update ordering, feedback lo
 cleanup before choosing a public binding contract. Borrowing a shared source must not transfer
 authority to dispose it. This proposal creates no theme store, generic state engine or automatic
 binding in Core. Existing opening authority remains governed by the
-[opening contract](packages/core/capabilities/openable/index.md).
+[opening contract](packages/components/capabilities/openable/index.md).
 
 ## Responsive representation and family conversion
 
@@ -85,7 +62,7 @@ No current conversion operation or compatibility matrix is promised.
 
 ## Independent capability distribution
 
-Keep capabilities separate from family implementations within the intended Components package,
+The Components package keeps capabilities separate from family implementations,
 depending on the public Core foundation. Requiring a Components import is not by itself evidence
 that another distribution is needed.
 

@@ -7,7 +7,7 @@ test("component scopes honour their lifetime and release protocol through the pa
     function check(source) {
       const result = runNode(["--input-type=module", "--eval", `
         import assert from "node:assert/strict";
-        import { componentLifecycleStates, componentScopeFactory } from "@luscious-garden/protea-core";
+        import { Scope, componentLifecycleStates } from "@luscious-garden/protea-core";
         ${source}
       `], consumer);
       assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
@@ -17,8 +17,8 @@ test("component scopes honour their lifetime and release protocol through the pa
 
     await context.test("creation exposes fresh active owners with independent state and cleanup", () => {
       check(`
-        const first = componentScopeFactory.create();
-        const second = componentScopeFactory.create();
+        const first = Scope.create();
+        const second = Scope.create();
         assert.notEqual(first, second);
         assert.equal(first.lifecycle, componentLifecycleStates.active);
         assert.equal(second.lifecycle, componentLifecycleStates.active);
@@ -42,7 +42,7 @@ test("component scopes honour their lifetime and release protocol through the pa
 
     await context.test("registration defers invocation and preserves duplicate obligations", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         let calls = 0;
         const release = () => { calls += 1; };
         assert.equal(scope.addCleanup(release), undefined);
@@ -55,7 +55,7 @@ test("component scopes honour their lifetime and release protocol through the pa
 
     await context.test("invalid and terminal registration fail without adopting an obligation", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         let calls = 0;
         scope.addCleanup(() => { calls += 1; });
         for (const invalid of [undefined, null, false, 0, "release", {}, []]) {
@@ -80,7 +80,7 @@ test("component scopes honour their lifetime and release protocol through the pa
 
     await context.test("every release observes the terminal lifetime before external work", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const observed = [];
         for (const name of ["first", "second", "third"]) {
           scope.addCleanup(() => { observed.push({ name, lifecycle: scope.lifecycle }); });
@@ -94,7 +94,7 @@ test("component scopes honour their lifetime and release protocol through the pa
     await context.test("falsey failures are reported after all required attempts", () => {
       check(`
         for (const failure of [undefined, null, false, 0, ""]) {
-          const scope = componentScopeFactory.create();
+          const scope = Scope.create();
           const attempted = [];
           scope.addCleanup(() => { attempted.push("failed"); throw failure; });
           scope.addCleanup(() => { attempted.push("completed"); });
@@ -106,7 +106,7 @@ test("component scopes honour their lifetime and release protocol through the pa
           assert.doesNotThrow(() => scope.dispose());
           assert.equal(attempted.length, 2);
         }
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const attempted = [];
         for (const [index, failure] of [undefined, null, false, 0, ""].entries()) {
           scope.addCleanup(() => { attempted.push(index); throw failure; });
@@ -122,7 +122,7 @@ test("component scopes honour their lifetime and release protocol through the pa
 
     await context.test("reentrant disposal returns before the ongoing release and never retries failures", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         const reentrant = [];
         let calls = 0;
         let otherCalls = 0;
@@ -152,7 +152,7 @@ test("component scopes honour their lifetime and release protocol through the pa
 
     await context.test("registration during disposal is rejected without delaying other releases", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         let refused = false;
         let lateCalls = 0;
         let otherCalls = 0;
@@ -181,7 +181,7 @@ test("component scopes honour their lifetime and release protocol through the pa
           },
           dispose() { sourceDisposals += 1; registrations.clear(); },
         };
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         scope.addCleanup(borrowed.connect());
         assert.equal(registrations.size, 2);
         scope.dispose();
@@ -192,7 +192,7 @@ test("component scopes honour their lifetime and release protocol through the pa
 
     await context.test("an early idempotent release remains registered until finalisation", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         let attempts = 0;
         let effectiveReleases = 0;
         let active = true;
@@ -215,7 +215,7 @@ test("component scopes honour their lifetime and release protocol through the pa
 
     await context.test("disposal is synchronous and does not await a fulfilled returned promise", () => {
       check(`
-        const scope = componentScopeFactory.create();
+        const scope = Scope.create();
         let calls = 0;
         let continuationRan = false;
         const returned = Promise.resolve();
@@ -235,7 +235,7 @@ test("component scopes honour their lifetime and release protocol through the pa
         const externalEffects = [];
         let connections = 0;
         const borrowed = {
-          scope: componentScopeFactory.create(),
+          scope: Scope.create(),
           connect() {
             connections += 1;
             return () => { connections -= 1; };
@@ -245,7 +245,7 @@ test("component scopes honour their lifetime and release protocol through the pa
         let ownedAttempts = 0;
         let inspectedScope;
         function assemble(completeSetup) {
-          const scope = componentScopeFactory.create();
+          const scope = Scope.create();
           inspectedScope = scope;
           let completed = false;
           try {
