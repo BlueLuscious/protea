@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Protea web example</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "@luscious-garden/protea-core": "../../packages/core/dist/index.js",
+          "@luscious-garden/protea-components": "../../packages/components/dist/index.js"
+        }
+      }
+    </script>
+    <script type="module" src="./main.mjs"></script>
+  </head>
+  <body>
+    <h1>Protea web example</h1>
+    <button id="open-dialog" type="button">Open dialogue</button>
+
+    <dialog id="example-dialog" aria-labelledby="dialog-title">
+      <h2 id="dialog-title">Example dialogue</h2>
+      <p>
+        <label><input id="refuse-close" type="checkbox"> Refuse close requests</label>
+      </p>
+      <button id="close-dialog" type="button" autofocus>Close dialogue</button>
+    </dialog>
+  </body>
+</html>
