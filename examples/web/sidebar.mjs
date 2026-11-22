@@ -1,35 +1,48 @@
-import { Scope } from "@luscious-garden/protea-core";
+import { Scope, componentLifecycleStates } from "@luscious-garden/protea-core";
 
 /**
- * @description Connects a native disclosure button and a navigation region to a borrowed Sidebar.
- * @param {HTMLButtonElement} control - The disclosure button in the example.
- * @param {HTMLElement} region - The navigation region controlled by the button.
- * @param {import("@luscious-garden/protea-components").SidebarInstance} sidebar - The model owned by the caller.
- * @returns {() => void} An idempotent release of the binding's listener and subscription.
+ * @description Projects a borrowed Sidebar's openness and forwards disclosure requests.
+ * @remarks External state reads can run application code. A detached connection ignores any
+ * callbacks still in progress or retained by a failed release.
+ * @param {HTMLButtonElement} control - The caller's native disclosure button.
+ * @param {HTMLElement} region - The caller's controlled region.
+ * @param {import("@luscious-garden/protea-components").SidebarInstance} sidebar - The live model.
+ * @returns {() => void} An idempotent detach that keeps the last projected values.
  */
-export function connectSidebar(control, region, sidebar) {
+export function bindSidebar(control, region, sidebar) {
   const connection = Scope.create();
+  let mounted = false;
 
-  try {
-    const events = new AbortController();
-    connection.addCleanup(() => events.abort());
-
-    function projectPresence() {
-      const isOpen = sidebar.isOpen;
+  function projectPresence(isOpen) {
+    if (connection.lifecycle === componentLifecycleStates.active) {
       region.hidden = !isOpen;
       control.setAttribute("aria-expanded", String(isOpen));
     }
+  }
 
-    connection.addCleanup(sidebar.subscribeOpenChange(projectPresence));
-    control.addEventListener("click", () => {
-      if (sidebar.isOpen) {
-        sidebar.close();
-      } else {
-        sidebar.open();
-      }
-    }, { signal: events.signal });
-    projectPresence();
+  function toggle() {
+    if (!mounted || connection.lifecycle !== componentLifecycleStates.active) {
+      return;
+    }
 
+    const isOpen = sidebar.isOpen;
+    if (connection.lifecycle !== componentLifecycleStates.active) {
+      return;
+    }
+
+    if (isOpen) {
+      sidebar.close();
+    } else {
+      sidebar.open();
+    }
+  }
+
+  try {
+    connection.addCleanup(sidebar.subscribeOpenChange(({ current }) => projectPresence(current)));
+    connection.addCleanup(() => control.removeEventListener("click", toggle));
+    control.addEventListener("click", toggle);
+    projectPresence(sidebar.isOpen);
+    mounted = true;
     return connection.dispose;
   } catch (error) {
     try {

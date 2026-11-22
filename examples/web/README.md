@@ -50,10 +50,16 @@ Stop the server with Ctrl+C when finished.
 
 ## Connection ownership
 
-The [example's Sidebar connection](sidebar.mjs) borrows the supplied model. Its detach operation
-releases the DOM listener and the model subscription. Repeated detach calls are safe. The
-borrowed model stays active and its owner can still request changes and dispose it. Its changes
-stop reaching the detached view, which keeps its last projected state.
+The example's [Button binding](button.mjs) reflects model availability in a native button's
+`disabled` property and forwards activation to the model. The [Sidebar binding](sidebar.mjs)
+connects a native disclosure button and a region, keeping `aria-expanded` and `hidden` in sync
+with effective openness. The caller supplies the elements, labels and relationships between them.
+The page's own Button subscriptions decide which Modal actions to request.
+
+Each binding borrows a live model and returns an idempotent detach function. Detach attempts
+to release the DOM listener and model subscription. The detached view keeps its last projected
+state. The caller can still use the model, attach it to another view and dispose it. If setup
+fails, the binding invalidates its callbacks and attempts any releases it acquired.
 
 The page scope owns the connections and model instances it creates. It releases the connections
 and disposes those instances when setup fails or the page leaves without entering the
