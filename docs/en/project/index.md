@@ -26,13 +26,31 @@ their prepared definitions. The [family guides](../packages/components/component
 their state, construction and ownership.
 [Component direction](component-direction.md) owns independent Sidebar axes and wider composition
 questions.
-[Integration boundaries](integration-boundaries.md) own future hosts, icons and motion.
-No renderer, concrete framework adapter, manager or optional provider is implemented.
+The [web example](../../../examples/web/README.md) connects the portable models to native HTML.
+Its bindings are local to the example. [Integration boundaries](integration-boundaries.md)
+describe the responsibilities of concrete hosts and the direction for optional presentation
+and providers.
 
 The [tooling guide](../tooling/index.md) owns contributor pins, scripts and checking limits.
 [Workspace tooling](../tooling/workspace/index.md) owns output production. Package evidence
 lives with [Core quality](../packages/core/quality.md) and
 [Components quality](../packages/components/quality.md).
+
+## Public contract changes
+
+The development contract covers the public package roots, their signatures and the guarantees
+documented at their owners. It includes lifetime and resource ownership, state authority,
+operation results, failure behaviour and the timing and order of observations. Changing one of
+these guarantees can break a consumer even when its code still type-checks.
+
+An incompatible change requires maintainer acceptance before implementation. Document the
+concrete case, the affected contracts and consumers, the migration path and the checks that
+will exercise the new behaviour. Verify public types and runtime behaviour against built
+packages and verify changed host guarantees in the named environment. Use the
+[repository checks](../tooling/index.md#current-verification) for their documented coverage.
+
+These rules apply to the current private packages. A release records its versions and support
+claims against its [reviewed source and artefacts](https://github.com/BlueLuscious/garden/blob/master/docs/en/project-rules.md#approval-and-publication-evidence).
 
 ## Shared rules adoption
 
