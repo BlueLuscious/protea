@@ -18,7 +18,9 @@ supplies independent instances with observable availability and activation.
 model with explicit opening authority.
 [`Sidebar.create(options)`](docs/en/packages/components/components/sidebar/index.md) constructs
 a lateral region model with changeable logical presence.
-[Host integrations](docs/en/project/integration-boundaries.md) remain future work.
+The [local web example](examples/web/README.md) connects Button, Modal and Sidebar to native HTML.
+The [integration guide](docs/en/project/integration-boundaries.md) describes host responsibilities
+and prospective adapters.
 
 Repository verification covers focused lint, strict production types, manifest/configuration
 formatting, bounded builds, public runtime regressions and fresh package consumers. Component

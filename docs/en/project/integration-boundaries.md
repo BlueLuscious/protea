@@ -1,11 +1,12 @@
 # Integration Boundaries
 
-Status: **Prospective product boundaries; no host adapter or provider integration implemented**
+Status: **Local web example and prospective integration boundaries**
 
 This guide owns Protea's optional integration responsibilities. The portable
 [core package](../packages/core/index.md) currently supplies component contracts;
-[component direction](component-direction.md) owns future family questions. Portable runtime
-establishes no executable host integration or compatibility promise.
+[component direction](component-direction.md) owns future family questions. The
+[local web example](../../../examples/web/README.md) connects Button, Modal and Sidebar through their
+public contracts. Its behaviour is scoped to the example page.
 
 ## Models, applications and hosts
 
