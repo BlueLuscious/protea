@@ -17,6 +17,15 @@
   <body>
     <h1>Protea web example</h1>
     <button id="open-dialog" type="button">Open dialogue</button>
+    <button id="toggle-sidebar" type="button" aria-controls="example-sidebar" aria-expanded="false">
+      Supplementary navigation
+    </button>
+
+    <nav id="example-sidebar" aria-label="Supplementary navigation" hidden>
+      <ul>
+        <li><a href="#open-dialog">Dialogue controls</a></li>
+      </ul>
+    </nav>
 
     <dialog id="example-dialog" aria-labelledby="dialog-title">
       <h2 id="dialog-title">Example dialogue</h2>

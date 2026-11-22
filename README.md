@@ -18,7 +18,7 @@ supplies independent instances with observable availability and activation.
 model with explicit opening authority.
 [`Sidebar.create(options)`](docs/en/packages/components/components/sidebar/index.md) constructs
 a lateral region model with changeable logical presence.
-The [local web example](examples/web/README.md) connects Button and Modal to native HTML controls.
+The [local web example](examples/web/README.md) connects Button, Modal and Sidebar to native HTML.
 The [integration guide](docs/en/project/integration-boundaries.md) describes host responsibilities
 and prospective adapters.
 

@@ -1,6 +1,6 @@
 # Protea Web Example
 
-This unstyled local page connects Button and Modal to native HTML controls. Its import map
+This unstyled local page connects Button, Modal and Sidebar to native HTML. Its import map
 resolves the public Core and Components entries from their built output.
 
 ## Run locally
@@ -40,5 +40,21 @@ Stop the server with Ctrl+C when finished.
    opening state. See the [dialogue element](https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element)
    and [close watcher infrastructure](https://html.spec.whatwg.org/multipage/interaction.html#close-watcher-infrastructure).
 
-The page owns its model instances, subscriptions and DOM listeners. The scope releases them
-when setup fails or the page leaves without entering the back-forward cache.
+## Try supplementary navigation
+
+1. Activate **Supplementary navigation** with the mouse or keyboard. The labelled navigation
+   region appears in the normal page flow and the button reports `aria-expanded="true"`.
+   With the button focused, press Tab to reach the navigation link.
+2. Activate the button again. The region is hidden and the button reports
+   `aria-expanded="false"`. Both attributes follow Sidebar's effective open state.
+
+## Connection ownership
+
+The [example's Sidebar connection](sidebar.mjs) borrows the supplied model. Its detach operation
+releases the DOM listener and the model subscription. Repeated detach calls are safe. The
+borrowed model stays active and its owner can still request changes and dispose it. Its changes
+stop reaching the detached view, which keeps its last projected state.
+
+The page scope owns the connections and model instances it creates. It releases the connections
+and disposes those instances when setup fails or the page leaves without entering the
+back-forward cache.

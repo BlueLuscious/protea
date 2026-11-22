@@ -5,7 +5,7 @@ Status: **Local web example and prospective integration boundaries**
 This guide owns Protea's optional integration responsibilities. The portable
 [core package](../packages/core/index.md) currently supplies component contracts;
 [component direction](component-direction.md) owns future family questions. The
-[local web example](../../../examples/web/README.md) connects Button and Modal through their
+[local web example](../../../examples/web/README.md) connects Button, Modal and Sidebar through their
 public contracts. Its behaviour is scoped to the example page.
 
 ## Models, applications and hosts

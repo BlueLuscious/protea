@@ -1,5 +1,6 @@
 import { Scope } from "@luscious-garden/protea-core";
-import { Button, Modal, Opening, openableResultStatuses } from "@luscious-garden/protea-components";
+import { Button, Modal, Opening, Sidebar, openableResultStatuses } from "@luscious-garden/protea-components";
+import { connectSidebar } from "./sidebar.mjs";
 
 /**
  * @description Connects the page's native controls to application-owned Protea models.
@@ -12,10 +13,13 @@ function mountExample() {
   const closeElement = document.getElementById("close-dialog");
   const dialog = document.getElementById("example-dialog");
   const refuseClose = document.getElementById("refuse-close");
+  const sidebarControl = document.getElementById("toggle-sidebar");
+  const navigation = document.getElementById("example-sidebar");
 
   if (!(openElement instanceof HTMLButtonElement) || !(closeElement instanceof HTMLButtonElement) ||
-    !(dialog instanceof HTMLDialogElement) || !(refuseClose instanceof HTMLInputElement)) {
-    throw new TypeError("The example requires its native dialogue controls.");
+    !(dialog instanceof HTMLDialogElement) || !(refuseClose instanceof HTMLInputElement) ||
+    !(sidebarControl instanceof HTMLButtonElement) || !(navigation instanceof HTMLElement)) {
+    throw new TypeError("The example requires its native dialogue and navigation controls.");
   }
 
   const lifetime = Scope.create();
@@ -24,6 +28,10 @@ function mountExample() {
     const events = new AbortController();
     const listenerOptions = { signal: events.signal };
     lifetime.addCleanup(() => events.abort());
+
+    const sidebar = Sidebar.create({ control: "internal" });
+    lifetime.addCleanup(sidebar.dispose);
+    lifetime.addCleanup(connectSidebar(sidebarControl, navigation, sidebar));
 
     const opening = Opening.create(lifetime, { control: "internal" });
     const openButton = Button.create();
