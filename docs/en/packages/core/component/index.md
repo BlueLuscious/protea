@@ -1,13 +1,38 @@
 # Component Foundation
 
-Status: **Component lifetime and cleanup runtime implemented**
+Status: **Component lifetime, cleanup and definition-based construction implemented**
 
-This guide owns component lifetime, scope construction and cleanup registration.
+This feature owns definitions, instances, lifetime and cleanup registration. See the
+[Core API](../api/index.md#usage) for authoring a component and the
+[component runtime](runtime/index.md) for preparation and composition.
 The [production source](../../../../../packages/core/src/component/) owns signatures; the
 [core package](../index.md) exports them through its root and emits declarations from that source.
-The root exports `componentScopeFactory` and `componentLifecycleStates`, alongside the
-`Component`, `ComponentScope`, `ComponentScopeFactory` and `ComponentLifecycleType` contracts.
-Implementation classes and their constructors remain private to the package.
+
+## Contracts
+
+| Contract | Responsibility |
+| --- | --- |
+| `ComponentIdentity` | Logical component type name and optional namespace. |
+| `ComponentDefinitionInput` | Authored identity and callable recipe. |
+| `ComponentDefinition` | Prepared identity and recipe. Definitions can retain code and captured values. |
+| `ComponentSetupContext` | Creation options and the scope supplied to one setup call. |
+| `ComponentLifetime` | Observable lifecycle and terminal finalisation. |
+| `ComponentScope` | Lifetime with explicit cleanup registration. |
+| `ComponentInstance` | Lifetime with the exact definition used to create the instance. |
+
+`ComponentLifecycleType` derives its values from `componentLifecycleStates`.
+
+## Definition identity
+
+`name` and any supplied `namespace` must match `^[a-z0-9]+(?:-[a-z0-9]+)*$`. Core captures an
+omitted or undefined namespace as absent when preparing a definition. A namespace provides logical
+attribution. Core rejects empty strings, invalid separators, whitespace and uppercase without
+normalising them. Definition identity describes a type and supplies no global registration.
+
+Each instance retains the exact prepared definition used by `Component.create`. Instances of the
+same definition have independent state, resources and lifetime. Calling a recipe directly runs
+author code. Core construction supplies the instance and its protected common lifetime.
+Definitions contain callable code and make no serialisation or isolation guarantee.
 
 ## Identity and lifetime
 
@@ -23,17 +48,16 @@ and must prevent new model work without inventing closing or activation notifica
 
 `componentLifecycleStates.active` and `.disposed` are the named string choices in a frozen
 vocabulary object. ComponentLifecycleType derives its union from that authority; existing
-`"active"` and `"disposed"` string consumers remain compatible. These are lifecycle states,
-separate from the result statuses of a future capability operation.
+`"active"` and `"disposed"` string consumers remain compatible. These describe lifecycle states.
+Capabilities own their operation result statuses.
 
-The lifecycle reading remains valid after finalisation. Its readonly type view restricts consumer
-assignment without freezing the object or supplying a lifecycle subscription. Future capabilities
-must specify their own permitted terminal readings and rejected requests.
+The lifecycle reading remains valid after finalisation. Build your custom operations against that
+lifetime and define their permitted terminal reads and requests.
 
-`Component` is the minimum structural contract. `ComponentScope` extends that same lifetime with
-explicit cleanup-registration authority; it is not an application scope, group, registry or
-mandatory superclass. A caller needing only a component should consume the narrower contract.
-The scope name identifies resource ownership, not a different component identity.
+`ComponentScope` and `ComponentInstance` both extend `ComponentLifetime`. A consumer that only
+needs lifecycle and finalisation can take the common `ComponentLifetime` contract. A scope gives
+its owner authority to register release obligations. An instance exposes its definition and
+specific behaviour alongside the common lifetime. Standalone scopes have no definition.
 
 ## Cleanup registration
 
@@ -78,25 +102,26 @@ functions in some void-return positions; that assignability is not semantic conf
 
 ## Construction and extension boundary
 
-`componentScopeFactory.create()` accepts no options and returns a new active scope. Each call
+`Scope.create()` accepts no options and returns a new active scope. Each call
 has its own lifetime and cleanup entries. Creating a scope acquires no external resource, calls
 no application callback and attaches no capability. The caller owns the new scope's disposal.
-The factory exposes completed scopes rather than a public implementation constructor.
+The returned scope is a frozen view backed by a private owner. Its `lifecycle` getter continues
+to reflect that owner. `addCleanup` and `dispose` are readonly callables.
 
 The following application-owned helper registers a caller-supplied synchronous release before
 letting a consumer borrow the minimum component contract:
 
 ```ts
 import {
-  componentScopeFactory,
-  type Component,
+  Scope,
+  type ComponentLifetime,
 } from "@luscious-garden/protea-core";
 
 export function useOwnedResource(
   release: () => void,
-  consume: (component: Component) => void,
+  consume: (component: ComponentLifetime) => void,
 ): void {
-  const scope = componentScopeFactory.create();
+  const scope = Scope.create();
 
   try {
     scope.addCleanup(release);
@@ -107,23 +132,21 @@ export function useOwnedResource(
 }
 ```
 
-The helper owns the created scope; borrowing it as Component does not transfer lifecycle
+The helper owns the created scope. Borrowing it as `ComponentLifetime` does not transfer lifecycle
 authority. A failed registration retains or invokes nothing, so its caller still owns that
 unregistered release obligation. Once registered, finalisation attempts it even if the consumer
 throws. A release failure propagates opaquely; no particular aggregation of simultaneous
 application and cleanup failures is promised by this example.
 
-The [capability construction protocol](../capabilities/index.md#failed-setup) applies those
-ownership rules to actual opening/activation setup: failure cleans only its own acquisitions
-and preserves the borrowed scope. Effects already performed by collaborators are not rolled
-back. The scope factory itself takes no resource-acquisition callback or options.
+The [Components capability construction protocol](../../components/capabilities/index.md#failed-setup)
+describes how opening and activation borrow a scope and release their own acquisitions.
 
 The contracts remain independent of implementation classes. A conforming structural owner is
 permitted, but its shape alone proves neither atomic registration, synchronous finalisation nor
 resource ownership. Native private implementation state and any genuine class specialisation
 remain implementation responsibilities.
 
-Closing a future Modal is distinct from finalising it. Removing a host representation is also
+Closing a Modal is distinct from finalising it. Removing a host representation is also
 distinct from ending a borrowed model's lifetime. Component-specific policies and optional
 capabilities must preserve these boundaries without adding unrelated members to the minimum
 contract.
@@ -134,7 +157,8 @@ Strict production/declaration checks and public type consumers exercise members,
 extension, readonly restrictions and host-free consumption. Separate runtime tests consume a
 fresh built public package to exercise creation, independent instances, terminal-before-release
 observation, every required cleanup attempt, invalid/terminal registration, duplicate obligations,
-borrowing, failure and repeated/reentrant disposal.
+borrowing, failure and repeated/reentrant disposal. See
+[Core quality](../quality.md) for construction and distribution evidence.
 
 This runtime evidence does not establish opening, activation, host teardown or accessibility.
 The [tooling guide](../../../tooling/index.md#current-verification) owns actual commands and

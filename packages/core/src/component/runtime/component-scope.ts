@@ -5,19 +5,26 @@ import type { ComponentLifecycleType } from "../types/component-lifecycle.type.j
 /**
  * @description Implements one component lifetime and its owned synchronous releases.
  */
-export class ComponentScope implements ComponentScopeContract {
+export class ComponentScope {
   /** @description The current logical lifetime of this scope. */
   #lifecycle: ComponentLifecycleType = componentLifecycleStates.active;
 
   /** @description Independent release obligations retained until disposal. */
   #releases: Array<() => void> = [];
 
-  /**
-   * @description Reads the scope's logical lifetime.
-   * @returns The current lifetime, including after disposal.
-   */
-  get lifecycle(): ComponentLifecycleType {
-    return this.#lifecycle;
+  /** @description The stable, public view of this lifetime and its cleanup operations. */
+  readonly view: ComponentScopeContract;
+
+  /** @description Creates an empty lifetime and freezes its view before it can be borrowed. */
+  constructor() {
+    const owner = this;
+    this.view = Object.freeze({
+      get lifecycle() {
+        return owner.#lifecycle;
+      },
+      addCleanup: this.#addCleanup.bind(this),
+      dispose: this.#dispose.bind(this),
+    });
   }
 
   /**
@@ -25,7 +32,7 @@ export class ComponentScope implements ComponentScopeContract {
    * @param release - Cleanup callback retained without invocation.
    * @returns No value.
    */
-  addCleanup(release: () => void): void {
+  #addCleanup(release: () => void): void {
     if (this.#lifecycle !== componentLifecycleStates.active) {
       throw new Error("Cannot register cleanup after component disposal.");
     }
@@ -42,7 +49,7 @@ export class ComponentScope implements ComponentScopeContract {
    * @remarks Detaching obligations before external calls makes repeated and reentrant disposal inert.
    * @returns No value.
    */
-  dispose(): void {
+  #dispose(): void {
     if (this.#lifecycle === componentLifecycleStates.disposed) {
       return;
     }

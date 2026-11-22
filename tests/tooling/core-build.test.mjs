@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
-import { access, mkdir, readFile, symlink, unlink, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { access, mkdir, readFile, readdir, symlink, unlink, writeFile } from "node:fs/promises";
+import { join, relative, sep } from "node:path";
 import test from "node:test";
 import { withTemporaryDirectory } from "../../tooling/shared/runtime/temporary-directory.mjs";
-import { buildCore } from "../../tooling/workspace/runtime/core-build.mjs";
-import { prepareCoreCandidate } from "../shared/core-candidate.mjs";
+import { buildComponents, buildCore } from "../../tooling/workspace/runtime/package-build.mjs";
+import { linkCoreCandidate, prepareComponentsCandidate, prepareCoreCandidate } from "../shared/core-candidate.mjs";
 
 test("build replaces only unchanged owned output and removes retired emitted files", async () => {
   await withTemporaryDirectory("protea-core-output-test", async (root) => {
@@ -22,7 +22,15 @@ test("build replaces only unchanged owned output and removes retired emitted fil
     const previous = await readFile(manifest, "utf8");
     await buildCore(root);
     assert.equal(await readFile(manifest, "utf8"), previous);
-    assert.equal(JSON.parse(previous).files.length, 68);
+    const source = join(packageRoot, "src");
+    const inputs = await readdir(source, { recursive: true, withFileTypes: true });
+    const expected = inputs
+      .filter((entry) => entry.isFile() && entry.name.endsWith(".ts") && !entry.name.endsWith(".d.ts"))
+      .flatMap((entry) => {
+        const stem = relative(source, join(entry.parentPath, entry.name)).split(sep).join("/").slice(0, -3);
+        return [`${stem}.js`, `${stem}.d.ts`];
+      });
+    assert.deepEqual(JSON.parse(previous).files.map(({ path }) => path).sort(), expected.sort());
   });
 });
 
@@ -99,5 +107,27 @@ test("failed compilation preserves the preceding output and ownership", async ()
     await assert.rejects(buildCore(root), /Core compilation failed/u);
     assert.equal(await readFile(output, "utf8"), originalOutput);
     assert.equal(await readFile(manifest, "utf8"), originalManifest);
+  });
+});
+
+test("Components rejects ownership metadata carried over from Core", async () => {
+  await withTemporaryDirectory("protea-components-owner-test", async (root) => {
+    const core = await prepareCoreCandidate(root);
+    const components = await prepareComponentsCandidate(root);
+    await linkCoreCandidate(root);
+    await buildCore(root);
+    await buildComponents(root);
+
+    const coreManifest = join(core, ".build", "core-output.json");
+    const componentsManifest = join(components, ".build", "components-output.json");
+    const originalCoreManifest = await readFile(coreManifest, "utf8");
+    const output = join(components, "dist", "index.js");
+    const originalOutput = await readFile(output, "utf8");
+    await writeFile(componentsManifest, originalCoreManifest);
+
+    await assert.rejects(buildComponents(root), /invalid output ownership/u);
+    assert.equal(await readFile(componentsManifest, "utf8"), originalCoreManifest);
+    assert.equal(await readFile(coreManifest, "utf8"), originalCoreManifest);
+    assert.equal(await readFile(output, "utf8"), originalOutput);
   });
 });

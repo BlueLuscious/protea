@@ -1,23 +1,30 @@
 # Component Direction
 
-Status: **Product concepts and deferred original families; portable capabilities implemented**
+Status: **Portable Button, Modal, Sidebar and capability runtimes**
 
-Protea will build original Button, Sidebar and Modal families before selecting variants. They
-may later belong to the [core package](../packages/core/index.md); no separate component package,
-mandatory hierarchy or catalogue is allocated here. Shared family implementation needs concrete
-state, behaviour and consumers before composition or a base implementation is selected.
+Protea develops original Button, Modal and Sidebar families before selecting variants. Their
+[family modules](../packages/components/components/index.md) live in Components. The package
+consumes public Core contracts for definition-based creation and lifetime.
+Shared family implementation still needs concrete state, behaviour and consumers before a common
+layer is chosen.
 
 ## Families and independent axes
 
-A Button motivates a discrete action without implying persistent pressed or selected state.
-A Modal motivates logical opening with additional host interaction and accessibility obligations.
-Those scenarios guide later design without retaining ambient component factories as present APIs.
+A [Button](../packages/components/components/button/index.md) combines owned lifetime, observable
+application-set availability and discrete activation. The reviewed
+[contract-led workflow](../packages/components/components/index.md#contract-led-development) maps
+these requirements to `ComponentInstance`, `Activatable` and family-owned availability.
+`Button.create()` delegates to Core with its incorporated definition.
+[Modal](../packages/components/components/modal/index.md) combines owned lifetime with logical
+opening and delegates construction to Core with its prepared definition.
+[Sidebar](../packages/components/components/sidebar/index.md) combines owned lifetime and
+changeable logical presence through its prepared definition. Persistent pressed or selected
+state would require its own family case and contract.
 
-Sidebar must be designed as a family first. The previous StaticSidebar/FloatingSidebar pilot
-is retired as a production classification: floating presentation and static state or interaction
-may describe independent axes and may coexist. Whether Sidebar always has opening behaviour,
-which distinctions justify variants and which remain presentation require that family's actual
-use cases. No variant union or inherited opening obligation is selected here.
+The initial Sidebar family selects changeable logical presence. Opening and closing work with
+fixed or floating positioning. A host selects rendered visibility, layout and interaction policies
+independently. A permanently present region needs its own capability and construction decision.
+See the [Sidebar axes](../packages/components/components/sidebar/index.md#supported-cases-and-independent-axes).
 
 Presentation choices such as Default, Minimal or Glass likewise do not justify behavioural
 classes by their names. The conceptual foundation, family, variant and presentation progression
@@ -32,7 +39,7 @@ These concepts distinguish product responsibilities without requiring matching c
 | --- | --- |
 | Component | An individual model with a defined purpose and contract; the [foundation](../packages/core/component/index.md) owns identity and lifetime. |
 | Family and variant | Related purposes and justified behavioural/structural differences; their actual component owner selects obligations and composition. |
-| Capability | A narrow reusable behaviour; [capability guides](../packages/core/capabilities/index.md) own opening, activation and their resource boundaries. |
+| Capability | A narrow reusable behaviour. The [capability guides](../packages/components/capabilities/index.md) own opening, activation and their resource boundaries. |
 | Behaviour and controller | Behaviour is promised observable meaning. A controller is a possible implementation mechanism needing real responsibility, state and consumers; the two terms do not require parallel abstractions. |
 | Manager and coordination | A manager may own justified scoped membership/lookup. Family/application coordination policy uses public operations; neither automatically owns member state or lifetime. |
 | Part | A composition role with explicitly selected representation, retention, borrowing, replacement and cleanup. |
@@ -42,8 +49,8 @@ These concepts distinguish product responsibilities without requiring matching c
 | Request and effective change | Asking an owner for work is distinct from authorisation, commitment and any subsequent visual completion. |
 
 Contracts remain independent of concrete implementation classes. Capabilities consume the
-component lifetime/resource boundary; Component imports no capability, family, manager or host
-consumer. Families choose capabilities by real responsibilities, not inherited names. Optional
+component lifetime and resource boundary. The construction feature depends only on that
+foundation. Families choose capabilities according to the responsibilities they need. Optional
 hosts consume public model and host contracts without introducing reverse dependencies.
 
 Every composition identifies what is owned, copied, borrowed, retained or exposed. Registration
@@ -54,13 +61,15 @@ guarantees at their actual owners.
 ## Capability lifetime and replacement
 
 The current [foundation](../packages/core/component/index.md) supplies one terminal component
-lifetime and explicit cleanup registration. [Opening and activation](../packages/core/capabilities/index.md)
-now borrow that fixed scope within core; sharing it shares lifetime rather than state or listeners.
-Independent capability teardown and replacement remain deferred. Component and ComponentScope
-retain their distinct consumer and resource-owner roles; no definition/instance alias replaces them.
+lifetime and explicit cleanup registration. [Opening and activation](../packages/components/capabilities/index.md)
+borrow that fixed scope. Capabilities sharing a scope retain independent state and listeners.
+Independent capability teardown and replacement remain deferred. `ComponentLifetime` and
+`ComponentScope` retain distinct consumer and resource-owner roles. `ComponentInstance`
+adds the definition association for models created by the new Core runtime. See the
+[component foundation](../packages/core/component/index.md#identity-and-lifetime).
 
-Consider a future Modal whose opening capability can be replaced while the Modal remains alive.
-Closing it would change logical openness; disposing the Modal would end its model lifetime.
+Consider replacing a Modal's opening capability while the Modal remains alive. Closing it changes
+logical openness. Disposing the Modal ends its model lifetime.
 Destroying or replacing just its opening capability would be a third responsibility. That case
 must answer who authorises replacement, how old subscriptions and source connections are released,
 what retained references observe or reject, and how independent retirement would preserve the
@@ -76,15 +85,16 @@ introduced by this example.
 
 ## Connections, parts and coordination
 
-A triggering control and its target are separate models. A future composition should request
-the target's public operation, keep the activation outcome distinct from that target's outcome,
-and identify who owns each acquired connection. A source storing a registration does not acquire
+A triggering control and its target are separate models. A composition requests the target's
+public operation, keeps the activation outcome distinct from that target's outcome,
+and identifies who owns each acquired connection. A source storing a registration does not acquire
 the consumer's lifetime; a consumer holding an unsubscribe obligation does not own the source.
 Target disposal cannot automatically remove application-owned registrations on other sources.
 
 A family may justify a borrowed part such as a closing control. It must specify multiplicity,
 retention, replacement, ownership, failed setup and behaviour after either participant ends.
-The retired modal pilot supplied useful questions, not a fixed production `closeControl` API.
+The application owns the closing control and the closing connection in the
+[Button and Modal example](../packages/components/components/modal/index.md#collaboration-and-finalisation).
 Shared controls would need explicit fan-out or exclusivity semantics rather than an inferred
 topmost target. Failed physical release must not revive logically invalidated work.
 
