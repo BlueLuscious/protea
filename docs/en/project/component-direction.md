@@ -58,6 +58,24 @@ storage and release obligations are distinct. Type compatibility alone proves no
 ownership, cleanup or accessible interaction; implementations and host evidence qualify those
 guarantees at their actual owners.
 
+## Construction and extension
+
+A definition supplies the identity and recipe of a reusable component type. Each creation
+establishes an independent model lifetime. Its recipe validates the options, initialises
+model-owned state and connects to any explicitly supplied collaborators. The author specifies
+which values the recipe captures, which collaborators it borrows, who releases each acquired
+resource and which single authority owns each logical state. Shared definition metadata or
+defaults need a demonstrated use and rules for validation and application. See the
+[Core construction runtime](../packages/core/component/runtime/index.md#setup-and-options) and
+the [family contracts](../packages/components/components/index.md#construction-contracts-and-factories).
+
+Keep model inputs portable. Supply host elements, templates, styles and motion at the
+[integration boundary](integration-boundaries.md#presentation-and-motion). Compose extensions
+through public operations and observations, preserving the model's identity, results and
+ownership. When a concrete case needs a new guard or observation, name it for the operation
+or fact it exposes. Define what it may veto or observe, when it runs, and how it handles
+reentrancy, errors and release.
+
 ## Capability lifetime and replacement
 
 The current [foundation](../packages/core/component/index.md) supplies one terminal component
