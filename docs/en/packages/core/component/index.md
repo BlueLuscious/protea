@@ -146,7 +146,7 @@ permitted, but its shape alone proves neither atomic registration, synchronous f
 resource ownership. Native private implementation state and any genuine class specialisation
 remain implementation responsibilities.
 
-Closing a future Modal is distinct from finalising it. Removing a host representation is also
+Closing a Modal is distinct from finalising it. Removing a host representation is also
 distinct from ending a borrowed model's lifetime. Component-specific policies and optional
 capabilities must preserve these boundaries without adding unrelated members to the minimum
 contract.

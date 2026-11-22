@@ -1,6 +1,6 @@
 # Component Direction
 
-Status: **Portable capabilities and Button implemented; Modal/Sidebar contracts reviewed and typed**
+Status: **Portable capabilities, Button and Modal implemented with reviewed Sidebar type contracts**
 
 Protea develops original Button, Modal and Sidebar families before selecting variants. Their
 [family modules](../packages/components/components/index.md) live in Components. The package
@@ -15,11 +15,12 @@ application-set availability and discrete activation. The reviewed
 [contract-led workflow](../packages/components/components/index.md#contract-led-development) maps
 these requirements to `ComponentInstance`, `Activatable` and family-owned availability.
 `Button.create()` delegates to Core with its incorporated definition.
-[Modal](../packages/components/components/modal/index.md) and
-[Sidebar](../packages/components/components/sidebar/index.md) combine owned lifetime with logical
-opening for their selected cases. Their instance and construction types are public. Their
-definitions, API values and runtime remain future work. Persistent pressed or selected state is
-outside these contracts.
+[Modal](../packages/components/components/modal/index.md) combines owned lifetime with logical
+opening and delegates construction to Core with its prepared definition.
+[Sidebar](../packages/components/components/sidebar/index.md) describes owned lifetime and logical
+opening for its selected cases. Its instance and construction types are public, with runtime
+implementation pending. Persistent pressed or selected state would require its own family case
+and contract.
 
 Sidebar must be designed as a family first. The previous StaticSidebar/FloatingSidebar pilot
 is retired as a production classification: floating presentation and static state or interaction
@@ -71,8 +72,8 @@ Independent capability teardown and replacement remain deferred. `ComponentLifet
 adds the definition association for models created by the new Core runtime. See the
 [component foundation](../packages/core/component/index.md#identity-and-lifetime).
 
-Consider a future Modal whose opening capability can be replaced while the Modal remains alive.
-Closing it would change logical openness; disposing the Modal would end its model lifetime.
+Consider replacing a Modal's opening capability while the Modal remains alive. Closing it changes
+logical openness. Disposing the Modal ends its model lifetime.
 Destroying or replacing just its opening capability would be a third responsibility. That case
 must answer who authorises replacement, how old subscriptions and source connections are released,
 what retained references observe or reject, and how independent retirement would preserve the
@@ -88,16 +89,16 @@ introduced by this example.
 
 ## Connections, parts and coordination
 
-A triggering control and its target are separate models. A future composition should request
-the target's public operation, keep the activation outcome distinct from that target's outcome,
-and identify who owns each acquired connection. A source storing a registration does not acquire
+A triggering control and its target are separate models. A composition requests the target's
+public operation, keeps the activation outcome distinct from that target's outcome,
+and identifies who owns each acquired connection. A source storing a registration does not acquire
 the consumer's lifetime; a consumer holding an unsubscribe obligation does not own the source.
 Target disposal cannot automatically remove application-owned registrations on other sources.
 
 A family may justify a borrowed part such as a closing control. It must specify multiplicity,
 retention, replacement, ownership, failed setup and behaviour after either participant ends.
-The first Modal contract leaves the closing control with the application and has no closeControl
-option. The retired modal pilot supplied useful questions, not a fixed production part API.
+The application owns the closing control and the closing connection in the
+[Button and Modal example](../packages/components/components/modal/index.md#collaboration-and-finalisation).
 Shared controls would need explicit fan-out or exclusivity semantics rather than an inferred
 topmost target. Failed physical release must not revive logically invalidated work.
 

@@ -1,10 +1,10 @@
 # Components
 
-Status: **Private Button and capability runtime with Modal and Sidebar type contracts**
+Status: **Private Button, Modal and capability runtimes with Sidebar type contracts**
 
 `@luscious-garden/protea-components` owns Protea's portable built-in families and reusable
-capabilities. Button has an incorporated definition and live instances. Modal and Sidebar
-have reviewed instance and construction contracts.
+capabilities. Button and Modal have incorporated definitions and create live instances. Sidebar
+has reviewed instance and construction contracts.
 
 ## Boundary
 
@@ -26,8 +26,8 @@ responsibilities.
 
 | Page | Owns |
 | --- | --- |
-| [API](api/index.md) | `Button`, `Opening` and `Activation` usage and exact root exports. |
+| [API](api/index.md) | `Button`, `Modal`, `Opening` and `Activation` usage and exact root exports. |
 | [Capabilities](capabilities/index.md) | Opening, activation and composition over a borrowed lifetime. |
-| [Component Families](components/index.md) | Button behaviour and the Modal and Sidebar type contracts. |
+| [Component Families](components/index.md) | Button and Modal behaviour and the Sidebar type contracts. |
 | [Shared Runtime](shared/index.md) | Listener registration and delivery across families and capabilities. |
 | [Quality](quality.md) | Runtime, declaration and packed-consumer evidence. |

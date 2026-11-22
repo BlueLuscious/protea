@@ -1,23 +1,23 @@
 # Modal
 
-Status: **Portable type contract; runtime implementation pending**
+Status: **Portable definition, construction and runtime implemented**
 
-Modal describes a dialogue model with its own lifetime and logical opening. A representative
+Modal models a dialogue with its own lifetime and logical opening. A representative
 application opens a confirmation dialogue and connects a separate Button to its closing request.
 The model keeps that opening state and lifetime distinct from application work and the future
 host's actual modality, focus and representation.
 
-The type-only contracts are `ModalInstance`, `ModalApi` and `ModalOptionsType`. `ModalInstance`
-composes [ComponentInstance](../../../core/component/index.md) and [Openable](../../capabilities/openable/index.md)
-contracts; this selects their semantic obligations without requiring implementation inheritance.
-Production TypeScript and its generated declarations own signatures. There is no executable
-Modal API value, incorporated definition or runtime implementation supplied by these types.
+The Components root exports the frozen `Modal` object through `ModalApi`, along with
+`ModalInstance` and `ModalOptionsType`. `ModalInstance` composes
+[ComponentInstance](../../../core/component/index.md) and
+[Openable](../../capabilities/openable/index.md). Production TypeScript and its generated
+declarations own the signatures.
 
 ## Construction and state authority
 
-`ModalApi` describes a readonly contextual `create` operation. Its required `ModalOptionsType`
-argument is an alias of OpenableOptionsType: every creation explicitly selects internal or
-external control. Omitting the options or the control mode is unsupported.
+`Modal.definition` is the prepared definition with identity `{ namespace: "protea", name: "modal" }`.
+`Modal.create(options)` delegates to `Component.create(Modal.definition, options)`. Both entries
+require `ModalOptionsType`, an alias of `OpenableOptionsType`, with an explicit control mode.
 
 | Mode | Required meaning |
 | --- | --- |
@@ -31,16 +31,15 @@ freezing or adopting the caller's configuration. It cannot be reconfigured by mu
 options later. A supplied source must satisfy the complete
 [synchronous authority protocol](../../capabilities/openable/index.md#external-authority-protocol).
 
-Each successful creation must expose a new active model with a private, independently owned
-scope. The caller owns its disposal authority. There is no public scope argument, addCleanup
-method, capability instance, closing-control option or implicit registration in a manager.
-Borrowing a Modal reference or supplying an authority does not transfer either collaborator's
-lifetime.
+Each creation returns a new active model with a private Core scope. Its caller owns disposal.
+`Opening.create` borrows that scope. The
+[Modal recipe](../../../../../../packages/components/src/api/modal.api.ts) exposes the Openable
+operations directly on the instance and keeps the capability and cleanup registration private.
+Supplied authorities and borrowed Modal references retain their original lifetime ownership.
 
-Failed creation exposes no partial model. Invalidate the attempt's work and finalise only its
-newly owned lifetime, becoming terminal before attempting every required owned release. Preserve
-supplied authorities, other models and unrelated registrations; report failures opaquely without
-promising rollback of collaborator effects. The
+Failed construction invalidates the attempt's work, finalises its newly owned lifetime and
+reports an error. Cleanup attempts all required owned releases and preserves
+supplied authorities, other models and unrelated registrations. The
 [capability setup rules](../../capabilities/index.md#failed-setup) own acquired-connection and
 late-release obligations.
 
@@ -63,19 +62,48 @@ follow commitment and does not establish refusal or rollback.
 
 The application can subscribe to a [Button](../button/index.md) activation and request this
 Modal's close operation through their public contracts. It owns that connection and its release.
-Button activation acceptance and the closing result are separate: a trigger can be accepted
-while the target is already closed, refuses closing or has ended its lifetime.
+Button can accept activation while its target is already closed, refuses closing or has ended
+its lifetime. The application handles each outcome independently.
 
-No participant acquires the other's disposal authority. Ending Modal does not remove an
-application-owned registration from a still-active Button; ending Button does not finalise
-Modal. The application must retire connections it no longer needs. A family-owned closeControl
-part, automatic dismissal, topmost selection and cross-modal policy are not selected here.
+In this example the application owns both models and releases the connection after one
+activation. The result contains the activation outcome and the observed closing outcome.
 
-Closing changes logical openness without ending the model. Disposal follows the
-[component finalisation protocol](../../../core/component/index.md#finalisation-and-ownership): become
-terminal before external releases, attempt all required owned cleanup and preserve borrowed
-lifetimes. Logical work and pending deliveries must stop even before physical disconnection
-runs or when it fails.
+```ts
+import { Button, Modal, type OpenableResultType } from "@luscious-garden/protea-components";
+
+export function requestConfirmationClose() {
+  const modal = Modal.create({ control: "internal", initialOpen: true });
+  const closeButton = Button.create();
+  const outcomes: { closing?: OpenableResultType } = {};
+  let disconnect: (() => void) | undefined;
+
+  try {
+    disconnect = closeButton.subscribeActivation(() => {
+      outcomes.closing = modal.close();
+    });
+
+    const activation = closeButton.activate();
+    return { activation, closing: outcomes.closing };
+  } finally {
+    disconnect?.();
+    closeButton.dispose();
+    modal.dispose();
+  }
+}
+```
+
+An invalid listener or a disposed Button causes registration to throw before it acquires a
+connection. The application still cleans up any resources it already owns. Disposing Button
+clears its subscriptions and leaves Modal alive. Disposing Modal leaves the connection on an
+active Button until the application releases it. Each registration has its own idempotent
+release, including when the same listener is added twice. Release the connection when the
+pairing ends, and dispose only models your application owns. Application composition owns any
+policy for selecting or changing the target.
+
+Closing changes logical openness without ending the model. Disposal makes Modal terminal before
+attempting all required owned releases and preserves borrowed lifetimes, following the
+[component finalisation protocol](../../../core/component/index.md#finalisation-and-ownership).
+If a borrowed authority's release throws, any retained callbacks remain inert.
 
 After finalisation, lifecycle and the last observed isOpen projection remain readable. Requests
 return rejected/disposed; new observation throws and existing release handles remain idempotent.
@@ -95,9 +123,8 @@ focus movement/return, background interaction, mounting and representation. None
 an open boolean. The [integration boundary](../../../../project/integration-boundaries.md)
 also keeps DOM, frameworks, icons, motion and styling outside this portable model.
 
-Public type consumers must check explicit authority options, inherited operations, readonly
-state and construction relationships without resolving a missing runtime factory. Runtime
-implementation must later demonstrate independent lifetimes, both authority modes, setup
-cleanup, repeated/refused requests, terminal projection and application-owned Button connections
-through fresh public package artefacts. Those behaviours and accessible host interaction require
-their own runtime evidence.
+## Evidence
+
+The [Components quality guide](../../quality.md) owns packed runtime and declaration checks for
+both creation entries, explicit authority options, terminal projection and application-owned
+Button connections.

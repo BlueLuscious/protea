@@ -7,9 +7,8 @@ direction is distinct from implemented contracts, package availability and publi
 [package guides](packages/index.md) own the actual source; proposals here do not add runtime APIs.
 
 The [Core](packages/core/index.md) and [Components](packages/components/index.md) guides own
-the implemented package boundary. The [Modal](packages/components/components/modal/index.md)
-and [Sidebar](packages/components/components/sidebar/index.md) guides own their remaining runtime
-work. Family defaults need a demonstrated consumer.
+the implemented package boundary. The [Sidebar guide](packages/components/components/sidebar/index.md)
+owns its remaining runtime work. Family defaults need a demonstrated consumer.
 
 ## Conditional and deferred work
 
@@ -76,7 +75,7 @@ claiming an independent package. Extraction alone establishes no bundle-size or 
 The following subjects retain their narrower authorities rather than duplicate their protocols here:
 
 - [Independent capability lifetime and replacement](project/component-direction.md#capability-lifetime-and-replacement)
-  owns the future Modal example and the unresolved retirement guarantees.
+  owns the example of replacing Modal's opening capability and the unresolved retirement guarantees.
 - [Connections, parts and coordination](project/component-direction.md#connections-parts-and-coordination)
   owns future shared controls and justified manager/lookup responsibilities.
 - [Integration boundaries](project/integration-boundaries.md) owns optional framework hosts,

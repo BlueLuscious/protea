@@ -1,7 +1,7 @@
 import * as core from "@luscious-garden/protea-core";
 import { Component, type ComponentInstance, type ComponentLifetime } from "@luscious-garden/protea-core";
 import * as components from "@luscious-garden/protea-components";
-import { Button } from "@luscious-garden/protea-components";
+import { Button, Modal } from "@luscious-garden/protea-components";
 import type {
   Activatable,
   ActivatableResultType,
@@ -27,7 +27,6 @@ import { ButtonComponent } from "@luscious-garden/protea-components/dist/compone
 void ButtonComponent;
 
 function consumeFamilies(
-  modalApi: ModalApi,
   sidebarApi: SidebarApi,
   authority: OpenStateAuthority,
 ): void {
@@ -46,8 +45,15 @@ function consumeFamilies(
 
   const modalInternal: ModalOptionsType = { control: "internal", initialOpen: true };
   const modalExternal: ModalOptionsType = { control: "external", authority };
+  const modalApi: ModalApi = Modal;
   const modal: ModalInstance = modalApi.create(modalInternal);
-  modalApi.create(modalExternal);
+  const explicitModal: ModalInstance = Component.create(Modal.definition, modalExternal);
+  const inferredModal = Component.create(Modal.definition, { control: "internal" });
+  const modalDefinition: typeof Modal.definition = inferredModal.definition;
+  const modalOpen: boolean = inferredModal.isOpen;
+  const modalOutcome: OpenableResultType = explicitModal.close();
+  Modal.create(modalExternal);
+  void [modalDefinition, modalOpen, modalOutcome];
 
   const sidebarInternal: SidebarOptionsType = { control: "internal" };
   const sidebarExternal: SidebarOptionsType = { control: "external", authority };
@@ -151,8 +157,16 @@ function consumeFamilies(
   modalApi.create({ control: "internal", authority });
   // @ts-expect-error External Modal state excludes a second initial value.
   modalApi.create({ control: "external", authority, initialOpen: false });
+  // @ts-expect-error Internal Modal state does not accept an explicit undefined initial value.
+  Modal.create({ control: "internal", initialOpen: undefined });
   // @ts-expect-error Modal construction does not consume Button options.
   modalApi.create(buttonOptions);
+  // @ts-expect-error Explicit Modal creation also requires options.
+  Component.create(Modal.definition);
+  // @ts-expect-error Explicit Modal creation requires a source for external opening.
+  Component.create(Modal.definition, { control: "external" });
+  // @ts-expect-error Button-to-Modal composition is registered by the application.
+  Modal.create({ control: "internal", closeControl: button });
   // @ts-expect-error Modal does not acquire activation merely by being a component.
   modal.activate();
   // @ts-expect-error Modal projects its selected opening authority through a read-only view.
@@ -161,6 +175,10 @@ function consumeFamilies(
   modal.addCleanup(() => {});
   // @ts-expect-error The Modal construction operation cannot be replaced.
   modalApi.create = () => modal;
+  // @ts-expect-error The built-in Modal definition cannot be replaced.
+  Modal.definition = modal.definition;
+  // @ts-expect-error The instance retains a readonly reference to its definition.
+  explicitModal.definition = Modal.definition;
 
   // @ts-expect-error Sidebar construction requires explicit options.
   sidebarApi.create();
@@ -189,10 +207,12 @@ function consumeFamilies(
 
   // @ts-expect-error Core no longer exports a family API.
   core.Button;
+  // @ts-expect-error Core does not export the Modal family.
+  core.Modal;
   // @ts-expect-error The Button API is not an implementation constructor.
   new Button();
-  // @ts-expect-error A type-only Modal API has no runtime value.
-  components.Modal;
+  // @ts-expect-error The Modal API is not an implementation constructor.
+  new Modal();
   // @ts-expect-error A type-only Sidebar API has no runtime value.
   components.Sidebar;
 }

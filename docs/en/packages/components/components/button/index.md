@@ -131,9 +131,9 @@ Disposal invents no activation or disabled transition and does not force isDisab
 Existing release handles remain valid. No scope or internal capability escapes through Button.
 
 An application connecting Button activation to another model owns that connection and its release.
-Neither participant acquires the other's lifetime. The reviewed [Modal](../modal/index.md)
-composition leaves the closing connection with the application; neither family accepts a
-closeControl option, manager membership or implicit target.
+Each participant keeps its own lifetime. The [Modal collaboration](../modal/index.md#collaboration-and-finalisation)
+guide shows how the application connects the models, handles each outcome and releases the
+connection.
 
 ## Host responsibilities and verification
 
@@ -151,7 +151,7 @@ tab order, gestures, rendering, icons and motion are not supplied by this model.
 
 The packed type consumer checks construction through both entries, readonly availability and
 definition, activation results, opposite-direction snapshots and private scope and constructor
-boundaries. Modal and Sidebar examples use typed collaborators and exercise their contracts.
+boundaries. The family fixture covers the public Modal API and the reviewed Sidebar types.
 
 The [public runtime suite](../../../../../../tests/runtime/button.test.mjs) exercises fresh packed
 Button instances: independent lifetimes/state, captured and invalid configuration, activation

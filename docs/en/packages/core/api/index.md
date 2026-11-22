@@ -65,5 +65,5 @@ The public `"."` entry of `@luscious-garden/protea-core` exposes these runtime v
 
 The same entry exposes public feature contracts and types, as documented by the
 [feature map](../index.md#documentation). Package feature and runtime imports are private.
-The [Components API guide](../../components/api/index.md) covers the built-in Button and
+The [Components API guide](../../components/api/index.md) covers the built-in Button, Modal and
 capability entry points.
