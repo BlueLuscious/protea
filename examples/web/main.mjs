@@ -1,12 +1,108 @@
 import { Scope } from "@luscious-garden/protea-core";
 import { Button, Modal, Opening, Sidebar, openableResultStatuses } from "@luscious-garden/protea-components";
 import { bindButton } from "./button.mjs";
+import { bindModal } from "./modal.mjs";
 import { bindSidebar } from "./sidebar.mjs";
 
 /**
+ * @description Owns one dialogue model and its application-controlled opening source.
+ * @remarks Page teardown detaches the connection before closing the supplied view.
+ * @param {import("@luscious-garden/protea-core").ComponentScope} lifetime - The page owner.
+ * @param {HTMLDialogElement} dialog - The page's native dialogue.
+ * @param {() => boolean} canClose - The application's synchronous closing policy.
+ * @returns {import("@luscious-garden/protea-components").ModalInstance} The page-owned model.
+ */
+function mountDialogue(lifetime, dialog, canClose) {
+  const opening = Opening.create(lifetime, { control: "internal" });
+  const modal = Modal.create({
+    control: "external",
+    authority: {
+      get isOpen() {
+        return opening.isOpen;
+      },
+      requestOpen(nextOpen) {
+        if (!nextOpen && !canClose()) {
+          return false;
+        }
+        const result = nextOpen ? opening.open() : opening.close();
+        return result.status !== openableResultStatuses.rejected;
+      },
+      subscribeOpenChange: opening.subscribeOpenChange.bind(opening),
+    },
+  });
+  lifetime.addCleanup(modal.dispose);
+
+  let detach;
+  lifetime.addCleanup(() => {
+    try {
+      detach?.();
+    } finally {
+      dialog.close();
+    }
+  });
+  detach = bindModal(dialog, modal, () => {
+    opening.close();
+  });
+  return modal;
+}
+
+/**
+ * @description Connects an application action to a page-owned Button and its native control.
+ * @param {import("@luscious-garden/protea-core").ComponentScope} lifetime - The page owner.
+ * @param {HTMLButtonElement} control - The native action control.
+ * @param {() => void} action - The application action requested on activation.
+ * @returns No value.
+ */
+function connectAction(lifetime, control, action) {
+  const button = Button.create();
+  lifetime.addCleanup(button.dispose);
+  lifetime.addCleanup(button.subscribeActivation(action));
+  lifetime.addCleanup(bindButton(control, button));
+}
+
+/**
+ * @description Mounts an editor whose draft survives a browser-completed closure.
+ * @param {import("@luscious-garden/protea-core").ComponentScope} lifetime - The page owner.
+ * @param {AddEventListenerOptions} listenerOptions - The caller's listener release options.
+ * @returns No value.
+ */
+function mountEditor(lifetime, listenerOptions) {
+  const dialog = document.getElementById("editor-dialog");
+  const opener = document.getElementById("open-editor");
+  const input = document.getElementById("editor-draft");
+  const save = document.getElementById("save-draft");
+  const discard = document.getElementById("discard-draft");
+
+  if (!(dialog instanceof HTMLDialogElement) || !(input instanceof HTMLInputElement) ||
+    !(opener instanceof HTMLButtonElement) || !(save instanceof HTMLButtonElement) ||
+    !(discard instanceof HTMLButtonElement)) {
+    throw new TypeError("The example requires its native editor controls.");
+  }
+
+  let savedValue = input.value;
+  let draftValue = savedValue;
+  const modal = mountDialogue(lifetime, dialog, () => draftValue === savedValue);
+  input.addEventListener("input", () => {
+    draftValue = input.value;
+  }, listenerOptions);
+
+  connectAction(lifetime, opener, () => {
+    input.value = draftValue;
+    modal.open();
+  });
+  connectAction(lifetime, save, () => {
+    savedValue = draftValue;
+    modal.close();
+  });
+  connectAction(lifetime, discard, () => {
+    draftValue = savedValue;
+    input.value = draftValue;
+    modal.close();
+  });
+}
+
+/**
  * @description Connects the page's native controls to application-owned Protea models.
- * @remarks A cancelable native dismissal passes through Modal. A completed native dismissal
- * updates the borrowed authority so the model follows the browser when it enforces closing.
  * @returns No value.
  */
 function mountExample() {
@@ -34,61 +130,16 @@ function mountExample() {
     lifetime.addCleanup(sidebar.dispose);
     lifetime.addCleanup(bindSidebar(sidebarControl, navigation, sidebar));
 
-    const opening = Opening.create(lifetime, { control: "internal" });
-    const openButton = Button.create();
-    lifetime.addCleanup(openButton.dispose);
-    const closeButton = Button.create();
-    lifetime.addCleanup(closeButton.dispose);
-    const modal = Modal.create({
-      control: "external",
-      authority: {
-        get isOpen() {
-          return opening.isOpen;
-        },
-        requestOpen(nextOpen) {
-          if (!nextOpen && refuseClose.checked) {
-            return false;
-          }
-          const result = nextOpen ? opening.open() : opening.close();
-          return result.status !== openableResultStatuses.rejected;
-        },
-        subscribeOpenChange: opening.subscribeOpenChange.bind(opening),
-      },
-    });
-    lifetime.addCleanup(modal.dispose);
+    const modal = mountDialogue(lifetime, dialog, () => !refuseClose.checked);
+    connectAction(lifetime, openElement, modal.open);
+    connectAction(lifetime, closeElement, modal.close);
+    mountEditor(lifetime, listenerOptions);
 
-    function projectOpenness() {
-      const isOpen = modal.isOpen;
-      if (isOpen && !dialog.open) {
-        dialog.showModal();
-      } else if (!isOpen && dialog.open) {
-        dialog.close();
-      }
-    }
-
-    lifetime.addCleanup(openButton.subscribeActivation(modal.open));
-    lifetime.addCleanup(closeButton.subscribeActivation(modal.close));
-    lifetime.addCleanup(bindButton(openElement, openButton));
-    lifetime.addCleanup(bindButton(closeElement, closeButton));
-    lifetime.addCleanup(modal.subscribeOpenChange(projectOpenness));
-    lifetime.addCleanup(() => dialog.close());
-    dialog.addEventListener("cancel", (event) => {
-      if (event.cancelable) {
-        event.preventDefault();
-        modal.close();
-      }
-    }, listenerOptions);
-    dialog.addEventListener("close", () => {
-      if (!dialog.open && modal.isOpen) {
-        opening.close();
-      }
-    }, listenerOptions);
     window.addEventListener("pagehide", ({ persisted }) => {
       if (!persisted) {
         lifetime.dispose();
       }
     }, listenerOptions);
-    projectOpenness();
   } catch (error) {
     try {
       lifetime.dispose();

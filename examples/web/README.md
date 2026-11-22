@@ -40,6 +40,15 @@ Stop the server with Ctrl+C when finished.
    opening state. See the [dialogue element](https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element)
    and [close watcher infrastructure](https://html.spec.whatwg.org/multipage/interaction.html#close-watcher-infrastructure).
 
+## Try the draft editor
+
+1. Activate **Open editor**. Focus starts in **Draft**. Press Escape before editing to close
+   the dialogue and return focus to its opener.
+2. Reopen the editor and change the draft. A cancellable Escape request leaves the editor open.
+   If the browser completes dismissal, reopen the editor to find the unsaved draft intact.
+3. **Save** keeps the current text. **Discard** restores the last saved text. Both actions
+   request closure. The saved value and draft live in memory until the page reloads.
+
 ## Try supplementary navigation
 
 1. Activate **Supplementary navigation** with the mouse or keyboard. The labelled navigation
@@ -57,9 +66,13 @@ with effective openness. The caller supplies the elements, labels and relationsh
 The page's own Button subscriptions decide which Modal actions to request.
 
 Each binding borrows a live model and returns an idempotent detach function. Detach attempts
-to release the DOM listener and model subscription. The detached view keeps its last projected
+to release its DOM listeners and model subscription. The detached view keeps its last projected
 state. The caller can still use the model, attach it to another view and dispose it. If setup
 fails, the binding invalidates its callbacks and attempts any releases it acquired.
+
+Both dialogues use the [Modal binding](modal.mjs) for native projection and dismissal. The
+page supplies each opening policy and reconciles completed native closing through that
+dialogue's own authority. It detaches the binding before closing the view during teardown.
 
 The page scope owns the connections and model instances it creates. It releases the connections
 and disposes those instances when setup fails or the page leaves without entering the
