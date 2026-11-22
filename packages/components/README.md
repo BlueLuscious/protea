@@ -9,10 +9,12 @@ with an independent lifetime, observable availability and activation. It shares 
 definition with the explicit Core entry `Component.create(Button.definition, options)`.
 `Modal.create(options)` creates a dialogue model with internal or borrowed external opening
 authority. Its prepared definition is available as `Modal.definition` for explicit creation.
+`Sidebar.create(options)` creates a lateral region model with changeable logical presence and
+the same opening authority choices. Use `Sidebar.definition` with the explicit Core entry.
 
 `Opening.create` and `Activation.create` add portable behaviour to a supplied active Core scope.
 Opening can use internal state or a borrowed synchronous state authority. Activation reports
-action acceptance. Sidebar supplies instance and construction types for a future runtime.
+action acceptance.
 
 The [package guide](../../docs/en/packages/components/index.md) maps public responsibilities.
 The [API guide](../../docs/en/packages/components/api/index.md) shows both construction entries.

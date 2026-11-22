@@ -8,6 +8,12 @@ Openable provides `isOpen`, `open()`, `close()` and `subscribeOpenChange()`. Its
 [capability guide](../index.md) owns shared construction, lifetime, subscription and error rules.
 Production contracts and generated declarations own complete signatures.
 
+The [Modal](../../components/modal/index.md) and [Sidebar](../../components/sidebar/index.md)
+recipes use a shared
+[surface projection](../../../../../../packages/components/src/capabilities/openable/runtime/internal/openable-surface.ts)
+to expose live reads and opening operations on Core-created instances. Each recipe supplies the
+scope Core created for that instance.
+
 Logical opening is independent of visibility, mounting, animation and focus. This capability
 does not define a Sidebar variant, modal interaction, host representation or style. `toggle`
 is excluded because the retained consumers justify explicit opening and closing only.

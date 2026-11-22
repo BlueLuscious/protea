@@ -1,7 +1,6 @@
 import * as core from "@luscious-garden/protea-core";
 import { Component, type ComponentInstance, type ComponentLifetime } from "@luscious-garden/protea-core";
-import * as components from "@luscious-garden/protea-components";
-import { Button, Modal } from "@luscious-garden/protea-components";
+import { Button, Modal, Sidebar } from "@luscious-garden/protea-components";
 import type {
   Activatable,
   ActivatableResultType,
@@ -26,10 +25,7 @@ import type {
 import { ButtonComponent } from "@luscious-garden/protea-components/dist/components/button/runtime/button.component.js";
 void ButtonComponent;
 
-function consumeFamilies(
-  sidebarApi: SidebarApi,
-  authority: OpenStateAuthority,
-): void {
+function consumeFamilies(authority: OpenStateAuthority): void {
   const construction: ButtonApi = Button;
   void construction;
   const buttonOptions: ButtonOptionsType = { initialDisabled: undefined };
@@ -57,8 +53,15 @@ function consumeFamilies(
 
   const sidebarInternal: SidebarOptionsType = { control: "internal" };
   const sidebarExternal: SidebarOptionsType = { control: "external", authority };
+  const sidebarApi: SidebarApi = Sidebar;
   const sidebar: SidebarInstance = sidebarApi.create(sidebarInternal);
-  sidebarApi.create(sidebarExternal);
+  const explicitSidebar: SidebarInstance = Component.create(Sidebar.definition, sidebarExternal);
+  const inferredSidebar = Component.create(Sidebar.definition, sidebarInternal);
+  const sidebarDefinition: typeof Sidebar.definition = inferredSidebar.definition;
+  const sidebarOpen: boolean = inferredSidebar.isOpen;
+  const sidebarOutcome: OpenableResultType = explicitSidebar.close();
+  Sidebar.create(sidebarExternal);
+  void [sidebarDefinition, sidebarOpen, sidebarOutcome];
 
   const component: ComponentLifetime = button;
   const modalComponent: ComponentLifetime = modal;
@@ -190,14 +193,26 @@ function consumeFamilies(
   sidebarApi.create({ control: "internal", initialOpen: undefined });
   // @ts-expect-error The reviewed Sidebar contract has no presentation-based control mode.
   sidebarApi.create({ control: "floating" });
+  // @ts-expect-error Constructing a Sidebar does not select its presentation.
+  Sidebar.create({ control: "internal", positioning: "floating" });
+  // @ts-expect-error Explicit Sidebar creation also requires options.
+  Component.create(Sidebar.definition);
+  // @ts-expect-error Explicit creation requires the same authority as the Sidebar API.
+  Component.create(Sidebar.definition, { control: "external" });
   // @ts-expect-error Sidebar has no inherited activation operation.
   sidebar.activate();
+  // @ts-expect-error Sidebar exposes explicit requests through open and close.
+  sidebar.toggle();
   // @ts-expect-error Sidebar projects its selected opening authority through a read-only view.
   sidebar.isOpen = true;
   // @ts-expect-error Sidebar owns cleanup privately rather than exposing a resource-owner extension.
   sidebar.addCleanup(() => {});
   // @ts-expect-error The Sidebar construction operation cannot be replaced.
   sidebarApi.create = () => sidebar;
+  // @ts-expect-error The built-in Sidebar definition cannot be replaced.
+  Sidebar.definition = sidebar.definition;
+  // @ts-expect-error The instance retains a readonly reference to its definition.
+  explicitSidebar.definition = Sidebar.definition;
 
   // @ts-expect-error Activation acceptance is not an opening result.
   const openingFromActivation: OpenableResultType = accepted;
@@ -209,12 +224,14 @@ function consumeFamilies(
   core.Button;
   // @ts-expect-error Core does not export the Modal family.
   core.Modal;
+  // @ts-expect-error Core does not export the Sidebar family.
+  core.Sidebar;
   // @ts-expect-error The Button API is not an implementation constructor.
   new Button();
   // @ts-expect-error The Modal API is not an implementation constructor.
   new Modal();
-  // @ts-expect-error A type-only Sidebar API has no runtime value.
-  components.Sidebar;
+  // @ts-expect-error The Sidebar API is not an implementation constructor.
+  new Sidebar();
 }
 
 void consumeFamilies;

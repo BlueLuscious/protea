@@ -2,6 +2,7 @@ export { Activation } from "./api/activation.api.js";
 export { Button } from "./api/button.api.js";
 export { Modal } from "./api/modal.api.js";
 export { Opening } from "./api/opening.api.js";
+export { Sidebar } from "./api/sidebar.api.js";
 export type { ActivationApi } from "./api/contracts/activation-api.contract.js";
 export type { ButtonApi } from "./api/contracts/button-api.contract.js";
 export type { ModalApi } from "./api/contracts/modal-api.contract.js";

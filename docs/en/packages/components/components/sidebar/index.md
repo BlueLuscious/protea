@@ -1,109 +1,127 @@
 # Sidebar
 
-Status: **Portable type contract for changeable logical presence; runtime implementation pending**
+Status: **Portable runtime for changeable logical presence**
 
-This first Sidebar contract covers a lateral region whose logical presence can be opened and
-closed. For example, an application opens a supplementary navigation region when requested and
-closes it when that task ends. The model owns an independent lifetime and opening relationship;
-it does not measure rendered visibility or perform layout.
+Sidebar models a lateral region whose logical presence can change. For example, an application
+opens its supplementary navigation when requested and closes it after selection. Each instance
+has its own lifetime and delegates logical opening to its selected authority.
 
-The type-only contracts are `SidebarInstance`, `SidebarApi` and `SidebarOptionsType`. For these
-cases, `SidebarInstance` composes [ComponentInstance](../../../core/component/index.md) and
-[Openable](../../capabilities/openable/index.md). This does not establish that every possible
-sidebar must be Openable. Production source and generated declarations own signatures. The
-Sidebar API value, incorporated definition and runtime implementation remain future work.
+The Components root exports the frozen `Sidebar` API object and the `SidebarApi`,
+`SidebarInstance` and `SidebarOptionsType` contracts. `SidebarInstance` composes
+[ComponentInstance](../../../core/component/index.md) and
+[Openable](../../capabilities/openable/index.md). Production source and generated declarations
+own the signatures.
 
 ## Supported cases and independent axes
 
-Both model-owned opening and a borrowed synchronous application authority support the selected
-changeable-presence cases. The complete source and request obligations are those of Openable;
-the Sidebar name introduces no weaker authority protocol.
+Model-owned opening and a borrowed synchronous application authority both support changeable
+presence. Their request and observation rules come from [Openable](../../capabilities/openable/index.md).
+Starting open sets the initial logical state in internal mode. An external authority can refuse a
+request under its own policy. A permanently present region falls outside this contract and needs
+its own capability and construction decision.
 
-A permanently invariable presence is outside this initial contract. Starting open still leaves
-a meaningful closing request and does not select a permanent mode. An authority may refuse a
-request under its existing policy, but that refusal does not introduce a permanent-sidebar
-variant or establish support for every persistent-layout scenario.
+| Axis | Responsibility |
+| --- | --- |
+| Logical presence | Sidebar exposes the current open state and requests open or close through the selected authority. |
+| Positioning and rendered visibility | A host decides where the region appears, how much space it occupies and when to show it. Fixed and floating positioning can each present a changeable region. |
+| Interaction | A host defines input, focus and any modal interaction according to the region's purpose. |
 
-Floating positioning, persistent layout, modality and responsive presentation are separate
-questions. No StaticSidebar/FloatingSidebar classes, variant union, presentation discriminator
-or inherited operation that is meaningless by construction is selected. A future permanently
-present model must justify its own capability/construction boundary instead of implementing
-close as a filler operation. Reconsidering the public family boundary requires an explicit
-compatibility decision; this contract does not promise an automatic future subtype hierarchy.
+A persistent layout can reserve a region's space while the model's logical presence changes.
+Each presentation can choose its policy independently of the opening authority.
 
 ## Construction and state authority
 
-`SidebarApi` describes a readonly contextual `create` operation with a required
-`SidebarOptionsType` argument. That type aliases `OpenableOptionsType`, preserving its explicit
-control choice and mutually exclusive inputs:
+`Sidebar.definition` is the prepared definition with identity
+`{ namespace: "protea", name: "sidebar" }`. `Sidebar.create(options)` delegates to
+`Component.create(Sidebar.definition, options)`. Both entries require `SidebarOptionsType`,
+an alias of `OpenableOptionsType`, with an explicit control mode.
 
 | Mode | Required meaning |
 | --- | --- |
 | Internal | The model owns logical openness. Omitted initialOpen defaults to false; an explicitly supplied value must be boolean. An external authority is excluded. |
 | External | A required borrowed OpenStateAuthority is the sole state owner. No separate initialOpen value is accepted. |
 
-Missing options or control mode are unsupported. An excluded member remains excluded when
-supplied as undefined; internal initialOpen also rejects explicit undefined. The model captures
-the selected configuration and source/callback references, leaving the caller's options mutable
-without making later mutations a reconfiguration mechanism. The source must satisfy the
+The internal `initialOpen` value must be a boolean when present. Excluded properties must be
+omitted entirely. The model captures the selected configuration and the source and callback
+references at creation. Later mutations to the options object leave those selections intact.
+The source must satisfy the
 [external authority protocol](../../capabilities/openable/index.md#external-authority-protocol),
 including synchronous commitment, notification and refusal without queued work.
 
-Each successful creation must return a new active model with its own private scope. The caller
-owns that model's lifetime; there is no public scope parameter, cleanup-registration operation,
-capability instance or manager membership. A supplied authority is borrowed and must not be
-finalised incidentally.
+Each successful creation returns a new active model with a private Core scope. The caller owns
+disposal. The [Sidebar recipe](../../../../../../packages/components/src/api/sidebar.api.ts)
+uses `Opening` on that scope and exposes the opening operations on the instance. A supplied
+authority retains its original lifetime owner.
 
-Failed construction exposes no partial model. Invalidate its work and finalise only the scope
-created for that attempt, becoming terminal before attempting every required owned release.
-Preserve earlier models and borrowed sources. The
+Failed construction invalidates the attempt and finalises its scope before reporting an error.
+Cleanup attempts every required release and preserves earlier models and borrowed sources. The
 [setup protocol](../../capabilities/index.md#failed-setup) governs acquired connections, late
 release handles and opaque failures without external rollback.
 
 ## Requests, observation and finalisation
 
-isOpen reports logical opening under the selected authority. open, close and subscribeOpenChange
-retain the full Openable meanings. Disposed checks precede busy checks and satisfaction; an idle
-satisfied request is unchanged, effective commitment is changed, and a live source refusal is
-rejected/denied. No family-specific result vocabulary, toggle, opening guard or second state
-writer is introduced.
+`isOpen` reports logical presence under the selected authority. `open`, `close` and
+`subscribeOpenChange` preserve the Openable contract. Disposed checks precede busy checks and
+target satisfaction. A satisfied idle request returns `unchanged`, a commitment returns
+`changed`, and a live source refusal returns `rejected` with reason `denied`.
 
 The [opening guide](../../capabilities/openable/index.md#results-and-request-ordering) owns exact
 outcomes. The [shared observation rules](../../capabilities/index.md#subscriptions-and-synchronous-delivery)
 own synchronous ordered delivery, independent registrations, mutation, unsubscribe and errors.
-An effective opening change is not a measurement of visual visibility or evidence of rendering.
-Callback/provider failure may follow commitment and cannot be treated as rollback or safe retry.
+Treat an opening change as logical state. If a callback or provider fails, read the current state
+before deciding how to recover because the change may already have committed.
 
 An application may connect another model's activation to a Sidebar request through public
-operations. It owns that subscription and its release; neither endpoint acquires the other's
-lifetime or an implicit target-selection policy. A closed Sidebar remains an active model.
+operations. It owns the subscription and its release. Each endpoint retains its own lifetime.
+A closed Sidebar stays active and can open again.
 
-Disposal follows the [component protocol](../../../core/component/index.md#finalisation-and-ownership),
-becoming terminal before external cleanup and attempting every required owned release. It stops
-requests and pending observations even if physical source disconnection has not run or fails.
-It does not request closing, alter the borrowed source or emit a synthetic opening change.
+Disposal follows the [component protocol](../../../core/component/index.md#finalisation-and-ownership).
+The model becomes terminal before external cleanup and attempts every owned release. Requests and
+pending observations stop even when an authority fails to disconnect. The borrowed authority
+retains its state.
 
-Terminal lifecycle and the last observed isOpen projection remain readable without further
-source access. New requests return rejected/disposed; new subscriptions throw and existing
-unsubscribe operations remain idempotent. Preserve the
+Terminal lifecycle and the last observed `isOpen` value stay readable without further source
+access. New requests return `rejected` with reason `disposed`. New subscriptions throw and
+existing unsubscribe operations remain idempotent. The
 [delegated-request finalisation rules](../../capabilities/openable/index.md#delegation-and-finalisation)
-when the owner ends before or after an observed commitment; no external rollback is promised.
+govern requests that overlap disposal.
+
+## Example
+
+This application-owned model opens a supplementary navigation region on request and closes it
+when selection completes. Its observer records the two effective changes.
+
+```ts
+import { Sidebar } from "@luscious-garden/protea-components";
+
+export function recordNavigationPresence() {
+  const navigation = Sidebar.create({ control: "internal" });
+  const changes: boolean[] = [];
+  const unsubscribe = navigation.subscribeOpenChange(({ current }) => {
+    changes.push(current);
+  });
+
+  try {
+    const opening = navigation.open();
+    const closing = navigation.close();
+    return { opening, closing, changes };
+  } finally {
+    unsubscribe();
+    navigation.dispose();
+  }
+}
+```
 
 ## Structural types and host evidence
 
-`SidebarInstance` expresses a structural `ComponentInstance` and `Openable` surface. The reviewed
-[Modal](../modal/index.md) surface may therefore be assignable where the
-same shape is required. This does not establish shared object identity, interchangeable domain
-purpose or equivalent host semantics. No family brand or runtime discriminator is introduced.
+`SidebarInstance` has a structural `ComponentInstance` and `Openable` surface.
+[Modal](../modal/index.md) instances can satisfy consumers that require the same shape. Each
+instance keeps its own definition, domain purpose and host responsibilities.
 
-Future hosts own landmarks/naming, supported input, focus, positioning, responsive layout,
-representation and any modal interaction. An open model alone proves none of those behaviours.
+Future hosts own landmarks, accessible naming, supported input, focus, positioning, responsive
+layout, representation and any modal interaction. Evaluate those behaviours in the chosen host.
 The [integration guide](../../../../project/integration-boundaries.md) keeps DOM/framework
 binding, styling, icons and motion at their explicit optional owners.
 
-Public type consumers must protect explicit control options, inherited requests/observation,
-readonly state, structural compatibility and the absence of public scope or unavailable factory
-values. Runtime implementation must later exercise the selected changeable-presence cases,
-independent models, both authority modes, connection/setup failures and terminal behaviour using
-fresh built-package consumers. Permanent presence, variants and host accessibility require their
-own evidence.
+The [Components quality guide](../../quality.md) owns the packed runtime and declaration checks
+for creation, opening authority, cleanup and the public surface.

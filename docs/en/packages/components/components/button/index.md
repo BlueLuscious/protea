@@ -151,7 +151,7 @@ tab order, gestures, rendering, icons and motion are not supplied by this model.
 
 The packed type consumer checks construction through both entries, readonly availability and
 definition, activation results, opposite-direction snapshots and private scope and constructor
-boundaries. The family fixture covers the public Modal API and the reviewed Sidebar types.
+boundaries. The family fixture also covers the public Modal and Sidebar APIs.
 
 The [public runtime suite](../../../../../../tests/runtime/button.test.mjs) exercises fresh packed
 Button instances: independent lifetimes/state, captured and invalid configuration, activation

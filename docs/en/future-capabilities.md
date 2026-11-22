@@ -8,7 +8,8 @@ direction is distinct from implemented contracts, package availability and publi
 
 The [Core](packages/core/index.md) and [Components](packages/components/index.md) guides own
 the implemented package boundary. The [Sidebar guide](packages/components/components/sidebar/index.md)
-owns its remaining runtime work. Family defaults need a demonstrated consumer.
+describes its changeable-presence model and the future decisions for permanent presence. Family
+defaults need a demonstrated consumer.
 
 ## Conditional and deferred work
 

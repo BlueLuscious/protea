@@ -36,7 +36,7 @@ test("packed Components borrows the installed Core and exposes only the implemen
         fileURLToPath(import.meta.resolve("@luscious-garden/protea-core")),
       );
       assert.deepEqual(Object.keys(components).sort(), [
-        "Activation", "Button", "Modal", "Opening", "activatableResultStatuses", "capabilityRejectionReasons", "openableResultStatuses",
+        "Activation", "Button", "Modal", "Opening", "Sidebar", "activatableResultStatuses", "capabilityRejectionReasons", "openableResultStatuses",
       ]);
       assert.equal(typeof components.Activation.create, "function");
       assert.equal(typeof components.Opening.create, "function");
@@ -71,6 +71,7 @@ test("packed Components borrows the installed Core and exposes only the implemen
       for (const suffix of [
         "api", "capabilities", "capabilities/openable", "components", "components/button", "components/modal",
         "components/sidebar", "shared", "package.json", "dist/index.js", "dist/api/button.api.js", "dist/api/modal.api.js",
+        "dist/api/sidebar.api.js", "dist/capabilities/openable/runtime/internal/openable-surface.js",
         "dist/shared/runtime/observation-listeners.js", "dist/components/button/runtime/button.component.js",
       ]) {
         await assert.rejects(import("@luscious-garden/protea-components/" + suffix), { code: "ERR_PACKAGE_PATH_NOT_EXPORTED" });

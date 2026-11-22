@@ -1,10 +1,10 @@
 # Components API
 
-Status: **Public Button, Modal, opening and activation construction implemented**
+Status: **Public Button, Modal, Sidebar, opening and activation construction implemented**
 
 The package-level `src/api/` feature exposes frozen API objects through the Components package
-root. Capability constructors receive an active scope from the caller. Each Button or Modal
-instance receives its own scope from [Core](../../core/api/index.md).
+root. Capability constructors receive an active scope from the caller. Each family instance
+receives its own scope from [Core](../../core/api/index.md).
 
 ## Contracts and values
 
@@ -16,7 +16,8 @@ instance receives its own scope from [Core](../../core/api/index.md).
 | `ButtonApi` | `Button.create(options?)` | A fresh `ButtonInstance` using that definition. |
 | `ModalApi` | `Modal.definition` | The prepared definition shared by all built-in Modal instances. |
 | `ModalApi` | `Modal.create(options)` | A fresh `ModalInstance` with an explicit opening authority. |
-| `SidebarApi` | Type-only `create(options)` contract | `SidebarInstance` describes the future family runtime. |
+| `SidebarApi` | `Sidebar.definition` | The prepared definition shared by all built-in Sidebar instances. |
+| `SidebarApi` | `Sidebar.create(options)` | A fresh `SidebarInstance` with an explicit opening authority. |
 
 ## Usage
 
@@ -37,10 +38,11 @@ Both Button entry points use the same Core construction protocol. Each result ha
 state and lifetime. See [Button](../components/button/index.md#construction-and-ownership) for
 configuration and disposal.
 
-Modal accepts the same two creation entries. Use `Modal.create({ control: "internal" })` or pass
-`Modal.definition` and the options to `Component.create`. The
-[Modal guide](../components/modal/index.md#construction-and-state-authority) describes the required
-authority choices. The [capabilities guide](../capabilities/index.md#construction-and-composition)
+Modal and Sidebar accept the same two creation entries. Call the family's `create` with the
+required options or pass its prepared definition and the options to `Component.create`.
+The [Modal guide](../components/modal/index.md#construction-and-state-authority) and
+[Sidebar guide](../components/sidebar/index.md#construction-and-state-authority) describe their
+opening authority choices. The [capabilities guide](../capabilities/index.md#construction-and-composition)
 shows composition with a standalone scope.
 
 ## Package exports
@@ -51,10 +53,10 @@ The public `"."` entry of `@luscious-garden/protea-components` exposes these run
 - `Button`
 - `Modal`
 - `Opening`
+- `Sidebar`
 - `activatableResultStatuses`
 - `capabilityRejectionReasons`
 - `openableResultStatuses`
 
 The same root exposes the public feature contracts and types mapped in the
-[package guide](../index.md#documentation). Sidebar's API value and definition await its runtime
-implementation.
+[package guide](../index.md#documentation).

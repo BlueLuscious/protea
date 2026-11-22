@@ -1,6 +1,6 @@
 # Component Families
 
-Status: **Button and Modal runtimes implemented with reviewed Sidebar type contracts**
+Status: **Portable Button, Modal and Sidebar runtimes**
 
 The first Button, Modal and Sidebar families live under `src/components/<family>/` in
 [Components](../index.md). Each family owns its state, operations and composition. Core supplies
@@ -10,7 +10,7 @@ portable lifetime and definition-based construction.
 | --- | --- |
 | [Button](button/index.md) | Incorporated definition, active instances, availability and activation. |
 | [Modal](modal/index.md) | Incorporated definition, dialogue lifetime and explicit opening authority. |
-| [Sidebar](sidebar/index.md) | Changeable presence, opening authority and construction contracts. |
+| [Sidebar](sidebar/index.md) | Incorporated definition, changeable logical presence and explicit opening authority. |
 
 ## Module and public boundaries
 
@@ -21,12 +21,12 @@ contracts. Each family's own `contracts/` and `types/` hold its specific instanc
 
 Concrete family implementation classes use the Component role. `ButtonComponent` in
 `runtime/button.component.ts` owns the family behaviour that the Button recipe delegates to.
-The Modal recipe delegates its behaviour to `Opening`. Core assembles both public instances.
+The Modal and Sidebar recipes delegate opening to `Opening`. Core assembles each public instance.
 The Button implementation follows
 [Garden's symbol and role naming](https://github.com/BlueLuscious/garden/blob/master/docs/en/project-rules.md#symbols-and-files).
 
-The [Components API guide](../api/index.md) lists the public root and distinguishes executable
-entry points from reviewed type-only contracts.
+The [Components API guide](../api/index.md) lists the public root and its executable
+family and capability entry points.
 
 ## Contract-led development
 
@@ -54,10 +54,9 @@ cleanup or accessible host behaviour.
 
 ## Construction contracts and factories
 
-`ButtonApi`, `ModalApi` and `SidebarApi` describe each family's `create` operation. The executable
-`Button` and `Modal` APIs delegate to Core with their prepared definitions. Sidebar supplies type
-contracts for its future runtime. Each family guide owns its parameter, result and lifetime
-relationships.
+`ButtonApi`, `ModalApi` and `SidebarApi` describe each family's creation operation and its
+prepared definition. Each `create` operation delegates to Core with that definition. Each family
+guide owns its parameter, result and lifetime relationships.
 
 A future common factory interface remains an option when a real consumer needs to work with
 multiple factories. It must preserve the relationship between inputs and returned instances,
@@ -95,11 +94,10 @@ families precede variants; the old static/floating Sidebar classification is not
 
 The non-executed [family type consumer](../../../../../tests/distribution/family-consumer.test.ts)
 checks valid and invalid public consumption against fresh installed declarations under NodeNext
-and Bundler resolution. It uses `Button` and `Modal` and supplies Sidebar construction as a typed
-input.
+and Bundler resolution. It uses the three family APIs and their prepared definitions.
 
-The [Components quality guide](../quality.md) owns the packed Button and Modal runtime, consumer
-and distribution checks.
+The [Components quality guide](../quality.md) owns the packed family runtime, consumer and
+distribution checks.
 [Product direction](../../../project/component-direction.md) owns wider concepts and deferred
 families; [integration boundaries](../../../project/integration-boundaries.md) own future hosts,
 icons and motion. Portable models alone establish no rendered or accessible component support.

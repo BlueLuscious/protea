@@ -1,6 +1,6 @@
 # Component Direction
 
-Status: **Portable capabilities, Button and Modal implemented with reviewed Sidebar type contracts**
+Status: **Portable Button, Modal, Sidebar and capability runtimes**
 
 Protea develops original Button, Modal and Sidebar families before selecting variants. Their
 [family modules](../packages/components/components/index.md) live in Components. The package
@@ -17,18 +17,14 @@ these requirements to `ComponentInstance`, `Activatable` and family-owned availa
 `Button.create()` delegates to Core with its incorporated definition.
 [Modal](../packages/components/components/modal/index.md) combines owned lifetime with logical
 opening and delegates construction to Core with its prepared definition.
-[Sidebar](../packages/components/components/sidebar/index.md) describes owned lifetime and logical
-opening for its selected cases. Its instance and construction types are public, with runtime
-implementation pending. Persistent pressed or selected state would require its own family case
-and contract.
+[Sidebar](../packages/components/components/sidebar/index.md) combines owned lifetime and
+changeable logical presence through its prepared definition. Persistent pressed or selected
+state would require its own family case and contract.
 
-Sidebar must be designed as a family first. The previous StaticSidebar/FloatingSidebar pilot
-is retired as a production classification: floating presentation and static state or interaction
-may describe independent axes and may coexist. The first Sidebar contract selects changeable
-logical presence, so opening/closing are useful operations independent of positioning. Permanently
-invariant visibility is outside that bounded contract; it must be reviewed before expanding the
-family, rather than inheriting unusable operations. This does not establish that every possible
-sidebar must be Openable. No variant union or presentation discriminator is selected.
+The initial Sidebar family selects changeable logical presence. Opening and closing work with
+fixed or floating positioning. A host selects rendered visibility, layout and interaction policies
+independently. A permanently present region needs its own capability and construction decision.
+See the [Sidebar axes](../packages/components/components/sidebar/index.md#supported-cases-and-independent-axes).
 
 Presentation choices such as Default, Minimal or Glass likewise do not justify behavioural
 classes by their names. The conceptual foundation, family, variant and presentation progression

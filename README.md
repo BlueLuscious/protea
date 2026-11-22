@@ -15,9 +15,10 @@ The private [Components package](docs/en/packages/components/index.md),
 [reusable capabilities](docs/en/packages/components/capabilities/index.md). `Button.create()`
 supplies independent instances with observable availability and activation.
 [`Modal.create(options)`](docs/en/packages/components/components/modal/index.md) constructs a dialogue
-model with explicit opening authority. [Sidebar](docs/en/packages/components/components/sidebar/index.md)
-supplies reviewed type contracts. Sidebar runtime and
-[host integrations](docs/en/project/integration-boundaries.md) remain future work.
+model with explicit opening authority.
+[`Sidebar.create(options)`](docs/en/packages/components/components/sidebar/index.md) constructs
+a lateral region model with changeable logical presence.
+[Host integrations](docs/en/project/integration-boundaries.md) remain future work.
 
 Repository verification covers focused lint, strict production types, manifest/configuration
 formatting, bounded builds, public runtime regressions and fresh package consumers. Component

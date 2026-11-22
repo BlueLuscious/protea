@@ -1,5 +1,6 @@
 import { Component, type ComponentSetupContext } from "@luscious-garden/protea-core";
 import type { Openable } from "../capabilities/openable/contracts/openable.contract.js";
+import { createOpenableSurface } from "../capabilities/openable/runtime/internal/openable-surface.js";
 import type { ModalOptionsType } from "../components/modal/types/modal-options.type.js";
 import type { ModalApi } from "./contracts/modal-api.contract.js";
 import { Opening } from "./opening.api.js";
@@ -8,16 +9,7 @@ import { Opening } from "./opening.api.js";
 const modalDefinition = Component.define({
   identity: { namespace: "protea", name: "modal" },
   setup({ scope, options }: ComponentSetupContext<ModalOptionsType>): Openable {
-    const opening = Opening.create(scope, options);
-
-    return {
-      get isOpen() {
-        return opening.isOpen;
-      },
-      open: opening.open.bind(opening),
-      close: opening.close.bind(opening),
-      subscribeOpenChange: opening.subscribeOpenChange.bind(opening),
-    };
+    return createOpenableSurface(Opening.create(scope, options));
   },
 });
 
