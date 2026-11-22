@@ -1,6 +1,7 @@
 import { Scope } from "@luscious-garden/protea-core";
 import { Button, Modal, Opening, Sidebar, openableResultStatuses } from "@luscious-garden/protea-components";
-import { connectSidebar } from "./sidebar.mjs";
+import { bindButton } from "./button.mjs";
+import { bindSidebar } from "./sidebar.mjs";
 
 /**
  * @description Connects the page's native controls to application-owned Protea models.
@@ -31,7 +32,7 @@ function mountExample() {
 
     const sidebar = Sidebar.create({ control: "internal" });
     lifetime.addCleanup(sidebar.dispose);
-    lifetime.addCleanup(connectSidebar(sidebarControl, navigation, sidebar));
+    lifetime.addCleanup(bindSidebar(sidebarControl, navigation, sidebar));
 
     const opening = Opening.create(lifetime, { control: "internal" });
     const openButton = Button.create();
@@ -56,15 +57,6 @@ function mountExample() {
     });
     lifetime.addCleanup(modal.dispose);
 
-    function connectButton(element, model, action) {
-      element.disabled = model.isDisabled;
-      lifetime.addCleanup(model.subscribeDisabledChange(({ current }) => {
-        element.disabled = current;
-      }));
-      lifetime.addCleanup(model.subscribeActivation(action));
-      element.addEventListener("click", () => model.activate(), listenerOptions);
-    }
-
     function projectOpenness() {
       const isOpen = modal.isOpen;
       if (isOpen && !dialog.open) {
@@ -74,8 +66,10 @@ function mountExample() {
       }
     }
 
-    connectButton(openElement, openButton, modal.open);
-    connectButton(closeElement, closeButton, modal.close);
+    lifetime.addCleanup(openButton.subscribeActivation(modal.open));
+    lifetime.addCleanup(closeButton.subscribeActivation(modal.close));
+    lifetime.addCleanup(bindButton(openElement, openButton));
+    lifetime.addCleanup(bindButton(closeElement, closeButton));
     lifetime.addCleanup(modal.subscribeOpenChange(projectOpenness));
     lifetime.addCleanup(() => dialog.close());
     dialog.addEventListener("cancel", (event) => {
