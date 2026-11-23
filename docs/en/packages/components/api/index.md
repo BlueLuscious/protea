@@ -4,8 +4,9 @@ Status: **Public family and capability construction implemented**
 
 The package-level `src/api/` feature owns the frozen family and capability API objects.
 Family entries live under `src/api/families/`, and capability entries live under
-`src/api/capabilities/`. The root exposes both sets. Capability constructors receive an
-active scope from the caller. Each family instance receives its own scope from
+`src/api/capabilities/`. Each entry declares its public values and types. The root
+re-exports the family entries and the capability aggregate. Capability constructors receive
+an active scope from the caller. Each family instance receives its own scope from
 [Core](../../core/api/index.md).
 
 ## Contracts and values
