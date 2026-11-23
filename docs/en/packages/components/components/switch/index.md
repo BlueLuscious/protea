@@ -3,17 +3,19 @@
 Status: **Portable runtime for retained boolean checked state**
 
 Switch models a two-state choice such as showing help. Its checked value remains available
-between requests. The Components root exports the frozen `Switch` API object and the
-`SwitchApi`, `SwitchInstance` and `SwitchOptionsType` contracts. `SwitchInstance` combines
+between requests. The Components root and `@luscious-garden/protea-components/switch` export
+the same frozen `Switch` object and the family types `SwitchApi`, `SwitchInstance` and
+`SwitchOptionsType`. `SwitchInstance` combines
 [ComponentInstance](../../../core/component/index.md) with
 [Checkable](../../capabilities/checkable/index.md).
 
 ## Construction and ownership
 
-`Switch.definition` is the prepared definition with identity
-`{ namespace: "protea", name: "switch" }`. `Switch.create(options)` delegates to
-`Component.create(Switch.definition, options)`. Both entries use the same definition and create
-a new active instance with its own lifetime. The caller owns disposal.
+Import `SwitchDefinition` from `@luscious-garden/protea-components/definitions/switch` for
+explicit Core construction. It has identity `{ namespace: "protea", name: "switch" }` and is
+the same value as `Switch.definition`. `Switch.create(options)` delegates to
+`Component.create(SwitchDefinition, options)`. Both routes create a new active instance with its
+own lifetime. The caller owns disposal.
 
 `SwitchOptionsType` aliases `CheckableOptionsType`. Choose `control: "internal"` to own an
 independent checked value, initially `false` unless `initialChecked` is supplied. Choose

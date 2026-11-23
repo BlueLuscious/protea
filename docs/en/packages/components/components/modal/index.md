@@ -7,17 +7,20 @@ application opens a confirmation dialogue and connects a separate Button to its 
 The model keeps that opening state and lifetime distinct from application work and the future
 host's actual modality, focus and representation.
 
-The Components root exports the frozen `Modal` object through `ModalApi`, along with
-`ModalInstance` and `ModalOptionsType`. `ModalInstance` composes
+The Components root and `@luscious-garden/protea-components/modal` export the same frozen
+`Modal` object and the family types `ModalApi`, `ModalInstance` and `ModalOptionsType`.
+`ModalInstance` composes
 [ComponentInstance](../../../core/component/index.md) and
 [Openable](../../capabilities/openable/index.md). Production TypeScript and its generated
 declarations own the signatures.
 
 ## Construction and state authority
 
-`Modal.definition` is the prepared definition with identity `{ namespace: "protea", name: "modal" }`.
-`Modal.create(options)` delegates to `Component.create(Modal.definition, options)`. Both entries
-require `ModalOptionsType`, an alias of `OpenableOptionsType`, with an explicit control mode.
+Import `ModalDefinition` from `@luscious-garden/protea-components/definitions/modal` for explicit
+Core construction. It has identity `{ namespace: "protea", name: "modal" }` and is the same
+value as `Modal.definition`. `Modal.create(options)` delegates to
+`Component.create(ModalDefinition, options)`. Both routes require `ModalOptionsType`, an alias
+of `OpenableOptionsType`, with an explicit control mode.
 
 | Mode | Required meaning |
 | --- | --- |
@@ -33,7 +36,7 @@ options later. A supplied source must satisfy the complete
 
 Each creation returns a new active model with a private Core scope. Its caller owns disposal.
 `Opening.create` borrows that scope. The
-[Modal recipe](../../../../../../packages/components/src/api/modal.api.ts) exposes the Openable
+[Modal recipe](../../../../../../packages/components/src/components/modal/definitions/modal.definition.ts) exposes the Openable
 operations directly on the instance and keeps the capability and cleanup registration private.
 Supplied authorities and borrowed Modal references retain their original lifetime ownership.
 

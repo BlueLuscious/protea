@@ -4,6 +4,9 @@ Status: **Portable activation, opening and checking runtimes**
 
 Capabilities supply narrow behaviour to a model and borrow a [ComponentScope](../../core/component/index.md)
 for lifetime and release registration. Each capability retains its own state and registrations.
+Use `@luscious-garden/protea-components/capabilities` for the combined API or an
+[individual capability entry](../api/index.md#capability-entries) for a single factory and its
+contracts. The Components root also exposes these values and types.
 
 ## Documentation
 
@@ -31,7 +34,7 @@ The following application-owned composition uses only public contracts and value
 
 ```ts
 import { Scope } from "@luscious-garden/protea-core";
-import { Activation, Opening } from "@luscious-garden/protea-components";
+import { Activation, Opening } from "@luscious-garden/protea-components/capabilities";
 
 const scope = Scope.create();
 

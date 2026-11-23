@@ -1,5 +1,5 @@
 import { componentLifecycleStates, type ComponentScope } from "@luscious-garden/protea-core";
-import { Activation } from "../../../api/activation.api.js";
+import { Activation } from "../../../api/capabilities/activation.api.js";
 import type { Activatable } from "../../../capabilities/activatable/contracts/activatable.contract.js";
 import type { ActivatableResultType } from "../../../capabilities/activatable/types/activatable-result.type.js";
 import type { CapabilityUnsubscribeType } from "../../../capabilities/shared/types/capability-unsubscribe.type.js";

@@ -5,6 +5,8 @@ Status: **Implemented in Components**
 This feature owns the public contracts common to [Openable](../openable/index.md),
 [Activatable](../activatable/index.md) and [Checkable](../checkable/index.md). Each capability
 owns its state, operation results and rules for accepting a request.
+The shared contracts and vocabulary are available from the
+[capability aggregate and Components root](../../api/index.md#capability-entries).
 
 ## Rejection reasons
 

@@ -17,12 +17,16 @@ for an isolated activation capability.
 
 ## Construction and ownership
 
-The Components root exports the frozen `Button` object through `ButtonApi`, along with
-`ButtonInstance`, `ButtonOptionsType` and `ButtonDisabledChangeType`. The
+The Components root and `@luscious-garden/protea-components/button` export the same frozen
+`Button` object and the family types `ButtonApi`, `ButtonInstance`, `ButtonOptionsType` and
+`ButtonDisabledChangeType`. The
 [instance contract](../../../../../../packages/components/src/components/button/contracts/button-instance.contract.ts)
-owns its family operations. `Button.definition` is the prepared Core definition with identity
-`{ namespace: "protea", name: "button" }`. `Button.create(options?)` delegates to
-`Component.create(Button.definition, options)`.
+owns its family operations.
+
+Import `ButtonDefinition` from `@luscious-garden/protea-components/definitions/button` for
+explicit Core construction. It is the prepared definition with identity
+`{ namespace: "protea", name: "button" }` and the same value as `Button.definition`.
+`Button.create(options?)` delegates to `Component.create(ButtonDefinition, options)`.
 
 Both entry points create a flat, active instance with the exact same definition reference. Every
 call receives an independent scope, disabled state and set of observation registrations. The

@@ -6,8 +6,9 @@ Sidebar models a lateral region whose logical presence can change. For example, 
 opens its supplementary navigation when requested and closes it after selection. Each instance
 has its own lifetime and delegates logical opening to its selected authority.
 
-The Components root exports the frozen `Sidebar` API object and the `SidebarApi`,
-`SidebarInstance` and `SidebarOptionsType` contracts. `SidebarInstance` composes
+The Components root and `@luscious-garden/protea-components/sidebar` export the same frozen
+`Sidebar` object and the family types `SidebarApi`, `SidebarInstance` and
+`SidebarOptionsType`. `SidebarInstance` composes
 [ComponentInstance](../../../core/component/index.md) and
 [Openable](../../capabilities/openable/index.md). Production source and generated declarations
 own the signatures.
@@ -31,9 +32,10 @@ Each presentation can choose its policy independently of the opening authority.
 
 ## Construction and state authority
 
-`Sidebar.definition` is the prepared definition with identity
-`{ namespace: "protea", name: "sidebar" }`. `Sidebar.create(options)` delegates to
-`Component.create(Sidebar.definition, options)`. Both entries require `SidebarOptionsType`,
+Import `SidebarDefinition` from `@luscious-garden/protea-components/definitions/sidebar` for
+explicit Core construction. It has identity `{ namespace: "protea", name: "sidebar" }` and is
+the same value as `Sidebar.definition`. `Sidebar.create(options)` delegates to
+`Component.create(SidebarDefinition, options)`. Both routes require `SidebarOptionsType`,
 an alias of `OpenableOptionsType`, with an explicit control mode.
 
 | Mode | Required meaning |
@@ -49,7 +51,7 @@ The source must satisfy the
 including synchronous commitment, notification and refusal without queued work.
 
 Each successful creation returns a new active model with a private Core scope. The caller owns
-disposal. The [Sidebar recipe](../../../../../../packages/components/src/api/sidebar.api.ts)
+disposal. The [Sidebar recipe](../../../../../../packages/components/src/components/sidebar/definitions/sidebar.definition.ts)
 uses `Opening` on that scope and exposes the opening operations on the instance. A supplied
 authority retains its original lifetime owner.
 

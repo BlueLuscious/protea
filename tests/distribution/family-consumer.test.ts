@@ -26,6 +26,54 @@ import type {
   SwitchInstance,
   SwitchOptionsType,
 } from "@luscious-garden/protea-components";
+import {
+  Button as SubpathButton,
+  type ButtonApi as SubpathButtonApi,
+  type ButtonDisabledChangeType as SubpathButtonDisabledChangeType,
+  type ButtonInstance as SubpathButtonInstance,
+  type ButtonOptionsType as SubpathButtonOptionsType,
+} from "@luscious-garden/protea-components/button";
+import {
+  Modal as SubpathModal,
+  type ModalApi as SubpathModalApi,
+  type ModalInstance as SubpathModalInstance,
+  type ModalOptionsType as SubpathModalOptionsType,
+} from "@luscious-garden/protea-components/modal";
+import {
+  Sidebar as SubpathSidebar,
+  type SidebarApi as SubpathSidebarApi,
+  type SidebarInstance as SubpathSidebarInstance,
+  type SidebarOptionsType as SubpathSidebarOptionsType,
+} from "@luscious-garden/protea-components/sidebar";
+import {
+  Switch as SubpathSwitch,
+  type SwitchApi as SubpathSwitchApi,
+  type SwitchInstance as SubpathSwitchInstance,
+  type SwitchOptionsType as SubpathSwitchOptionsType,
+} from "@luscious-garden/protea-components/switch";
+import { ButtonDefinition } from "@luscious-garden/protea-components/definitions/button";
+import { ModalDefinition } from "@luscious-garden/protea-components/definitions/modal";
+import { SidebarDefinition } from "@luscious-garden/protea-components/definitions/sidebar";
+import { SwitchDefinition } from "@luscious-garden/protea-components/definitions/switch";
+
+// @ts-expect-error Named definitions are available through their explicit routes, not the root.
+import { ButtonDefinition as RootButtonDefinition } from "@luscious-garden/protea-components";
+// @ts-expect-error A definition route exposes its definition rather than the construction API.
+import { Modal as DefinitionModal } from "@luscious-garden/protea-components/definitions/modal";
+// @ts-expect-error A family route does not expose its definition under a second named export.
+import { SidebarDefinition as FamilySidebarDefinition } from "@luscious-garden/protea-components/sidebar";
+// @ts-expect-error Authored definition source paths remain internal to the package.
+import { SwitchDefinition as InternalSwitchDefinition } from "@luscious-garden/protea-components/components/switch/definitions/switch.definition";
+void [RootButtonDefinition, DefinitionModal, FamilySidebarDefinition, InternalSwitchDefinition];
+// @ts-expect-error The reserved definitions aggregate remains unavailable.
+import * as DefinitionsAggregate from "@luscious-garden/protea-components/definitions";
+// @ts-expect-error The family pattern does not expose the opening capability API.
+import { Opening as SubpathOpening } from "@luscious-garden/protea-components/opening";
+// @ts-expect-error The family pattern does not expose the checking capability API.
+import { Checking as SubpathChecking } from "@luscious-garden/protea-components/checking";
+// @ts-expect-error The family pattern does not expose the activation capability API.
+import { Activation as SubpathActivation } from "@luscious-garden/protea-components/activation";
+void [DefinitionsAggregate, SubpathOpening, SubpathChecking, SubpathActivation];
 
 // @ts-expect-error Internal family implementation modules are not public TypeScript entrypoints.
 import { ButtonComponent } from "@luscious-garden/protea-components/dist/components/button/runtime/button.component.js";
@@ -282,3 +330,94 @@ function consumeSwitch(authority: CheckedStateAuthority): void {
 }
 
 void consumeSwitch;
+
+function consumeSubpaths(opening: OpenStateAuthority, checking: CheckedStateAuthority): void {
+  const buttonApi: SubpathButtonApi = Button;
+  const buttonOptions: SubpathButtonOptionsType = { initialDisabled: true };
+  const button: SubpathButtonInstance = SubpathButton.create(buttonOptions);
+  const rootButton: ButtonInstance = button;
+  const explicitButton: SubpathButtonInstance = Component.create(ButtonDefinition, buttonOptions);
+  const inferredButton = Component.create(ButtonDefinition);
+  const disabled: boolean = inferredButton.isDisabled;
+  const activation: ActivatableResultType = inferredButton.activate();
+  const change: SubpathButtonDisabledChangeType = { previous: true, current: false };
+  const buttonDefinition: typeof ButtonDefinition = button.definition;
+  SubpathButton.create();
+  SubpathButton.create(undefined);
+  Component.create(ButtonDefinition, undefined);
+
+  const modalApi: SubpathModalApi = Modal;
+  const modalOptions: SubpathModalOptionsType = { control: "external", authority: opening };
+  const modal: SubpathModalInstance = SubpathModal.create(modalOptions);
+  const rootModal: ModalInstance = modal;
+  const inferredModal = Component.create(ModalDefinition, { control: "internal" });
+  const modalDefinition: typeof ModalDefinition = modal.definition;
+  const modalOpen: boolean = inferredModal.isOpen;
+  const modalResult: OpenableResultType = inferredModal.close();
+
+  const sidebarApi: SubpathSidebarApi = Sidebar;
+  const sidebarOptions: SubpathSidebarOptionsType = { control: "internal", initialOpen: true };
+  const sidebar: SubpathSidebarInstance = SubpathSidebar.create(sidebarOptions);
+  const rootSidebar: SidebarInstance = sidebar;
+  const inferredSidebar = Component.create(SidebarDefinition, { control: "external", authority: opening });
+  const sidebarDefinition: typeof SidebarDefinition = sidebar.definition;
+  const sidebarOpen: boolean = inferredSidebar.isOpen;
+  const sidebarResult: OpenableResultType = inferredSidebar.open();
+
+  const switchApi: SubpathSwitchApi = Switch;
+  const switchOptions: SubpathSwitchOptionsType = { control: "external", authority: checking };
+  const model: SubpathSwitchInstance = SubpathSwitch.create(switchOptions);
+  const rootSwitch: SwitchInstance = model;
+  const inferredSwitch = Component.create(SwitchDefinition, { control: "internal" });
+  const switchDefinition: typeof SwitchDefinition = model.definition;
+  const checked: boolean = inferredSwitch.isChecked;
+  const switchResult: CheckableResultType = inferredSwitch.requestChecked(true);
+
+  // Equivalent opening surfaces retain structural compatibility across the new routes.
+  const modalFromSidebar: SubpathModalInstance = inferredSidebar;
+  const sidebarFromModal: SubpathSidebarInstance = inferredModal;
+  const modalFromSidebarDefinition: typeof ModalDefinition = SidebarDefinition;
+  const sidebarFromModalDefinition: typeof SidebarDefinition = ModalDefinition;
+  void [buttonApi, rootButton, explicitButton, disabled, activation, change, buttonDefinition,
+    modalApi, rootModal, modalDefinition, modalOpen, modalResult,
+    sidebarApi, rootSidebar, sidebarDefinition, sidebarOpen, sidebarResult,
+    switchApi, rootSwitch, switchDefinition, checked, switchResult,
+    modalFromSidebar, sidebarFromModal, modalFromSidebarDefinition, sidebarFromModalDefinition];
+
+  // @ts-expect-error The extracted definition preserves Button's boolean configuration.
+  Component.create(ButtonDefinition, { initialDisabled: "disabled" });
+  // @ts-expect-error Button's family route accepts the same boolean configuration as the root.
+  SubpathButton.create({ initialDisabled: "disabled" });
+  // @ts-expect-error The extracted Button definition retains availability as readonly state.
+  inferredButton.isDisabled = false;
+  // @ts-expect-error The prepared identity remains readonly through its definition route.
+  ButtonDefinition.identity.name = "other";
+  // @ts-expect-error Modal requires explicit options through its family route.
+  SubpathModal.create();
+  // @ts-expect-error Modal requires explicit options through its definition route.
+  Component.create(ModalDefinition);
+  // @ts-expect-error External Modal state requires its sole authority.
+  Component.create(ModalDefinition, { control: "external" });
+  // @ts-expect-error Internal Modal state cannot add an external authority.
+  SubpathModal.create({ control: "internal", authority: opening });
+  // @ts-expect-error Sidebar requires explicit options through its family route.
+  SubpathSidebar.create();
+  // @ts-expect-error Sidebar requires explicit options through its definition route.
+  Component.create(SidebarDefinition);
+  // @ts-expect-error External Sidebar state excludes a competing initial value.
+  Component.create(SidebarDefinition, { control: "external", authority: opening, initialOpen: true });
+  // @ts-expect-error External Sidebar control cannot omit its authority.
+  SubpathSidebar.create({ control: "external" });
+  // @ts-expect-error Switch requires explicit options through its family route.
+  SubpathSwitch.create();
+  // @ts-expect-error Switch requires explicit options through its definition route.
+  Component.create(SwitchDefinition);
+  // @ts-expect-error External Switch state cannot add a competing initial value.
+  Component.create(SwitchDefinition, { control: "external", authority: checking, initialChecked: true });
+  // @ts-expect-error Internal Switch state excludes an external authority.
+  SubpathSwitch.create({ control: "internal", authority: checking });
+  // @ts-expect-error Extracting the definition does not add opening to Switch's surface.
+  inferredSwitch.open();
+}
+
+void consumeSubpaths;
