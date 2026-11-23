@@ -151,7 +151,7 @@ tab order, gestures, rendering, icons and motion are not supplied by this model.
 
 The packed type consumer checks construction through both entries, readonly availability and
 definition, activation results, opposite-direction snapshots and private scope and constructor
-boundaries. The family fixture also covers the public Modal and Sidebar APIs.
+boundaries.
 
 The [public runtime suite](../../../../../../tests/runtime/button.test.mjs) exercises fresh packed
 Button instances: independent lifetimes/state, captured and invalid configuration, activation
@@ -164,7 +164,7 @@ Core creates the scope and calls the Button recipe. The internal
 registers availability cleanup and creates `Activatable` through `Activation.create` on that
 scope. The recipe delegates the family operations to the model. Core owns the public instance's
 definition, lifecycle and disposal. Disabled state and delivery occupation stay with the family.
-The [shared observation runtime](../../shared/index.md) serves Button and both capabilities.
+The [shared observation runtime](../../shared/index.md) delivers Button's availability changes.
 
 The [Components quality guide](../../quality.md) owns the packed runtime and declaration checks.
 Accessible interaction, browser input and rendering require evidence at a host boundary.
