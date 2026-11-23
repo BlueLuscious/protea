@@ -31,6 +31,19 @@ current delivery commitment. Importance does not establish implementation order.
 | `P4` | Framework adapters, Icon/Aster and motion integrations. | Stable public contracts and one supported host/provider scenario exist. |
 | `P2` | Shared development tooling. | Common mechanisms can serve the observed repositories while their product policies remain separate. |
 
+## Component catalogue and loading
+
+A metadata-only catalogue manifest is conditional on a consumer that needs to enumerate families,
+such as an editor or authoring tool. Define the fields needed for discovery and derive them from
+their canonical owners. A component definition includes an executable recipe, so discovery should
+be able to read the selected metadata without evaluating those recipes.
+
+Consider deferred loaders when a consumer needs to select a definition at runtime. Specify identity
+resolution, absence and loading failures, and verify that a successful load returns the same
+definition as the supported static import. Consider generating entry modules or catalogue projections
+when maintaining them by hand produces repeated edits or drift. Keep one authoring source and verify
+its projections against the packed package.
+
 ## Shared application state
 
 The [Switch guide](packages/components/components/switch/index.md#checked-state-and-collaboration)
@@ -41,6 +54,11 @@ A future responsive host could present a mobile Switch and a desktop Button for 
 preference. The host can project the effective preference independently of which control sends the
 request. A generic state engine or binding needs a concrete case beyond checked state. Review
 initial reads, update ordering, feedback loops and cleanup at the owner of that integration.
+
+Start theme coordination with an application-owned example. Consider a reusable Theme Manager API
+when an independent consumer needs the same preference, effective-theme and observation semantics.
+That consumer should help establish which state is portable, who supplies the system preference
+and who owns host projection and connection cleanup.
 
 ## Responsive representation and family conversion
 
