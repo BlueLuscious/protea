@@ -1,9 +1,9 @@
 # Component Families
 
-Status: **Portable Button, Modal and Sidebar runtimes**
+Status: **Portable Button, Modal, Sidebar and Switch runtimes**
 
-The first Button, Modal and Sidebar families live under `src/components/<family>/` in
-[Components](../index.md). Each family owns its state, operations and composition. Core supplies
+The built-in families live under `src/components/<family>/` in [Components](../index.md).
+Each family owns its state, operations and composition. Core supplies
 portable lifetime and definition-based construction.
 
 | Guide | Responsibility |
@@ -11,6 +11,7 @@ portable lifetime and definition-based construction.
 | [Button](button/index.md) | Incorporated definition, active instances, availability and activation. |
 | [Modal](modal/index.md) | Incorporated definition, dialogue lifetime and explicit opening authority. |
 | [Sidebar](sidebar/index.md) | Incorporated definition, changeable logical presence and explicit opening authority. |
+| [Switch](switch/index.md) | Incorporated definition and retained checked state with internal or external authority. |
 
 ## Module and public boundaries
 
@@ -21,7 +22,8 @@ contracts. Each family's own `contracts/` and `types/` hold its specific instanc
 
 Concrete family implementation classes use the Component role. `ButtonComponent` in
 `runtime/button.component.ts` owns the family behaviour that the Button recipe delegates to.
-The Modal and Sidebar recipes delegate opening to `Opening`. Core assembles each public instance.
+The Modal and Sidebar recipes delegate opening to `Opening`. The Switch recipe delegates checked
+state to `Checking`. Core assembles each public instance.
 The Button implementation follows
 [Garden's symbol and role naming](https://github.com/BlueLuscious/garden/blob/master/docs/en/project-rules.md#symbols-and-files).
 
@@ -30,7 +32,7 @@ family and capability entry points.
 
 ## Contract-led development
 
-The bounded joint review starts from each family's cases before implementing the families:
+The bounded review starts from each family's cases before implementation:
 
 1. Establish representative cases and each original family's purpose and exclusions.
 2. Define actions, state authority, construction, ownership, observation, lifecycle and failures.
@@ -38,13 +40,12 @@ The bounded joint review starts from each family's cases before implementing the
    feature owners, with semantic guides and statically checked consumption examples.
 4. Compare those requirements with existing Core contracts. Identify family-owned behaviour,
    justified reusable capabilities and responsibilities belonging to a future host.
-5. Implement and verify each family in the order Button, Modal and Sidebar.
+5. Implement and verify each family against its accepted contract.
 
 A method name alone establishes no shared capability. Review state authority, request/results,
-notification ordering, reentrancy and lifetime before composing a shared contract. Activatable
-and Openable already have real implementations; use them where their semantics fit, without
-forcing the families into them or changing accepted Core contracts implicitly. Any incompatible
-Core change requires explicit acceptance before its implementation.
+notification ordering, reentrancy and lifetime before composing a shared contract. Use the
+existing capabilities where their semantics fit. Incompatible Core changes follow the
+[public contract procedure](../../../project/index.md#public-contract-changes).
 
 Interface method signatures need no executable bodies. Do not substitute empty methods, throwing
 stubs, ambient declarations of unavailable factory values or a second prototype workspace for
@@ -54,7 +55,7 @@ cleanup or accessible host behaviour.
 
 ## Construction contracts and factories
 
-`ButtonApi`, `ModalApi` and `SidebarApi` describe each family's creation operation and its
+`ButtonApi`, `ModalApi`, `SidebarApi` and `SwitchApi` describe each family's creation operation and its
 prepared definition. Each `create` operation delegates to Core with that definition. Each family
 guide owns its parameter, result and lifetime relationships.
 
@@ -74,18 +75,16 @@ The reviewed cases and responsibility map are:
 | A Save control becomes enabled and accepts a discrete action. | [Button](button/index.md) owns observable availability and combines `ComponentInstance` with `Activatable`. |
 | A dialogue is opened and closed, including an application-controlled source. | [Modal](modal/index.md) combines `ComponentInstance` with `Openable`. The model owns lifetime, and a future host supplies actual modality. |
 | A lateral region can be opened and closed independently of its visual positioning. | [Sidebar](sidebar/index.md) combines `ComponentInstance` with `Openable` for changeable presence. Permanently invariant visibility is outside this bounded contract. |
+| A two-state control reads local checked state or uses a shared preference from the application. | [Switch](switch/index.md) combines `ComponentInstance` with `Checkable` and retains an independent lifetime in either mode. |
 | Each created family has an independent identity and finalisation authority. | Core supplies each built instance's lifetime and definition reference. The family API exposes the instance's disposal operation and keeps cleanup registration private. |
 | Modal/Sidebar choose internal or synchronous external control. | Their feature-owned options aliases reuse OpenableOptionsType without a second authority or state/result vocabulary. Options are required to make that choice explicit. |
 | Button needs observable disabled changes. | Family-owned state, setter and snapshots; one current consumer does not justify a new shared availability capability. |
 | Button activation requests Modal closure. | Application-owned connection through public operations, with separate activation and closing results; no closeControl part or manager. |
-| Consumers need host input, naming, focus or layout. | Future host responsibility, with its own implementation and evidence; neither capability supplies these effects. |
+| Consumers need host input, naming, focus or layout. | Host responsibility, with its own implementation and evidence. |
 
-Button's initial availability/activation baseline is retained. Openable and Activatable fit the
-selected cases without a Core contract change. There is no new reusable capability or common
-factory abstraction: existing consumers need family-specific construction, not a polymorphic
-factory collection. No common family class has demonstrated shared runtime work yet. The internal
-ordered-observation helper serves Button, opening and activation. See the
-[shared runtime](../shared/index.md).
+Each recipe composes the relevant capabilities over its own scope. The package-level
+[shared runtime](../shared/index.md) supplies ordered delivery for family-owned availability and
+reusable capabilities.
 
 The current Modal and Sidebar types are structurally compatible; their purposes and host obligations
 differ, but no nominal brand or runtime identity test is invented to distinguish them. Neither
@@ -94,7 +93,7 @@ families precede variants; the old static/floating Sidebar classification is not
 
 The non-executed [family type consumer](../../../../../tests/distribution/family-consumer.test.ts)
 checks valid and invalid public consumption against fresh installed declarations under NodeNext
-and Bundler resolution. It uses the three family APIs and their prepared definitions.
+and Bundler resolution. It uses the family APIs and their prepared definitions.
 
 The [Components quality guide](../quality.md) owns the packed family runtime, consumer and
 distribution checks.

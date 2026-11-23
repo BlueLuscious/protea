@@ -5,7 +5,7 @@ Status: **Private Core and Components packages**
 | Package | Current responsibility |
 | --- | --- |
 | [Core](core/index.md) | Portable definitions and instances, standalone scopes, lifetime and cleanup. |
-| [Components](components/index.md) | Built-in Button, Modal and Sidebar with reusable opening and activation. |
+| [Components](components/index.md) | Built-in Button, Modal, Sidebar and Switch with reusable activation, opening and checking. |
 
 Components depends on the public Core root. Core has no runtime dependencies. Each package
 emits ES2022 ESM and declarations with one public root. Their local versions identify private,

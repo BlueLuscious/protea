@@ -11,10 +11,12 @@ definition with the explicit Core entry `Component.create(Button.definition, opt
 authority. Its prepared definition is available as `Modal.definition` for explicit creation.
 `Sidebar.create(options)` creates a lateral region model with changeable logical presence and
 the same opening authority choices. Use `Sidebar.definition` with the explicit Core entry.
+`Switch.create(options)` creates a checked-state model with internal or borrowed external
+control. Its prepared definition is available as `Switch.definition`.
 
-`Opening.create` and `Activation.create` add portable behaviour to a supplied active Core scope.
-Opening can use internal state or a borrowed synchronous state authority. Activation reports
-action acceptance.
+`Opening.create`, `Checking.create` and `Activation.create` add portable behaviour to a
+supplied active Core scope. Opening and Checking can use internal state or a borrowed
+synchronous state authority. Activation reports action acceptance.
 
 The [package guide](../../docs/en/packages/components/index.md) maps public responsibilities.
 The [API guide](../../docs/en/packages/components/api/index.md) shows both construction entries.

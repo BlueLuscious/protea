@@ -1,9 +1,11 @@
 import { Scope, type ComponentLifetime } from "@luscious-garden/protea-core";
 import {
   Activation,
+  Checking,
   Opening,
   activatableResultStatuses,
   capabilityRejectionReasons,
+  checkableResultStatuses,
   openableResultStatuses,
 } from "@luscious-garden/protea-components";
 import type {
@@ -14,6 +16,13 @@ import type {
   ActivatableResultType,
   CapabilityRejectionReasonType,
   CapabilityUnsubscribeType,
+  Checkable,
+  CheckableChangeType,
+  CheckableOptionsType,
+  CheckableResultStatusType,
+  CheckableResultType,
+  CheckedStateAuthority,
+  CheckingApi,
   Openable,
   OpenableChangeType,
   OpeningApi,
@@ -85,6 +94,59 @@ consumeChange({ previous: true, current: false });
 consumeComponent(owner);
 consumeOpening(owner);
 consumeActivation(owner);
+
+function consumeChecking(authority: CheckedStateAuthority): void {
+  const checkingApi: CheckingApi = Checking;
+  const internal: CheckableOptionsType = { control: "internal" };
+  const external: CheckableOptionsType = { control: "external", authority };
+  const checking: Checkable = checkingApi.create(scope, internal);
+  checkingApi.create(scope, { control: "internal", initialChecked: true });
+  const borrowed: Checkable = checkingApi.create(scope, external);
+  const current: boolean = borrowed.isChecked;
+  const result: CheckableResultType = borrowed.requestChecked(!current);
+  if (result.status === checkableResultStatuses.rejected) {
+    consumeReason(result.reason);
+  } else {
+    const status: CheckableResultStatusType = result.status;
+    void status;
+    // @ts-expect-error A successful request has no rejection reason.
+    result.reason;
+  }
+  const release: CapabilityUnsubscribeType = checking.subscribeCheckedChange((change) => {
+    const snapshot: CheckableChangeType = change;
+    // @ts-expect-error An effective change snapshot is readonly.
+    snapshot.current = true;
+  });
+  consumeVoid(release());
+
+  const mixedInternal = { ...internal, authority };
+  const mixedExternal = { ...external, initialChecked: undefined };
+  // @ts-expect-error Internal control excludes an authority through structurally typed inputs.
+  checkingApi.create(scope, mixedInternal);
+  // @ts-expect-error The excluded initial value cannot be present as undefined.
+  checkingApi.create(scope, mixedExternal);
+  // @ts-expect-error An explicitly supplied internal initial value must be boolean.
+  checkingApi.create(scope, { control: "internal", initialChecked: undefined });
+  // @ts-expect-error External control requires its authority.
+  checkingApi.create(scope, { control: "external" });
+  // @ts-expect-error The construction requires a cleanup owner.
+  checkingApi.create(minimumComponent, internal);
+  // @ts-expect-error An authority may not acknowledge requests asynchronously.
+  checkingApi.create(scope, { control: "external", authority: { ...authority, async requestChecked() { return true; } } });
+  // @ts-expect-error The checked reading is readonly.
+  checking.isChecked = false;
+  // @ts-expect-error Request targets are explicit booleans.
+  checking.requestChecked();
+  // @ts-expect-error A borrowed capability grants no authority to dispose its owner.
+  checking.dispose();
+  // @ts-expect-error Unchanged pairs are not effective changes.
+  const noChange: CheckableChangeType = { previous: true, current: true };
+  // @ts-expect-error Rejections carry a reason.
+  const missingRejectionReason: CheckableResultType = { status: "rejected" };
+  void [noChange, missingRejectionReason];
+}
+
+void consumeChecking;
 
 const openingResult = opening.open();
 if (openingResult.status === openableResultStatuses.rejected) {

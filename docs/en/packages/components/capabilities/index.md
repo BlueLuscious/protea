@@ -1,6 +1,6 @@
 # Reusable Capabilities
 
-Status: **Portable opening and activation runtime implemented**
+Status: **Portable activation, opening and checking runtimes**
 
 Capabilities supply narrow behaviour to a model and borrow a [ComponentScope](../../core/component/index.md)
 for lifetime and release registration. Each capability retains its own state and registrations.
@@ -9,16 +9,17 @@ for lifetime and release registration. Each capability retains its own state and
 
 | Page | Owns |
 | --- | --- |
-| [Openable](openable/index.md) | Logical opening, state authority, changes and request results. |
 | [Activatable](activatable/index.md) | Discrete action acceptance, guards and observation. |
+| [Checkable](checkable/index.md) | Checked state, authority, changes and request results. |
+| [Openable](openable/index.md) | Logical opening, state authority, changes and request results. |
 | [Shared](shared/index.md) | Rejection vocabulary and observation release contracts. |
 
 ## Construction and composition
 
-`Opening.create(scope, options)` and `Activation.create(scope, options?)` require an active
-conforming `ComponentScope`. Their public contracts are `OpeningApi` and `ActivationApi`. The
-caller retains disposal authority. A capability borrows the scope for terminal observation and
-cleanup registration.
+`Activation.create(scope, options?)`, `Opening.create(scope, options)` and
+`Checking.create(scope, options)` require an active conforming `ComponentScope`. The caller
+retains disposal authority. A capability borrows the scope for terminal observation and cleanup
+registration. See the [API guide](../api/index.md#contracts-and-values) for their public contracts.
 
 Creation captures selected configuration values, the external authority reference where used
 and configured callback references. Mutating the original options object does not reconfigure a
@@ -76,19 +77,17 @@ capability replacement, reparenting, detach operation or independent capability 
 ## Results and named vocabularies
 
 Each capability owns an immutable runtime vocabulary and derives its status type from that
-authority. `openableResultStatuses` contains changed, unchanged and rejected;
-`activatableResultStatuses` contains activated and rejected. Results preserve branch-specific
-status members, including the required reason on rejection. Opening's no-op and activation's
-acceptance do not become a generic success status or resource discriminator.
+authority. `openableResultStatuses` and `checkableResultStatuses` each contain `changed`,
+`unchanged` and `rejected`. `activatableResultStatuses` contains `activated` and `rejected`.
+Results preserve branch-specific status members, including the required reason on rejection.
 
 Rejected results use the [shared rejection vocabulary](shared/index.md#rejection-reasons).
 
 Public requests check disposed before busy, then their operation-specific conditions. A satisfied
-opening target does not bypass those first checks. Occupation lasts through guard/source calls,
-commitment and notification delivery. Source-driven opening delivery also occupies that opening
-capability. A reentrant public request on the same occupied capability is rejected with busy,
-without queuing work. The current external-source projection callback is permitted inside its
-pending opening request; it is not a second public request.
+state target is considered after those first checks. Occupation lasts through guard/source calls,
+commitment and notification delivery, including source-driven delivery. A reentrant public
+request on the same occupied capability returns `rejected` with `busy` without queuing work.
+An external-source callback can still project a commitment during a pending request.
 
 Separate instances and capabilities have no implicit common busy flag or mutable state. A
 vocabulary's runtime immutability and a consumer's readonly type view are separate guarantees;
@@ -97,12 +96,12 @@ Unexpected exceptions are not members of the result unions and do not establish 
 
 ## Subscriptions and synchronous delivery
 
-Opening-change subscribers receive previous/current booleans for one effective transition.
+Opening and checked-change subscribers receive previous/current booleans for one effective transition.
 Activation subscribers receive acceptance without a universal payload. Neither notification
 reports rejected or unchanged requests as effective changes. Their operation results carry
 those distinctions.
 
-Both capabilities use the [shared observation runtime](../shared/index.md#runtime) for
+Capabilities use the [shared observation runtime](../shared/index.md#runtime) for
 independent registrations, ordered delivery and terminal checks. Conforming external authorities
 follow these delivery rules for their own notifications. The [release contract](shared/index.md#observation-release)
 defines what a returned unsubscribe owns.
@@ -123,10 +122,9 @@ must stop even if its cleanup has not run yet or physical disconnection fails. A
 owned release under the component protocol; only the initial disposal's normal return establishes
 successful synchronous release. Repeated disposal does not retry failures.
 
-Opening preserves its last observed projection at finalisation. Finalisation requests no closing,
-does not mutate an external source and invents no activation or change event. It retires the
-capability's source registration without cancelling unrelated registrations or deliveries owned
-by that source. Opening-change observation is not a disposal publisher.
+Opening and Checking preserve their last observed values at finalisation. Finalisation retires
+the capability's source registration while the borrowed source retains its value and unrelated
+registrations. Observers receive effective changes or accepted actions during the active lifetime.
 
 An application subscription on another model remains application-owned even if its target ends.
 The application must release its own connection; target disposal cannot remove records owned by
@@ -134,8 +132,9 @@ a different source. No manager, implicit membership or cross-component transacti
 
 An exception may follow committed state or accepted activation. Preserve the commitment and
 attempt remaining eligible observers; callers must not infer refusal, assume external rollback
-or automatically retry activation from that exception. Detailed delegated-opening outcomes
-belong to the [opening guide](openable/index.md#delegation-and-finalisation).
+or automatically retry activation from that exception. The
+[Opening](openable/index.md#delegation-and-finalisation) and
+[Checking](checkable/index.md#finalisation-and-failure) guides describe delegated outcomes.
 
 ## Evidence and limits
 
@@ -145,7 +144,6 @@ during requests/delivery and partial setup. Public type and distribution consume
 check declarations, choices and actual exports. The [tooling guide](../../../tooling/index.md)
 owns actual commands and coverage; local, hosted and publication evidence remain distinct.
 
-These capabilities supply no DOM events, rendering, focus, persistent selection, Pressable,
-toggle operation, framework scheduler, manager or optional icon/motion dependency. Original
-[component families](../../../project/component-direction.md) and concrete
-[host integration](../../../project/integration-boundaries.md) retain their own responsibilities.
+[Component families](../../../project/component-direction.md) own model composition.
+[Host integrations](../../../project/integration-boundaries.md) own events, rendering, focus and
+optional providers for their environment.

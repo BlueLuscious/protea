@@ -1,8 +1,8 @@
 # Component Direction
 
-Status: **Portable Button, Modal, Sidebar and capability runtimes**
+Status: **Portable Button, Modal, Sidebar, Switch and capability runtimes**
 
-Protea develops original Button, Modal and Sidebar families before selecting variants. Their
+Protea develops original component families before selecting variants. Its
 [family modules](../packages/components/components/index.md) live in Components. The package
 consumes public Core contracts for definition-based creation and lifetime.
 Shared family implementation still needs concrete state, behaviour and consumers before a common
@@ -20,6 +20,10 @@ opening and delegates construction to Core with its prepared definition.
 [Sidebar](../packages/components/components/sidebar/index.md) combines owned lifetime and
 changeable logical presence through its prepared definition. Persistent pressed or selected
 state would require its own family case and contract.
+
+[Switch](../packages/components/components/switch/index.md) combines owned lifetime with a
+checked value retained between requests. Its Checking capability uses local state or borrows an
+application-owned authority, so separate instances can act on the same effective preference.
 
 The initial Sidebar family selects changeable logical presence. Opening and closing work with
 fixed or floating positioning. A host selects rendered visibility, layout and interaction policies
@@ -39,7 +43,7 @@ These concepts distinguish product responsibilities without requiring matching c
 | --- | --- |
 | Component | An individual model with a defined purpose and contract; the [foundation](../packages/core/component/index.md) owns identity and lifetime. |
 | Family and variant | Related purposes and justified behavioural/structural differences; their actual component owner selects obligations and composition. |
-| Capability | A narrow reusable behaviour. The [capability guides](../packages/components/capabilities/index.md) own opening, activation and their resource boundaries. |
+| Capability | A narrow reusable behaviour. The [capability guides](../packages/components/capabilities/index.md) own activation, opening, checking and their resource boundaries. |
 | Behaviour and controller | Behaviour is promised observable meaning. A controller is a possible implementation mechanism needing real responsibility, state and consumers; the two terms do not require parallel abstractions. |
 | Manager and coordination | A manager may own justified scoped membership/lookup. Family/application coordination policy uses public operations; neither automatically owns member state or lifetime. |
 | Part | A composition role with explicitly selected representation, retention, borrowing, replacement and cleanup. |
@@ -79,7 +83,7 @@ reentrancy, errors and release.
 ## Capability lifetime and replacement
 
 The current [foundation](../packages/core/component/index.md) supplies one terminal component
-lifetime and explicit cleanup registration. [Opening and activation](../packages/components/capabilities/index.md)
+lifetime and explicit cleanup registration. [Capabilities](../packages/components/capabilities/index.md)
 borrow that fixed scope. Capabilities sharing a scope retain independent state and listeners.
 Independent capability teardown and replacement remain deferred. `ComponentLifetime` and
 `ComponentScope` retain distinct consumer and resource-owner roles. `ComponentInstance`

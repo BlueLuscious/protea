@@ -2,9 +2,9 @@
 
 Status: **Implemented in Components**
 
-This feature owns the public contracts common to [Openable](../openable/index.md) and
-[Activatable](../activatable/index.md). Each capability owns its state, operation results and
-rules for accepting a request.
+This feature owns the public contracts common to [Openable](../openable/index.md),
+[Activatable](../activatable/index.md) and [Checkable](../checkable/index.md). Each capability
+owns its state, operation results and rules for accepting a request.
 
 ## Rejection reasons
 

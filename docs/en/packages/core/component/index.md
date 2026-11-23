@@ -139,7 +139,7 @@ throws. A release failure propagates opaquely; no particular aggregation of simu
 application and cleanup failures is promised by this example.
 
 The [Components capability construction protocol](../../components/capabilities/index.md#failed-setup)
-describes how opening and activation borrow a scope and release their own acquisitions.
+describes how capabilities borrow a scope and release their own acquisitions.
 
 The contracts remain independent of implementation classes. A conforming structural owner is
 permitted, but its shape alone proves neither atomic registration, synchronous finalisation nor
@@ -160,6 +160,6 @@ observation, every required cleanup attempt, invalid/terminal registration, dupl
 borrowing, failure and repeated/reentrant disposal. See
 [Core quality](../quality.md) for construction and distribution evidence.
 
-This runtime evidence does not establish opening, activation, host teardown or accessibility.
+Capability behaviour and host evidence belong to their respective owners.
 The [tooling guide](../../../tooling/index.md#current-verification) owns actual commands and
 coverage; local, hosted and publication evidence remain separate.

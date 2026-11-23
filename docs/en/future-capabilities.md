@@ -23,7 +23,7 @@ current delivery commitment. Importance does not establish implementation order.
 | `P2` | Resolve component definitions by logical identity. | A consumer needs to select a definition by name and optional namespace. Its lookup scope and handling of duplicate identities can be defined. |
 | `P2` | Identify component instances outside their in-memory references. | A consumer needs to correlate the same instance across a boundary where its object reference is unavailable. |
 | `P2` | Inspect shared descriptive metadata on component definitions. | A consumer such as a catalogue or authoring tool needs specific descriptive fields across multiple definitions. |
-| `P2` | Shared application state across independent components. | Two real controls need to observe and request changes to the same application-owned state. |
+| `P2` | General shared-state integration across independent components. | A consumer needs an integration beyond the existing synchronous checked-state authority and demonstrates the required state, timing and ownership. |
 | `P2` | Responsive representation or control replacement. | A concrete host needs different controls at different breakpoints while preserving application state and correct interaction semantics. |
 | `P4` | Conversion between component families. | A case cannot reasonably be served by representation changes, composition or replacement. |
 | `P2` | Independent capability distribution. | Consumers need capabilities independently of the family catalogue and an actual dependency, loading, support or release requirement justifies extraction. |
@@ -33,20 +33,14 @@ current delivery commitment. Importance does not establish implementation order.
 
 ## Shared application state
 
-A future mobile Switch and desktop Button could both operate on an application-owned theme.
-Each model would retain its own identity, lifetime, operational state and subscriptions. A shared
-authority would own the theme; both controls would request changes and observe the resulting
-state. Sharing a component definition alone would not synchronise instances.
+The [Switch guide](packages/components/components/switch/index.md#checked-state-and-collaboration)
+owns the current composition. An application supplies the checked-state authority and can connect
+Button activation to that same authority. Each model retains its own lifetime.
 
-The current Button represents a discrete action; it has no checked or theme state. A future Switch
-would need its own state semantics. The Button's presentation could reflect the theme through its
-host without pretending that activation is persistent selection.
-
-Review ownership, initial reads, effective changes, update ordering, feedback loops and connection
-cleanup before choosing a public binding contract. Borrowing a shared source must not transfer
-authority to dispose it. This proposal creates no theme store, generic state engine or automatic
-binding in Core. Existing opening authority remains governed by the
-[opening contract](packages/components/capabilities/openable/index.md).
+A future responsive host could present a mobile Switch and a desktop Button for one theme
+preference. The host can project the effective preference independently of which control sends the
+request. A generic state engine or binding needs a concrete case beyond checked state. Review
+initial reads, update ordering, feedback loops and cleanup at the owner of that integration.
 
 ## Responsive representation and family conversion
 

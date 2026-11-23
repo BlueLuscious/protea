@@ -59,11 +59,11 @@ request, result and observation protocols. An adapter preserves their meaning at
 | Effective change or accepted activation | The model reports the committed change or accepted activation through its public results and observations. |
 | Application or host effect | The effect's owner exposes any completion its consumers need, such as saving data, updating a view or finishing an animation. |
 
-External opening control requires synchronous authorisation, commitment and change delivery
-through the selected authority. Qualify that protocol with the actual source. A host scheduler
-can defer projection while the logical state stays with that authority. When a request depends
-on asynchronous application work, the application waits for the result and makes a fresh
-logical request only if the model and the intent are still current.
+External opening and checked-state control require synchronous authorisation, commitment and
+change delivery through the selected authority. Qualify that protocol with the actual source.
+A host scheduler can defer projection while the logical state stays with that authority. When a
+request depends on asynchronous application work, the application waits for the result and makes
+a fresh logical request only if the model and the intent are still current.
 
 A future asynchronous model operation needs an explicit contract for pending work, commitment,
 cancellation, concurrent requests, failures and finalisation.

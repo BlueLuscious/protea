@@ -1,6 +1,6 @@
 # Protea Project
 
-Status: **Private Core and Components packages with portable Button, Modal and Sidebar runtimes**
+Status: **Private Core and Components packages with portable component models**
 
 ## Purpose and authority
 
@@ -20,13 +20,13 @@ The private [core package](../packages/core/index.md) provides `Component.define
 `Component.create` and `Scope.create` through one root export with JavaScript and declarations.
 Its [API guide](../packages/core/api/index.md) owns usage and exports. Its
 [component guide](../packages/core/component/index.md) owns the contracts, lifetime and cleanup
-registration. The [Components package](../packages/components/index.md) uses Core to implement
-opening and activation over borrowed scopes and to build Button, Modal and Sidebar instances from
-their prepared definitions. The [family guides](../packages/components/components/index.md) own
-their state, construction and ownership.
+registration. The [Components package](../packages/components/index.md) uses Core for activation,
+opening and checking over borrowed scopes and to build Button, Modal, Sidebar and Switch instances
+from their prepared definitions. The [family guides](../packages/components/components/index.md)
+own their state, construction and ownership.
 [Component direction](component-direction.md) owns independent Sidebar axes and wider composition
 questions.
-The [web example](../../../examples/web/README.md) connects the portable models to native HTML.
+The [web example](../../../examples/web/README.md) connects Button, Modal and Sidebar to native HTML.
 Its bindings are local to the example. [Integration boundaries](integration-boundaries.md)
 describe the responsibilities of concrete hosts and the direction for optional presentation
 and providers.
