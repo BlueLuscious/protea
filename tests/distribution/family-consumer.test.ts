@@ -1,6 +1,6 @@
 import * as core from "@luscious-garden/protea-core";
 import { Component, type ComponentInstance, type ComponentLifetime } from "@luscious-garden/protea-core";
-import { Button, Modal, Sidebar } from "@luscious-garden/protea-components";
+import { Button, Modal, Sidebar, Switch } from "@luscious-garden/protea-components";
 import type {
   Activatable,
   ActivatableResultType,
@@ -10,6 +10,9 @@ import type {
   ButtonOptionsType,
   CapabilityRejectionReasonType,
   CapabilityUnsubscribeType,
+  Checkable,
+  CheckableResultType,
+  CheckedStateAuthority,
   ModalApi,
   ModalInstance,
   ModalOptionsType,
@@ -19,6 +22,9 @@ import type {
   SidebarApi,
   SidebarInstance,
   SidebarOptionsType,
+  SwitchApi,
+  SwitchInstance,
+  SwitchOptionsType,
 } from "@luscious-garden/protea-components";
 
 // @ts-expect-error Internal family implementation modules are not public TypeScript entrypoints.
@@ -235,3 +241,44 @@ function consumeFamilies(authority: OpenStateAuthority): void {
 }
 
 void consumeFamilies;
+
+function consumeSwitch(authority: CheckedStateAuthority): void {
+  const api: SwitchApi = Switch;
+  const internal: SwitchOptionsType = { control: "internal", initialChecked: true };
+  const external: SwitchOptionsType = { control: "external", authority };
+  const local: SwitchInstance = api.create(internal);
+  const delegated: SwitchInstance = api.create(external);
+  const explicitLocal = Component.create(Switch.definition, internal);
+  const explicitDelegated = Component.create(Switch.definition, external);
+  const definition: typeof Switch.definition = explicitDelegated.definition;
+  const instance: ComponentInstance = explicitLocal;
+  const checking: Checkable = explicitDelegated;
+  const checked: boolean = local.isChecked;
+  const result: CheckableResultType = delegated.requestChecked(checked);
+  const release: CapabilityUnsubscribeType = local.subscribeCheckedChange(() => {});
+  release();
+  void [definition, instance, checking, result];
+
+  // @ts-expect-error Switch requires an explicit control mode.
+  Switch.create();
+  // @ts-expect-error Core creation requires the same explicit control mode.
+  Component.create(Switch.definition);
+  // @ts-expect-error External control cannot add a separate initial value.
+  Switch.create({ control: "external", authority, initialChecked: true });
+  // @ts-expect-error External control requires an authority through Core construction too.
+  Component.create(Switch.definition, { control: "external" });
+  // @ts-expect-error Options for logical opening are not checked-state options.
+  Component.create(Switch.definition, { control: "internal", initialOpen: true });
+  // @ts-expect-error Switch exposes an explicit checked-state request rather than opening.
+  local.open();
+  // @ts-expect-error The borrowed authority does not make the family view writable.
+  delegated.isChecked = true;
+  // @ts-expect-error The prepared family definition is readonly.
+  api.definition = definition;
+  // @ts-expect-error The foundation does not export a Switch family.
+  core.Switch;
+  // @ts-expect-error The Switch API is a factory object.
+  new Switch();
+}
+
+void consumeSwitch;

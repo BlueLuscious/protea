@@ -18,7 +18,9 @@ supplies independent instances with observable availability and activation.
 model with explicit opening authority.
 [`Sidebar.create(options)`](docs/en/packages/components/components/sidebar/index.md) constructs
 a lateral region model with changeable logical presence.
-The [local web example](examples/web/README.md) connects Button, Modal and Sidebar to native HTML.
+[`Switch.create(options)`](docs/en/packages/components/components/switch/index.md) constructs
+a two-state model with local checked state or an application-owned authority.
+The [local web example](examples/web/README.md) connects Button, Modal, Sidebar and Switch to native HTML.
 The [integration guide](docs/en/project/integration-boundaries.md) describes host responsibilities
 and prospective adapters.
 
