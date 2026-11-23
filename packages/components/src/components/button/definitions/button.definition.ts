@@ -1,11 +1,11 @@
 import { Component, type ComponentSetupContext } from "@luscious-garden/protea-core";
-import type { IButtonSurface } from "../components/button/contracts/internal/button-surface.contract.js";
-import { ButtonComponent } from "../components/button/runtime/button.component.js";
-import type { ButtonOptionsType } from "../components/button/types/button-options.type.js";
-import type { ButtonApi } from "./contracts/button-api.contract.js";
+import type { ButtonInstance } from "../contracts/button-instance.contract.js";
+import type { IButtonSurface } from "../contracts/internal/button-surface.contract.js";
+import { ButtonComponent } from "../runtime/button.component.js";
+import type { ButtonOptionsType } from "../types/button-options.type.js";
 
 /** @description The built-in Button recipe, shared by the family API and explicit Core creation. */
-const buttonDefinition = Component.define({
+export const ButtonDefinition: ButtonInstance["definition"] = Component.define({
   identity: { namespace: "protea", name: "button" },
   setup({ scope, options }: ComponentSetupContext<ButtonOptionsType | undefined>): IButtonSurface {
     const model = new ButtonComponent(scope, options);
@@ -19,14 +19,5 @@ const buttonDefinition = Component.define({
       activate: model.activate.bind(model),
       subscribeActivation: model.subscribeActivation.bind(model),
     };
-  },
-});
-
-/** @description Immutable public API for creating independent Button instances. */
-export const Button = Object.freeze<ButtonApi>({
-  definition: buttonDefinition,
-
-  create(options) {
-    return Component.create(buttonDefinition, options);
   },
 });

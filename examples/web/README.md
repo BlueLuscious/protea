@@ -1,7 +1,9 @@
 # Protea Web Example
 
-This unstyled local page connects Button, Modal, Sidebar and Switch to native HTML. Its import map
-resolves the public Core and Components entries from their built output.
+This unstyled local page connects Button, Modal, Sidebar and Switch to native HTML. Its
+[import map](index.html) maps the four family specifiers to their files under
+`packages/components/dist/api/families/` and `@luscious-garden/protea-components/capabilities`
+to the built capability aggregate. The Core root supplies the page scope.
 
 ## Run locally
 

@@ -8,6 +8,10 @@ import {
   checkableResultStatuses,
   openableResultStatuses,
 } from "@luscious-garden/protea-components";
+import * as capabilityEntries from "@luscious-garden/protea-components/capabilities";
+import * as activationEntry from "@luscious-garden/protea-components/capabilities/activation";
+import * as checkingEntry from "@luscious-garden/protea-components/capabilities/checking";
+import * as openingEntry from "@luscious-garden/protea-components/capabilities/opening";
 import type {
   Activatable,
   ActivationApi,
@@ -225,3 +229,70 @@ capabilityRejectionReasons.busy = "busy";
 openingApi.create = openingApi.create;
 // @ts-expect-error A creation operation cannot be replaced.
 activationApi.create = activationApi.create;
+
+function consumeCapabilityEntries(openAuthority: OpenStateAuthority, checkedAuthority: CheckedStateAuthority): void {
+  const leafActivationApi: activationEntry.ActivationApi = capabilityEntries.Activation;
+  const leafActivationOptions: activationEntry.ActivatableOptionsType = activationOptions;
+  const leafActivation: activationEntry.Activatable = leafActivationApi.create(scope, leafActivationOptions);
+  const leafActivationResult: activationEntry.ActivatableResultType = leafActivation.activate();
+  const leafActivationStatus: activationEntry.ActivatableResultStatusType = activationEntry.activatableResultStatuses.activated;
+  const aggregateActivation: [
+    capabilityEntries.ActivationApi, capabilityEntries.ActivatableOptionsType, capabilityEntries.Activatable,
+    capabilityEntries.ActivatableResultType, capabilityEntries.ActivatableResultStatusType,
+  ] = [leafActivationApi, leafActivationOptions, leafActivation, leafActivationResult, leafActivationStatus];
+  const rootActivation: [ActivationApi, ActivatableOptionsType, Activatable, ActivatableResultType, ActivatableResultStatusType] = aggregateActivation;
+
+  const leafOpeningApi: openingEntry.OpeningApi = capabilityEntries.Opening;
+  const leafOpenAuthority: openingEntry.OpenStateAuthority = openAuthority;
+  const leafOpeningOptions: openingEntry.OpenableOptionsType = { control: "external", authority: leafOpenAuthority };
+  const leafOpening: openingEntry.Openable = leafOpeningApi.create(scope, leafOpeningOptions);
+  const leafOpeningResult: openingEntry.OpenableResultType = leafOpening.open();
+  const leafOpeningStatus: openingEntry.OpenableResultStatusType = openingEntry.openableResultStatuses.changed;
+  const leafOpeningChange: openingEntry.OpenableChangeType = { previous: false, current: true };
+  const aggregateOpening: [
+    capabilityEntries.OpeningApi, capabilityEntries.OpenStateAuthority, capabilityEntries.OpenableOptionsType,
+    capabilityEntries.Openable, capabilityEntries.OpenableResultType, capabilityEntries.OpenableResultStatusType,
+    capabilityEntries.OpenableChangeType,
+  ] = [leafOpeningApi, leafOpenAuthority, leafOpeningOptions, leafOpening, leafOpeningResult, leafOpeningStatus, leafOpeningChange];
+  const rootOpening: [
+    OpeningApi, OpenStateAuthority, OpenableOptionsType, Openable, OpenableResultType, OpenableResultStatusType, OpenableChangeType,
+  ] = aggregateOpening;
+
+  const leafCheckingApi: checkingEntry.CheckingApi = capabilityEntries.Checking;
+  const leafCheckedAuthority: checkingEntry.CheckedStateAuthority = checkedAuthority;
+  const leafCheckingOptions: checkingEntry.CheckableOptionsType = { control: "external", authority: leafCheckedAuthority };
+  const leafChecking: checkingEntry.Checkable = leafCheckingApi.create(scope, leafCheckingOptions);
+  const leafCheckingResult: checkingEntry.CheckableResultType = leafChecking.requestChecked(true);
+  const leafCheckingStatus: checkingEntry.CheckableResultStatusType = checkingEntry.checkableResultStatuses.changed;
+  const leafCheckingChange: checkingEntry.CheckableChangeType = { previous: false, current: true };
+  const aggregateChecking: [
+    capabilityEntries.CheckingApi, capabilityEntries.CheckedStateAuthority, capabilityEntries.CheckableOptionsType,
+    capabilityEntries.Checkable, capabilityEntries.CheckableResultType, capabilityEntries.CheckableResultStatusType,
+    capabilityEntries.CheckableChangeType,
+  ] = [leafCheckingApi, leafCheckedAuthority, leafCheckingOptions, leafChecking, leafCheckingResult, leafCheckingStatus, leafCheckingChange];
+  const rootChecking: [
+    CheckingApi, CheckedStateAuthority, CheckableOptionsType, Checkable, CheckableResultType, CheckableResultStatusType, CheckableChangeType,
+  ] = aggregateChecking;
+
+  const aggregateRelease: capabilityEntries.CapabilityUnsubscribeType = leafOpening.subscribeOpenChange(() => {});
+  const rootRelease: CapabilityUnsubscribeType = aggregateRelease;
+  const reason: capabilityEntries.CapabilityRejectionReasonType = capabilityEntries.capabilityRejectionReasons.denied;
+  consumeReason(reason);
+  rootRelease();
+  void [rootActivation, rootOpening, rootChecking];
+
+  // @ts-expect-error Capability aggregates do not expose family construction.
+  capabilityEntries.Button;
+  // @ts-expect-error An opening leaf does not expose another capability's construction API.
+  openingEntry.Activation;
+  // @ts-expect-error Shared rejection vocabulary belongs to the aggregate rather than each leaf.
+  checkingEntry.capabilityRejectionReasons;
+  // @ts-expect-error Leaf result vocabularies retain their readonly choices.
+  activationEntry.activatableResultStatuses.activated = "activated";
+  // @ts-expect-error The leaf API preserves required opening options.
+  leafOpeningApi.create(scope);
+  // @ts-expect-error The leaf API excludes a competing initial checked value.
+  leafCheckingApi.create(scope, { control: "external", authority: checkedAuthority, initialChecked: true });
+}
+
+void consumeCapabilityEntries;

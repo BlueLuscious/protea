@@ -39,7 +39,7 @@ lives with [Core quality](../packages/core/quality.md) and
 
 ## Public contract changes
 
-The development contract covers the public package roots, their signatures and the guarantees
+The development contract covers the public package entries, their signatures and the guarantees
 documented at their owners. It includes lifetime and resource ownership, state authority,
 operation results, failure behaviour and the timing and order of observations. Changing one of
 these guarantees can break a consumer even when its code still type-checks.

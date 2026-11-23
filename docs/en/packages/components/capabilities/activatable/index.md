@@ -4,9 +4,9 @@ Status: **Synchronous activation acceptance runtime implemented**
 
 Activatable provides `activate()` and `subscribeActivation()` without persistent activation,
 pressed, selected or opening state. `Activation.create(scope, options?)` binds one
-capability to the supplied active `ComponentScope`. Import `Activation` from the
-[Components root](../../api/index.md).
-the [capability guide](../index.md) owns shared construction, lifetime, observation and failure rules.
+capability to the supplied active `ComponentScope`. Import `Activation` and its types from
+`@luscious-garden/protea-components/capabilities/activation`.
+The [capability guide](../index.md) owns shared construction, lifetime, observation and failure rules.
 Production source and generated declarations own complete signatures.
 
 ## Eligibility and acceptance

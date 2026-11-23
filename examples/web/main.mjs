@@ -1,7 +1,11 @@
 import { Scope } from "@luscious-garden/protea-core";
 import {
-  Button, Checking, Modal, Opening, Sidebar, Switch, checkableResultStatuses, openableResultStatuses,
-} from "@luscious-garden/protea-components";
+  Checking, Opening, checkableResultStatuses, openableResultStatuses,
+} from "@luscious-garden/protea-components/capabilities";
+import { Button } from "@luscious-garden/protea-components/button";
+import { Modal } from "@luscious-garden/protea-components/modal";
+import { Sidebar } from "@luscious-garden/protea-components/sidebar";
+import { Switch } from "@luscious-garden/protea-components/switch";
 import { bindButton } from "./button.mjs";
 import { bindModal } from "./modal.mjs";
 import { bindSidebar } from "./sidebar.mjs";
@@ -13,7 +17,7 @@ import { bindSwitch } from "./switch.mjs";
  * @param {import("@luscious-garden/protea-core").ComponentScope} lifetime - The page owner.
  * @param {HTMLDialogElement} dialog - The page's native dialogue.
  * @param {() => boolean} canClose - The application's synchronous closing policy.
- * @returns {import("@luscious-garden/protea-components").ModalInstance} The page-owned model.
+ * @returns {import("@luscious-garden/protea-components/modal").ModalInstance} The page-owned model.
  */
 function mountDialogue(lifetime, dialog, canClose) {
   const opening = Opening.create(lifetime, { control: "internal" });
@@ -120,7 +124,7 @@ function mountHelp(lifetime) {
   }
 
   const preference = Checking.create(lifetime, { control: "internal" });
-  /** @type {import("@luscious-garden/protea-components").CheckedStateAuthority} */
+  /** @type {import("@luscious-garden/protea-components/capabilities/checking").CheckedStateAuthority} */
   const authority = {
     get isChecked() {
       return preference.isChecked;

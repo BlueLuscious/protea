@@ -18,6 +18,27 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./capabilities": {
+      "types": "./dist/api/capabilities/index.d.ts",
+      "import": "./dist/api/capabilities/index.js",
+      "default": "./dist/api/capabilities/index.js"
+    },
+    "./capabilities/*": {
+      "types": "./dist/api/capabilities/*.api.d.ts",
+      "import": "./dist/api/capabilities/*.api.js",
+      "default": "./dist/api/capabilities/*.api.js"
+    },
+    "./definitions": null,
+    "./definitions/*": {
+      "types": "./dist/components/*/definitions/*.definition.d.ts",
+      "import": "./dist/components/*/definitions/*.definition.js",
+      "default": "./dist/components/*/definitions/*.definition.js"
+    },
+    "./*": {
+      "types": "./dist/api/families/*.api.d.ts",
+      "import": "./dist/api/families/*.api.js",
+      "default": "./dist/api/families/*.api.js"
     }
   },
   "files": [

@@ -16,9 +16,11 @@ portable lifetime and definition-based construction.
 ## Module and public boundaries
 
 Families use the [Core component foundation](../../core/component/index.md) through Core's public
-package root. Within Components, family modules consume capability contracts and creation APIs from
-their owners. The package-level `src/api/` contains executable family entry points and their API
-contracts. Each family's own `contracts/` and `types/` hold its specific instance and data contracts.
+package root. Within Components, family modules consume capability contracts and creation APIs
+from their owners in `src/capabilities/` and `src/api/capabilities/`. The package-level
+`src/api/families/` contains each executable family entry.
+The API contracts live in `src/api/contracts/`. Each family owns its prepared definition under
+`definitions/` and its instance and data contracts under `contracts/` and `types/`.
 
 Concrete family implementation classes use the Component role. `ButtonComponent` in
 `runtime/button.component.ts` owns the family behaviour that the Button recipe delegates to.
@@ -27,8 +29,9 @@ state to `Checking`. Core assembles each public instance.
 The Button implementation follows
 [Garden's symbol and role naming](https://github.com/BlueLuscious/garden/blob/master/docs/en/project-rules.md#symbols-and-files).
 
-The [Components API guide](../api/index.md) lists the public root and its executable
-family and capability entry points.
+The [Components API guide](../api/index.md#package-exports) lists the public root and the available
+family and definition entries. A family entry exposes the same API object as the root. Its
+`definition` property refers to the family's named definition export.
 
 ## Contract-led development
 

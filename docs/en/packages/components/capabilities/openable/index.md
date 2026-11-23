@@ -4,8 +4,9 @@ Status: **Logical opening runtime with internal or borrowed external state autho
 
 Openable provides `isOpen`, `open()`, `close()` and `subscribeOpenChange()`. Its
 `Opening.create(scope, options)` returns a capability bound to the supplied active
-`ComponentScope`. Import `Opening` from the [Components root](../../api/index.md). The
-[capability guide](../index.md) owns shared construction, lifetime, subscription and error rules.
+`ComponentScope`. Import `Opening` and its types from
+`@luscious-garden/protea-components/capabilities/opening`.
+The [capability guide](../index.md) owns shared construction, lifetime, subscription and error rules.
 Production contracts and generated declarations own complete signatures.
 
 The [Modal](../../components/modal/index.md) and [Sidebar](../../components/sidebar/index.md)

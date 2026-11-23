@@ -4,7 +4,7 @@ Status: **Checked-state runtime with internal or borrowed external authority**
 
 `Checking.create(scope, options)` returns a `Checkable` with a readable `isChecked` value,
 an explicit `requestChecked(nextChecked)` operation and `subscribeCheckedChange(listener)`.
-Import `Checking` and its `CheckingApi` contract from the [Components root](../../api/index.md).
+Import `Checking` and its types from `@luscious-garden/protea-components/capabilities/checking`.
 The caller owns the supplied active `ComponentScope`. [Switch](../../components/switch/index.md)
 uses Checking with its own family instance scope.
 
