@@ -1,6 +1,6 @@
 # Protea Web Example
 
-This unstyled local page connects Button, Modal and Sidebar to native HTML. Its import map
+This unstyled local page connects Button, Modal, Sidebar and Switch to native HTML. Its import map
 resolves the public Core and Components entries from their built output.
 
 ## Run locally
@@ -57,6 +57,17 @@ Stop the server with Ctrl+C when finished.
 2. Activate the button again. The region is hidden and the button reports
    `aria-expanded="false"`. Both attributes follow Sidebar's effective open state.
 
+## Try the shared help preference
+
+1. Activate **Show help** with the pointer or focus it with Tab and press Space. The switch
+   shows the current preference and the help text appears.
+2. Activate **Toggle help**. The help text hides and **Show help** reflects the same change.
+   Either control can change the preference during the life of the page.
+
+The [Switch binding](switch.mjs) forwards one native change and restores the effective checked
+value if the request is refused. A page-owned Checking capability supplies the value. The
+application's authority connects that value to Switch and to the Button's activation action.
+
 ## Connection ownership
 
 The example's [Button binding](button.mjs) reflects model availability in a native button's
@@ -66,9 +77,10 @@ with effective openness. The caller supplies the elements, labels and relationsh
 The page's own Button subscriptions decide which Modal actions to request.
 
 Each binding borrows a live model and returns an idempotent detach function. Detach attempts
-to release its DOM listeners and model subscription. The detached view keeps its last projected
-state. The caller can still use the model, attach it to another view and dispose it. If setup
-fails, the binding invalidates its callbacks and attempts any releases it acquired.
+to release its DOM listeners and model subscription. A detached view stops receiving model
+updates. A native control that remains in the page can still respond locally. The caller can
+still use the model, attach it to another view and dispose it. If setup fails, the binding
+invalidates its callbacks and attempts any releases it acquired.
 
 Both dialogues use the [Modal binding](modal.mjs) for native projection and dismissal. The
 page supplies each opening policy and reconciles completed native closing through that

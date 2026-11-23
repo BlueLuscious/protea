@@ -41,3 +41,5 @@ The model's checked value and operations are portable. A concrete host supplies 
 name, pointer and keyboard interaction, projection of the authoritative value, and release of its
 own connections. See the [integration boundaries](../../../../project/integration-boundaries.md)
 and the [Components quality guide](../../quality.md#checks) for their respective scopes.
+The [web example](../../../../../../examples/web/README.md#try-the-shared-help-preference)
+connects a native Switch and a Button to one application-owned help preference.

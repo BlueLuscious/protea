@@ -26,7 +26,8 @@ from their prepared definitions. The [family guides](../packages/components/comp
 own their state, construction and ownership.
 [Component direction](component-direction.md) owns independent Sidebar axes and wider composition
 questions.
-The [web example](../../../examples/web/README.md) connects Button, Modal and Sidebar to native HTML.
+The [web example](../../../examples/web/README.md) connects Button, Modal, Sidebar and Switch
+to native HTML.
 Its bindings are local to the example. [Integration boundaries](integration-boundaries.md)
 describe the responsibilities of concrete hosts and the direction for optional presentation
 and providers.

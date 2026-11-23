@@ -1,8 +1,11 @@
 import { Scope } from "@luscious-garden/protea-core";
-import { Button, Modal, Opening, Sidebar, openableResultStatuses } from "@luscious-garden/protea-components";
+import {
+  Button, Checking, Modal, Opening, Sidebar, Switch, checkableResultStatuses, openableResultStatuses,
+} from "@luscious-garden/protea-components";
 import { bindButton } from "./button.mjs";
 import { bindModal } from "./modal.mjs";
 import { bindSidebar } from "./sidebar.mjs";
+import { bindSwitch } from "./switch.mjs";
 
 /**
  * @description Owns one dialogue model and its application-controlled opening source.
@@ -102,6 +105,45 @@ function mountEditor(lifetime, listenerOptions) {
 }
 
 /**
+ * @description Connects Switch and Button to one application-owned help preference.
+ * @param {import("@luscious-garden/protea-core").ComponentScope} lifetime - The page owner.
+ * @returns No value.
+ */
+function mountHelp(lifetime) {
+  const control = document.getElementById("show-help");
+  const toggle = document.getElementById("toggle-help");
+  const help = document.getElementById("help-content");
+
+  if (!(control instanceof HTMLInputElement) || !(toggle instanceof HTMLButtonElement) ||
+    !(help instanceof HTMLElement)) {
+    throw new TypeError("The example requires its native help controls and content.");
+  }
+
+  const preference = Checking.create(lifetime, { control: "internal" });
+  /** @type {import("@luscious-garden/protea-components").CheckedStateAuthority} */
+  const authority = {
+    get isChecked() {
+      return preference.isChecked;
+    },
+    requestChecked(nextChecked) {
+      return preference.requestChecked(nextChecked).status !== checkableResultStatuses.rejected;
+    },
+    subscribeCheckedChange: preference.subscribeCheckedChange.bind(preference),
+  };
+  const model = Switch.create({ control: "external", authority });
+  lifetime.addCleanup(model.dispose);
+  lifetime.addCleanup(bindSwitch(control, model));
+  lifetime.addCleanup(authority.subscribeCheckedChange(({ current }) => {
+    help.hidden = !current;
+  }));
+  help.hidden = !authority.isChecked;
+
+  connectAction(lifetime, toggle, () => {
+    authority.requestChecked(!authority.isChecked);
+  });
+}
+
+/**
  * @description Connects the page's native controls to application-owned Protea models.
  * @returns No value.
  */
@@ -134,6 +176,7 @@ function mountExample() {
     connectAction(lifetime, openElement, modal.open);
     connectAction(lifetime, closeElement, modal.close);
     mountEditor(lifetime, listenerOptions);
+    mountHelp(lifetime);
 
     window.addEventListener("pagehide", ({ persisted }) => {
       if (!persisted) {
