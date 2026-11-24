@@ -52,11 +52,13 @@ Button activation to that same authority. Each model retains its own lifetime.
 
 A future responsive host could present a mobile Switch and a desktop Button for one theme
 preference. The host can project the effective preference independently of which control sends the
-request. A generic state engine or binding needs a concrete case beyond checked state. Review
-initial reads, update ordering, feedback loops and cleanup at the owner of that integration.
+request. A generic state engine or binding needs a concrete case beyond the current authority
+contracts. Review initial reads, update ordering, feedback loops and cleanup at the owner of
+that integration.
 
-Start theme coordination with an application-owned example. Consider a reusable Theme Manager API
-when an independent consumer needs the same preference, effective-theme and observation semantics.
+The [theme example](../../examples/web/README.md#try-theme-selection) uses an application-owned
+manager. Consider a reusable Theme Manager API when an independent consumer needs the same
+preference, effective-theme and observation semantics.
 That consumer should help establish which state is portable, who supplies the system preference
 and who owns host projection and connection cleanup.
 

@@ -5,8 +5,8 @@ Status: **Local web example and prospective integration boundaries**
 This guide owns Protea's optional integration responsibilities. The portable
 [core package](../packages/core/index.md) currently supplies component contracts;
 [component direction](component-direction.md) owns future family questions. The
-[local web example](../../../examples/web/README.md) connects Button, Modal, Sidebar and Switch
-through their public contracts. Its behaviour is scoped to the example page.
+[local web example](../../../examples/web/README.md) connects Button, Modal, Select, Sidebar
+and Switch through their public contracts. Its behaviour is scoped to the example page.
 
 ## Models, applications and hosts
 
@@ -21,6 +21,8 @@ and lifetime mechanisms. It connects public observations to framework tracking w
 The current native bindings live in the web example. Consider a DOM package when an independent
 consumer needs to install those bindings through a public API and can verify the native
 interaction and connection lifetime.
+The [theme case](../../../examples/web/README.md#try-theme-selection) keeps theme resolution with
+the application and browser projection with the host.
 
 Core and Components stay independent of concrete host runtimes, styles, icon providers and
 motion engines. Each integration documents its supported environments and provides host

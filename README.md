@@ -22,7 +22,8 @@ application-owned choice from a fixed set of options.
 a lateral region model with changeable logical presence.
 [`Switch.create(options)`](docs/en/packages/components/components/switch/index.md) constructs
 a two-state model with local checked state or an application-owned authority.
-The [local web example](examples/web/README.md) connects Button, Modal, Sidebar and Switch to native HTML.
+The [local web example](examples/web/README.md) connects Button, Modal, Select, Sidebar and Switch
+to native HTML, including a page-owned theme preference.
 The [integration guide](docs/en/project/integration-boundaries.md) describes host responsibilities
 and prospective adapters.
 

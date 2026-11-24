@@ -5,6 +5,8 @@ Status: **Portable single selection with an application-owned authority**
 Select projects one selected string value from a fixed, ordered set of options. The
 application owns the selection and its policy. A host uses the option values for identity and
 supplies labels and presentation.
+The [native theme example](../../../../../../examples/web/README.md#try-theme-selection) supplies
+an application-owned authority and connects Select to a labelled native chooser.
 
 ## Construction and ownership
 

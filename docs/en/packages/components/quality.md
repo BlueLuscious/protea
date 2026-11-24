@@ -31,7 +31,7 @@ routes for Button, Modal, Select, Sidebar and Switch. It checks named subpath im
 and instance methods, definition and lifetime contracts, capability-specific results and the
 public family surfaces.
 
-The [web example](../../../../examples/web/README.md) owns the browser cases for the four family
+The [web example](../../../../examples/web/README.md) owns the browser cases for the five family
 imports and their use with native controls.
 
 The [root tooling commands](../../tooling/index.md#installation-and-commands) run the checks in
