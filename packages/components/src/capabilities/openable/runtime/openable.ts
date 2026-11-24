@@ -221,30 +221,30 @@ export class Openable implements OpenableContract {
       return;
     }
 
-    if (change === null || typeof change !== "object") {
-      throw new TypeError("An opening change must describe opposite boolean states.");
-    }
-
-    const previous = change.previous;
-    const current = change.current;
-    const snapshot = previous === false && current === true
-      ? Object.freeze({ previous: false, current: true } as const)
-      : previous === true && current === false
-        ? Object.freeze({ previous: true, current: false } as const)
-        : undefined;
-
-    if (snapshot === undefined) {
-      throw new TypeError("An opening change must describe opposite boolean states.");
-    }
-
-    if (!this.#isActive()) {
-      return;
-    }
-
     const wasBusy = this.#busy;
     this.#busy = true;
 
     try {
+      if (change === null || typeof change !== "object") {
+        throw new TypeError("An opening change must describe opposite boolean states.");
+      }
+
+      const previous = change.previous;
+      const current = change.current;
+      const snapshot = previous === false && current === true
+        ? Object.freeze({ previous: false, current: true } as const)
+        : previous === true && current === false
+          ? Object.freeze({ previous: true, current: false } as const)
+          : undefined;
+
+      if (snapshot === undefined) {
+        throw new TypeError("An opening change must describe opposite boolean states.");
+      }
+
+      if (!this.#isActive()) {
+        return;
+      }
+
       this.#observe(current);
       this.#listeners.deliver(snapshot);
     } finally {

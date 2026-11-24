@@ -72,8 +72,10 @@ describe registration mutation and release during delivery.
 An unsuccessful setup releases the connections acquired by that attempt. Disposal invalidates
 work before releasing the authority subscription. The model retains its last valid selection and
 captured options for reading after finalisation. Previously returned releases stay idempotent.
-If disposal occurs during delegation, a change observed before disposal retains its
-`changed` result. A request that has yet to observe its change returns with reason `disposed`.
+If disposal occurs during delegation, a single matching transition received before disposal
+retains its `changed` result when the authority accepts it. An accepted request still awaiting
+its transition returns with reason `disposed`. A refusal after a reported change or a change
+in the retained selection raises a protocol error even after disposal.
 The authority retains its application owner and lifetime.
 
 The [Select runtime suite](../../../../../../tests/runtime/select.test.mjs) exercises the model

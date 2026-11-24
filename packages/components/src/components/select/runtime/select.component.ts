@@ -123,21 +123,23 @@ export class SelectComponent implements ISelectSurface {
         throw new TypeError("The selection authority must return a boolean request outcome.");
       }
       const current = this.selectedValue;
-      const committed = accepted && changes.length === 1 &&
-        changes[0]?.previous === previous && changes[0].current === nextValue;
+      const active = this.#isActive();
 
-      if (!this.#isActive()) {
-        return committed ? { status: selectResultStatuses.changed } : this.#reject(capabilityRejectionReasons.disposed);
+      if (!accepted) {
+        if (changes.length !== 0 || current !== previous) {
+          throw new Error("The selection authority changed the selection during a refused request.");
+        }
+        return this.#reject(active ? capabilityRejectionReasons.denied : capabilityRejectionReasons.disposed);
       }
-      if (committed && current === nextValue) {
+
+      const committed = changes.length === 1 && changes[0]?.previous === previous && changes[0].current === nextValue;
+      if (committed && (!active || current === nextValue)) {
         return { status: selectResultStatuses.changed };
       }
-      if (!accepted && changes.length === 0 && current === previous) {
-        return this.#reject(capabilityRejectionReasons.denied);
+      if (!active) {
+        return this.#reject(capabilityRejectionReasons.disposed);
       }
-      throw new Error(accepted
-        ? "The selection authority must commit and report the accepted transition synchronously."
-        : "The selection authority changed the selection during a refused request.");
+      throw new Error("The selection authority must commit and report the accepted transition synchronously.");
     } finally {
       this.#delegatedChanges = undefined;
       this.#busy = false;
