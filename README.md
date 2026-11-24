@@ -16,6 +16,8 @@ The private [Components package](docs/en/packages/components/index.md),
 supplies independent instances with observable availability and activation.
 [`Modal.create(options)`](docs/en/packages/components/components/modal/index.md) constructs a dialogue
 model with explicit opening authority.
+[`Select.create(config)`](docs/en/packages/components/components/select/index.md) observes an
+application-owned choice from a fixed set of options.
 [`Sidebar.create(options)`](docs/en/packages/components/components/sidebar/index.md) constructs
 a lateral region model with changeable logical presence.
 [`Switch.create(options)`](docs/en/packages/components/components/switch/index.md) constructs

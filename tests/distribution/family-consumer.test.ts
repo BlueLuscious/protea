@@ -1,6 +1,6 @@
 import * as core from "@luscious-garden/protea-core";
 import { Component, type ComponentInstance, type ComponentLifetime } from "@luscious-garden/protea-core";
-import { Button, Modal, Sidebar, Switch } from "@luscious-garden/protea-components";
+import { Button, Modal, Select, Sidebar, Switch, selectResultStatuses } from "@luscious-garden/protea-components";
 import type {
   Activatable,
   ActivatableResultType,
@@ -19,6 +19,14 @@ import type {
   Openable,
   OpenableResultType,
   OpenStateAuthority,
+  SelectApi,
+  SelectChangeType,
+  SelectInstance,
+  SelectOption,
+  SelectOptionsType,
+  SelectResultStatusType,
+  SelectResultType,
+  SelectionAuthority,
   SidebarApi,
   SidebarInstance,
   SidebarOptionsType,
@@ -51,10 +59,23 @@ import {
   type SwitchInstance as SubpathSwitchInstance,
   type SwitchOptionsType as SubpathSwitchOptionsType,
 } from "@luscious-garden/protea-components/switch";
+import {
+  Select as SubpathSelect,
+  selectResultStatuses as subpathSelectResultStatuses,
+  type SelectApi as SubpathSelectApi,
+  type SelectChangeType as SubpathSelectChangeType,
+  type SelectInstance as SubpathSelectInstance,
+  type SelectOption as SubpathSelectOption,
+  type SelectOptionsType as SubpathSelectOptionsType,
+  type SelectResultStatusType as SubpathSelectResultStatusType,
+  type SelectResultType as SubpathSelectResultType,
+  type SelectionAuthority as SubpathSelectionAuthority,
+} from "@luscious-garden/protea-components/select";
 import { ButtonDefinition } from "@luscious-garden/protea-components/definitions/button";
 import { ModalDefinition } from "@luscious-garden/protea-components/definitions/modal";
 import { SidebarDefinition } from "@luscious-garden/protea-components/definitions/sidebar";
 import { SwitchDefinition } from "@luscious-garden/protea-components/definitions/switch";
+import { SelectDefinition } from "@luscious-garden/protea-components/definitions/select";
 
 // @ts-expect-error Named definitions are available through their explicit routes, not the root.
 import { ButtonDefinition as RootButtonDefinition } from "@luscious-garden/protea-components";
@@ -421,3 +442,89 @@ function consumeSubpaths(opening: OpenStateAuthority, checking: CheckedStateAuth
 }
 
 void consumeSubpaths;
+
+function consumeSelect(authority: SelectionAuthority): void {
+  const leafAuthority: SubpathSelectionAuthority = authority;
+  const option: SubpathSelectOption = { value: "light" };
+  const disabledOption: SelectOption = { value: "dark", disabled: true };
+  const options: readonly SelectOption[] = [option, disabledOption, { value: "system" }];
+  const config: SubpathSelectOptionsType = { options, authority: leafAuthority };
+  const rootConfig: SelectOptionsType = config;
+  const api: SubpathSelectApi = Select;
+  const rootApi: SelectApi = SubpathSelect;
+  const select: SubpathSelectInstance = api.create(config);
+  const rootSelect: SelectInstance = select;
+  const explicit: SelectInstance = Component.create(SelectDefinition, rootConfig);
+  const inferred = Component.create(SelectDefinition, config);
+  const selected: string = inferred.selectedValue;
+  const captured: readonly SubpathSelectOption[] = inferred.options;
+  const definition: typeof SelectDefinition = select.definition;
+  const leafResult: SubpathSelectResultType = inferred.requestSelection("light");
+  const result: SelectResultType = leafResult;
+  const leafStatus: SubpathSelectResultStatusType = selectResultStatuses.changed;
+  const status: SelectResultStatusType = subpathSelectResultStatuses.changed;
+  const change: SubpathSelectChangeType = { previous: "system", current: "light" };
+  const rootChange: SelectChangeType = change;
+  const release: CapabilityUnsubscribeType = select.subscribeSelectionChange((snapshot) => {
+    const current: string = snapshot.current;
+    const previous: string = snapshot.previous;
+    void [current, previous];
+  });
+  if (result.status === subpathSelectResultStatuses.rejected) {
+    const reason: CapabilityRejectionReasonType = result.reason;
+    void reason;
+  } else {
+    // @ts-expect-error Successful selection outcomes carry no rejection reason.
+    result.reason;
+  }
+  // Membership is a runtime guarantee; both creation routes retain string keys.
+  select.requestSelection("another-application-key");
+  release();
+  void [rootApi, rootSelect, explicit, selected, captured, definition, leafStatus, status, rootChange];
+
+  // @ts-expect-error Select requires its fixed options and external authority.
+  SubpathSelect.create();
+  // @ts-expect-error Core creation requires the same Select configuration.
+  Component.create(SelectDefinition);
+  // @ts-expect-error The selected authority is required.
+  Select.create({ options });
+  // @ts-expect-error The catalogue is required.
+  Select.create({ authority });
+  // @ts-expect-error The first Select does not offer a locally owned selection mode.
+  SubpathSelect.create({ options, control: "internal", initialValue: "light" });
+  // @ts-expect-error An external authority excludes an additional initial selection field.
+  Component.create(SelectDefinition, { options, authority, initialValue: "light" });
+  // @ts-expect-error Option values are strings.
+  SubpathSelect.create({ options: [{ value: 1 }], authority });
+  // @ts-expect-error Explicit option availability must be boolean.
+  SubpathSelect.create({ options: [{ value: "light", disabled: "yes" }], authority });
+  // @ts-expect-error Selection requests require string keys.
+  inferred.requestSelection(false);
+  // @ts-expect-error A selection request requires a target.
+  select.requestSelection();
+  // @ts-expect-error Selection state is readonly to consumers.
+  select.selectedValue = "dark";
+  // @ts-expect-error Captured option arrays are readonly.
+  select.options.push(option);
+  // @ts-expect-error Captured option properties are readonly.
+  option.value = "other";
+  // @ts-expect-error Change snapshots are readonly.
+  change.current = "dark";
+  // @ts-expect-error Definition references cannot be replaced.
+  select.definition = SelectDefinition;
+  // @ts-expect-error The family result vocabulary is immutable.
+  subpathSelectResultStatuses.changed = "changed";
+  // @ts-expect-error Selection authority outcomes must be synchronous booleans.
+  Select.create({ options, authority: { ...authority, async requestSelection() { return true; } } });
+  // @ts-expect-error A rejected selection result includes its reason.
+  const rejection: SelectResultType = { status: "rejected" };
+  void rejection;
+  // @ts-expect-error Selection does not supply opening operations.
+  select.open();
+  // @ts-expect-error Selection does not expose its private cleanup-registration owner.
+  select.addCleanup(() => {});
+  // @ts-expect-error Core does not export the Select family.
+  core.Select;
+}
+
+void consumeSelect;

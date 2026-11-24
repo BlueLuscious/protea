@@ -5,13 +5,15 @@ Private portable component families and capabilities for Protea.
 ## Current surface
 
 `@luscious-garden/protea-components` exposes the family and capability APIs at its public root.
-Import a single family through `/button`, `/modal`, `/sidebar` or `/switch` on the same package.
+Import a single family through `/button`, `/modal`, `/select`, `/sidebar` or `/switch` on the same package.
 The corresponding `/definitions/<family>` entry exports its prepared definition by name.
 `Button.create()` creates a Button with an independent lifetime, observable availability and
 activation. The named `ButtonDefinition` is the same value as `Button.definition` and works
 with `Component.create(ButtonDefinition, options)`.
 `Modal.create(options)` creates a dialogue model with internal or borrowed external opening
 authority. Its prepared definition is available as `Modal.definition` for explicit creation.
+`Select.create(config)` creates a single-selection model with a fixed set of options and a
+borrowed application authority. Its prepared definition is available as `Select.definition`.
 `Sidebar.create(options)` creates a lateral region model with changeable logical presence and
 the same opening authority choices. Use `Sidebar.definition` with the explicit Core entry.
 `Switch.create(options)` creates a checked-state model with internal or borrowed external

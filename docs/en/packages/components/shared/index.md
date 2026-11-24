@@ -9,7 +9,7 @@ Each owner chooses its payload, eligibility and when to deliver or clear registr
 
 | Class | Responsibility | Relations |
 | --- | --- | --- |
-| `ObservationListeners` | Registers independent listeners, attempts each eligible callback in delivery order and clears registrations on request. | Used by [Openable](../capabilities/openable/index.md), [Activatable](../capabilities/activatable/index.md), [Checkable](../capabilities/checkable/index.md) and [Button availability](../components/button/index.md). |
+| `ObservationListeners` | Registers independent listeners, attempts each eligible callback in delivery order and clears registrations on request. | Used by [Openable](../capabilities/openable/index.md), [Activatable](../capabilities/activatable/index.md), [Checkable](../capabilities/checkable/index.md), [Button availability](../components/button/index.md) and [Select](../components/select/index.md). |
 
 Subscribing while active records one registration for future deliveries. The helper neither invokes
 the listener immediately nor merges repeated subscriptions to the same function. An inactive owner
