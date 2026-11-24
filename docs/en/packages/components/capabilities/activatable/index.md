@@ -31,9 +31,10 @@ not reuse opening's changed/unchanged meanings or become a generic successful re
 | --- | --- |
 | Owner disposed | Rejected with disposed before any busy or authorisation check; no guard or notification. |
 | This capability occupied | Rejected with busy, without guard execution, notification or queued work. |
-| Guard returns false and the owner remains active | Rejected with denied; no accepted activation or persistent-state change. |
-| Guard finalises the owner before acceptance | Rejected with disposed after the lifecycle recheck, even if the guard authorises. |
-| Guard throws | Propagate the failure without acceptance; it is not a denial result. |
+| Guard throws | Propagate the failure without accepting the activation. |
+| Guard returns a non-boolean value, including a promise | Throw `TypeError` before rechecking the owner's lifecycle. |
+| Guard returns a boolean after finalising the owner | Rejected with disposed after the lifecycle recheck. |
+| Guard returns `false` and the owner remains active | Rejected with denied without accepting the activation or changing persistent state. |
 | Live, idle request passes authorisation | Accept once, deliver eligible observers synchronously, then return activated normally. |
 
 The capability remains occupied through authorisation, acceptance and notification. Requests on

@@ -3,10 +3,12 @@
 Status: **Local web example and prospective integration boundaries**
 
 This guide owns Protea's optional integration responsibilities. The portable
-[core package](../packages/core/index.md) currently supplies component contracts;
-[component direction](component-direction.md) owns future family questions. The
-[local web example](../../../examples/web/README.md) connects Button, Modal, Select, Sidebar
-and Switch through their public contracts. Its behaviour is scoped to the example page.
+[Core package](../packages/core/index.md) provides definition-based construction, lifetime and
+cleanup. [Components](../packages/components/index.md) provides the Opening, Activation and
+Checking capabilities and the Button, Modal, Select, Sidebar and Switch families.
+[Component direction](component-direction.md) describes family and variant boundaries.
+The [local web example](../../../examples/web/README.md) connects those families to native HTML
+through their public contracts. Its behaviour is scoped to the example page.
 
 ## Models, applications and hosts
 
