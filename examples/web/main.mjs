@@ -110,7 +110,7 @@ function mountEditor(lifetime, listenerOptions) {
 }
 
 /**
- * @description Connects Switch and Button to one application-owned help preference.
+ * @description Connects Switch and Button to one application-owned help preference and projects the disclosure state.
  * @param {import("@luscious-garden/protea-core").ComponentScope} lifetime - The page owner.
  * @returns No value.
  */
@@ -122,6 +122,11 @@ function mountHelp(lifetime) {
   if (!(control instanceof HTMLInputElement) || !(toggle instanceof HTMLButtonElement) ||
     !(help instanceof HTMLElement)) {
     throw new TypeError("The example requires its native help controls and content.");
+  }
+
+  function projectHelp(isChecked) {
+    help.hidden = !isChecked;
+    toggle.setAttribute("aria-expanded", String(isChecked));
   }
 
   const preference = Checking.create(lifetime, { control: "internal" });
@@ -138,10 +143,8 @@ function mountHelp(lifetime) {
   const model = Switch.create({ control: "external", authority });
   lifetime.addCleanup(model.dispose);
   lifetime.addCleanup(bindSwitch(control, model));
-  lifetime.addCleanup(authority.subscribeCheckedChange(({ current }) => {
-    help.hidden = !current;
-  }));
-  help.hidden = !authority.isChecked;
+  lifetime.addCleanup(authority.subscribeCheckedChange(({ current }) => projectHelp(current)));
+  projectHelp(authority.isChecked);
 
   connectAction(lifetime, toggle, () => {
     authority.requestChecked(!authority.isChecked);

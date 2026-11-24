@@ -31,21 +31,26 @@ Stop the server with Ctrl+C when finished.
 
 ## Try the dialogue
 
-1. Activate **Open dialogue** with the mouse or keyboard. The heading names the dialogue and
+1. Use Tab to focus **Open dialogue**, then press Enter. The heading names the dialogue and
    **Close dialogue** receives initial focus.
-2. Activate **Close dialogue** or press Escape. An accepted request closes the dialogue and
-   returns focus to the opening button.
-3. Open it again, select **Refuse close requests** and press Escape. The host routes a
-   cancellable `cancel` event to Modal and keeps the dialogue open when the authority refuses.
+2. Activate **Close dialogue** or press Escape. The dialogue closes and focus returns to
+   **Open dialogue**.
+3. Open it again and select **Refuse close requests**. Activate **Close dialogue**, then press
+   Escape. The same policy refuses the button's request and a cancellable Escape request.
    The browser can enforce dismissal on a subsequent Escape without fresh user activation.
    The host observes the resulting `close` event and synchronises the application-owned
-   opening state. See the [dialogue element](https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element)
-   and [close watcher infrastructure](https://html.spec.whatwg.org/multipage/interaction.html#close-watcher-infrastructure).
+   opening state. If the dialogue is still open, clear **Refuse close requests** and activate
+   **Close dialogue**. [Close watcher infrastructure](https://html.spec.whatwg.org/multipage/interaction.html#close-watcher-infrastructure)
+
+Both dialogues use native focus restoration, which attempts to return focus to the element
+that had it before opening. A pointer click may leave the opening button unfocused on macOS,
+as reported in WebKit. [HTML closing steps](https://html.spec.whatwg.org/multipage/interactive-elements.html#close-the-dialog),
+[WebKit pointer focus report](https://bugs.webkit.org/show_bug.cgi?id=229895).
 
 ## Try the draft editor
 
-1. Activate **Open editor**. Focus starts in **Draft**. Press Escape before editing to close
-   the dialogue and return focus to its opener.
+1. Use Tab to focus **Open editor**, then press Enter. Focus starts in **Draft**. Press Escape
+   before editing to close the dialogue and return focus to **Open editor**.
 2. Reopen the editor and change the draft. A cancellable Escape request leaves the editor open.
    If the browser completes dismissal, reopen the editor to find the unsaved draft intact.
 3. **Save** keeps the current text. **Discard** restores the last saved text. Both actions
@@ -61,10 +66,12 @@ Stop the server with Ctrl+C when finished.
 
 ## Try the shared help preference
 
-1. Activate **Show help** with the pointer or focus it with Tab and press Space. The switch
-   shows the current preference and the help text appears.
-2. Activate **Toggle help**. The help text hides and **Show help** reflects the same change.
-   Either control can change the preference during the life of the page.
+1. Start with the help text hidden and **Toggle help** reporting `aria-expanded="false"`.
+   Activate **Show help** with the pointer or focus it with Tab and press Space. The switch
+   becomes checked, the help text appears and **Toggle help** reports `aria-expanded="true"`.
+2. Activate **Toggle help**. The help text hides, **Toggle help** reports
+   `aria-expanded="false"` and **Show help** becomes unchecked. Both controls reflect the
+   same preference regardless of which one changes it.
 
 The [Switch binding](switch.mjs) forwards one native change and restores the effective checked
 value if the request is refused. A page-owned Checking capability supplies the value. The
