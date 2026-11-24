@@ -88,6 +88,11 @@ test("component construction honours its protocol through the packed public API"
           assert.throws(() => Component.define(invalid));
           assert.throws(() => Component.create(invalid));
         }
+        const undefinedPreparedNamespace = Object.freeze({
+          identity: Object.freeze({ name: "counter", namespace: undefined }),
+          setup,
+        });
+        assert.throws(() => Component.create(undefinedPreparedNamespace), TypeError);
         const inheritedNamespace = Object.freeze({
           identity: Object.freeze(Object.assign(Object.create({ get namespace() { return accessor(); } }), {
             name: "counter",
