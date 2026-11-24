@@ -26,7 +26,7 @@ Changing the original options later cannot switch modes or replace the selected 
 
 | Mode | State owner | Inputs and initialisation |
 | --- | --- | --- |
-| `internal` | This capability. | Optional `initialOpen` defaults to false. The value is established before exposure without a change notification. An external authority is excluded. |
+| `internal` | This capability. | Omitting `initialOpen` starts at `false`. A supplied value must be boolean. Explicit `undefined` raises `TypeError`. The value is established before exposure without a change notification. An external authority is excluded. |
 | `external` | One borrowed OpenStateAuthority. | Required `authority`, without a separate initial value, fallback writer or public setter. Establish the initial reading and source subscription before exposure without losing a transition. |
 
 Internal opening has no additional opening guard or public authorisation hook. A live, idle
