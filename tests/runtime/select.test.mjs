@@ -385,6 +385,60 @@ test("Select preserves bounded selection and borrowed authority through the pack
       `);
     });
 
+    await context.test("reports an observed change during refusal even when its observer disposes Select", () => {
+      check(`
+        for (const disposeInObserver of [false, true]) {
+          const hooks = {};
+          const source = createAuthority("system", hooks);
+          hooks.request = (next) => {
+            source.setValue(next);
+            return false;
+          };
+          const select = Select.create({ options, authority: source.authority });
+          const changes = [];
+          select.subscribeSelectionChange((change) => {
+            changes.push(change);
+            if (disposeInObserver) {
+              select.dispose();
+            }
+          });
+
+          assert.throws(() => select.requestSelection("light"));
+          assert.deepEqual(changes, [{ previous: "system", current: "light" }]);
+          assert.equal(select.selectedValue, "light");
+          assert.equal(source.authority.selectedValue, "light");
+          assert.equal(select.lifecycle, disposeInObserver ? "disposed" : "active");
+          select.dispose();
+          assert.equal(source.stats.releases, 1);
+          assert.equal(source.stats.disposals, 0);
+        }
+      `);
+    });
+
+    await context.test("reports a change read before disposal even when the authority refuses without reporting it", () => {
+      check(`
+        const hooks = {};
+        const source = createAuthority("system", hooks);
+        const select = Select.create({ options, authority: source.authority });
+        const changes = [];
+        let read;
+        select.subscribeSelectionChange((change) => changes.push(change));
+        hooks.request = (next) => {
+          source.setRaw(next);
+          read = select.selectedValue;
+          select.dispose();
+          return false;
+        };
+
+        assert.throws(() => select.requestSelection("light"));
+        assert.equal(read, "light");
+        assert.equal(select.selectedValue, "light");
+        assert.equal(select.lifecycle, "disposed");
+        assert.deepEqual(changes, []);
+        assert.equal(source.stats.releases, 1);
+      `);
+    });
+
     await context.test("keeps terminal reads and retained callbacks inert after a source release fails", () => {
       check(`
         let retained;

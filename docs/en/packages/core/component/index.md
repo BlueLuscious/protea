@@ -29,10 +29,11 @@ omitted or undefined namespace as absent when preparing a definition. A namespac
 attribution. Core rejects empty strings, invalid separators, whitespace and uppercase without
 normalising them. Definition identity describes a type and supplies no global registration.
 
-Each instance retains the exact prepared definition used by `Component.create`. Instances of the
-same definition have independent state, resources and lifetime. Calling a recipe directly runs
-author code. Core construction supplies the instance and its protected common lifetime.
-Definitions contain callable code and make no serialisation or isolation guarantee.
+Each instance retains the exact prepared definition used by `Component.create`. Core supplies
+each instance with an independent lifetime and cleanup registrations. The recipe defines which
+state and collaborators are specific to that instance or intentionally shared. Calling a recipe
+directly runs author code. Core construction supplies the instance and its protected common
+lifetime. Definitions contain callable code and make no serialisation or isolation guarantee.
 
 ## Identity and lifetime
 

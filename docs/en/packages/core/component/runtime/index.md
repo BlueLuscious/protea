@@ -24,7 +24,9 @@ The recipe runs during creation.
 
 `Component.create` requires a frozen definition container with own data fields for the recipe and
 valid frozen identity. Core validates that shape and retains the exact supplied definition.
-The identity's name and any present namespace must be own data properties.
+The identity's name and any present namespace must be own data properties with valid string
+values. An unnamespaced prepared identity omits `namespace`. A present `namespace` with value
+`undefined` fails validation.
 Structurally conforming definitions from another compatible Core copy are permitted. Pass mutable
 authoring input through `define` to prepare it. Runtime validation checks the frozen protocol.
 

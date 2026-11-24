@@ -56,7 +56,7 @@ with an explicit target. `selectResultStatuses` supplies the vocabulary for
 | The model is disposed or already processing a request or delivery. | Return `rejected` with reason `disposed` or `busy` before validating the target. |
 | The target is malformed or a string outside the option set. | Throw `TypeError` for a malformed target or `RangeError` for an unknown string. |
 | The target is the current value, including a disabled current option. | Return `unchanged` without delegation or notification. |
-| A differing target is disabled or the authority refuses it. | Return `rejected` with reason `denied`. |
+| A differing target is disabled or the authority refuses it without a change while the model remains active. | Return `rejected` with reason `denied`. |
 | The authority accepts and delivers the requested change. | Return `changed` after the synchronous transition. |
 
 `subscribeSelectionChange(listener)` observes effective changes in registration order. Each
@@ -72,8 +72,11 @@ describe registration mutation and release during delivery.
 An unsuccessful setup releases the connections acquired by that attempt. Disposal invalidates
 work before releasing the authority subscription. The model retains its last valid selection and
 captured options for reading after finalisation. Previously returned releases stay idempotent.
-If disposal occurs during delegation, a change observed before disposal retains its
-`changed` result. A request that has yet to observe its change returns with reason `disposed`.
+If disposal occurs during delegation, a single matching transition received before disposal
+retains its `changed` result when the authority accepts it. An accepted request still awaiting
+its transition returns with reason `disposed`. A refusal without an observed change also returns
+`disposed` after finalisation. A refusal after a reported change or a change in the retained
+selection raises a protocol error even after disposal.
 The authority retains its application owner and lifetime.
 
 The [Select runtime suite](../../../../../../tests/runtime/select.test.mjs) exercises the model

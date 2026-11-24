@@ -57,8 +57,8 @@ export class ComponentDefinitionFactory {
     const name = this.#readOwnDataField(identity, "name");
     const namespace = this.#readOwnDataField(identity, "namespace");
 
-    if (prepared && namespace === undefined && "namespace" in identity && !Object.hasOwn(identity, "namespace")) {
-      throw new TypeError("A prepared component namespace must be an own data property when present.");
+    if (prepared && namespace === undefined && "namespace" in identity) {
+      throw new TypeError("A prepared component namespace must be an own string property when present.");
     }
 
     const identityPartPattern = ComponentDefinitionFactory.#identityPartPattern;

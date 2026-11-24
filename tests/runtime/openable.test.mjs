@@ -178,6 +178,56 @@ test("opening preserves authority, observation and lifetime through the packed p
       `);
     });
 
+    await context.test("source payload reads stay occupied and throwing accessors release occupation", () => {
+      check(`
+        const scope = Scope.create();
+        const source = createOpenStateAuthority();
+        const nested = [];
+        const changes = [];
+        let model;
+        let failReading = false;
+        const authority = {
+          get isOpen() { return source.authority.isOpen; },
+          requestOpen(next) { return source.authority.requestOpen(next); },
+          subscribeOpenChange(listener) {
+            return source.authority.subscribeOpenChange((change) => listener({
+              get previous() {
+                nested.push(model.open());
+                if (failReading) { throw new Error("Source payload reading failed."); }
+                return change.previous;
+              },
+              get current() {
+                nested.push(model.close());
+                return change.current;
+              },
+            }));
+          },
+        };
+        model = Opening.create(scope, { control: "external", authority });
+        model.subscribeOpenChange((change) => { changes.push(change); });
+        source.setOpen(true);
+        const busy = { status: "rejected", reason: "busy" };
+        assert.deepEqual(nested, [busy, busy]);
+        assert.deepEqual(source.stats.requests, []);
+        assert.deepEqual(changes, [{ previous: false, current: true }]);
+
+        failReading = true;
+        assert.throws(() => source.setOpen(false));
+        assert.equal(model.isOpen, false);
+        assert.deepEqual(nested, [busy, busy, busy]);
+        assert.deepEqual(source.stats.requests, []);
+        failReading = false;
+        assert.deepEqual(model.open(), { status: "changed" });
+        assert.deepEqual(nested, [busy, busy, busy, busy, busy]);
+        assert.deepEqual(source.stats.requests, [true]);
+        assert.deepEqual(changes, [
+          { previous: false, current: true },
+          { previous: false, current: true },
+        ]);
+        scope.dispose();
+      `);
+    });
+
     await context.test("disposal before delegated commitment freezes projection without rolling back the source", () => {
       check(`
         const scope = Scope.create();
