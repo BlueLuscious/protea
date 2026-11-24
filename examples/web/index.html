@@ -12,6 +12,7 @@
           "@luscious-garden/protea-components/button": "../../packages/components/dist/api/families/button.api.js",
           "@luscious-garden/protea-components/capabilities": "../../packages/components/dist/api/capabilities/index.js",
           "@luscious-garden/protea-components/modal": "../../packages/components/dist/api/families/modal.api.js",
+          "@luscious-garden/protea-components/select": "../../packages/components/dist/api/families/select.api.js",
           "@luscious-garden/protea-components/sidebar": "../../packages/components/dist/api/families/sidebar.api.js",
           "@luscious-garden/protea-components/switch": "../../packages/components/dist/api/families/switch.api.js"
         }
@@ -57,5 +58,17 @@
       <button id="toggle-help" type="button" aria-controls="help-content">Toggle help</button>
     </p>
     <p id="help-content" hidden>Use the dialogue or draft editor to try the closing controls.</p>
+
+    <p>
+      <label for="theme-preference">Theme preference</label>
+      <select id="theme-preference">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+        <option value="system" selected>System</option>
+      </select>
+      <button id="use-system-theme" type="button">Use system theme</button>
+    </p>
+    <p>Effective theme: <output id="effective-theme"></output></p>
+    <p><label><input id="refuse-theme" type="checkbox"> Refuse theme changes</label></p>
   </body>
 </html>

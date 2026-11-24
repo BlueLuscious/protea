@@ -1,6 +1,6 @@
 # Component Direction
 
-Status: **Portable Button, Modal, Sidebar, Switch and capability runtimes**
+Status: **Portable Button, Modal, Select, Sidebar, Switch and capability runtimes**
 
 Protea develops original component families before selecting variants. Its
 [family modules](../packages/components/components/index.md) live in Components. The package
@@ -17,6 +17,8 @@ these requirements to `ComponentInstance`, `Activatable` and family-owned availa
 `Button.create()` delegates to Core with its incorporated definition.
 [Modal](../packages/components/components/modal/index.md) combines owned lifetime with logical
 opening and delegates construction to Core with its prepared definition.
+[Select](../packages/components/components/select/index.md) captures a fixed set of ordered options
+and observes one selected value from a synchronous application-owned authority.
 [Sidebar](../packages/components/components/sidebar/index.md) combines owned lifetime and
 changeable logical presence through its prepared definition. Persistent pressed or selected
 state would require its own family case and contract.

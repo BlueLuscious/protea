@@ -10,6 +10,7 @@ import { bindButton } from "./button.mjs";
 import { bindModal } from "./modal.mjs";
 import { bindSidebar } from "./sidebar.mjs";
 import { bindSwitch } from "./switch.mjs";
+import { mountTheme } from "./theme.mjs";
 
 /**
  * @description Owns one dialogue model and its application-controlled opening source.
@@ -181,6 +182,7 @@ function mountExample() {
     connectAction(lifetime, closeElement, modal.close);
     mountEditor(lifetime, listenerOptions);
     mountHelp(lifetime);
+    mountTheme(lifetime, listenerOptions);
 
     window.addEventListener("pagehide", ({ persisted }) => {
       if (!persisted) {

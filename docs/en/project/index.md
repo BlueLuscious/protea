@@ -21,13 +21,14 @@ The private [core package](../packages/core/index.md) provides `Component.define
 Its [API guide](../packages/core/api/index.md) owns usage and exports. Its
 [component guide](../packages/core/component/index.md) owns the contracts, lifetime and cleanup
 registration. The [Components package](../packages/components/index.md) uses Core for activation,
-opening and checking over borrowed scopes and to build Button, Modal, Sidebar and Switch instances
-from their prepared definitions. The [family guides](../packages/components/components/index.md)
+opening and checking over borrowed scopes and to build Button, Modal, Select, Sidebar and Switch
+instances from their prepared definitions. The [family guides](../packages/components/components/index.md)
 own their state, construction and ownership.
 [Component direction](component-direction.md) owns independent Sidebar axes and wider composition
 questions.
-The [web example](../../../examples/web/README.md) connects Button, Modal, Sidebar and Switch
-to native HTML.
+The [web example](../../../examples/web/README.md) connects Button, Modal, Select, Sidebar and
+Switch to native HTML. Its [theme case](../../../examples/web/README.md#try-theme-selection)
+uses Select with an application-owned preference.
 Its bindings are local to the example. [Integration boundaries](integration-boundaries.md)
 describe the responsibilities of concrete hosts and the direction for optional presentation
 and providers.

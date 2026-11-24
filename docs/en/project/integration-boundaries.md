@@ -5,8 +5,8 @@ Status: **Local web example and prospective integration boundaries**
 This guide owns Protea's optional integration responsibilities. The portable
 [core package](../packages/core/index.md) currently supplies component contracts;
 [component direction](component-direction.md) owns future family questions. The
-[local web example](../../../examples/web/README.md) connects Button, Modal, Sidebar and Switch
-through their public contracts. Its behaviour is scoped to the example page.
+[local web example](../../../examples/web/README.md) connects Button, Modal, Select, Sidebar
+and Switch through their public contracts. Its behaviour is scoped to the example page.
 
 ## Models, applications and hosts
 
@@ -21,6 +21,8 @@ and lifetime mechanisms. It connects public observations to framework tracking w
 The current native bindings live in the web example. Consider a DOM package when an independent
 consumer needs to install those bindings through a public API and can verify the native
 interaction and connection lifetime.
+The [theme case](../../../examples/web/README.md#try-theme-selection) keeps theme resolution with
+the application and browser projection with the host.
 
 Core and Components stay independent of concrete host runtimes, styles, icon providers and
 motion engines. Each integration documents its supported environments and provides host
@@ -59,8 +61,10 @@ request, result and observation protocols. An adapter preserves their meaning at
 | Effective change or accepted activation | The model reports the committed change or accepted activation through its public results and observations. |
 | Application or host effect | The effect's owner exposes any completion its consumers need, such as saving data, updating a view or finishing an animation. |
 
-External opening and checked-state control require synchronous authorisation, commitment and
-change delivery through the selected authority. Qualify that protocol with the actual source.
+External opening, checked-state control and
+[selection](../packages/components/components/select/index.md#selection-authority) require
+synchronous authorisation, commitment and change delivery through the chosen authority.
+Qualify that protocol with the source supplied by the application.
 A host scheduler can defer projection while the logical state stays with that authority. When a
 request depends on asynchronous application work, the application waits for the result and makes
 a fresh logical request only if the model and the intent are still current.

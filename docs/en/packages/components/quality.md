@@ -14,6 +14,7 @@ This page owns conformance evidence for `@luscious-garden/protea-components`. Th
 | [Checking and Switch runtime](../../../../tests/runtime/checkable.test.mjs) | Direct capability creation and both Switch entry points, internal and external control, checked-state observation, refusal, reentrancy, failed setup and disposal. | [Checking](capabilities/checkable/index.md) and [Switch](components/switch/index.md). |
 | [Button runtime](../../../../tests/runtime/button.test.mjs) | Independent lifetime, availability, activation, listener changes and terminal behaviour through `Button.create`. | [Button](components/button/index.md). |
 | [Modal runtime](../../../../tests/runtime/modal.test.mjs) | Shared definition and independent instances, internal and external opening authority, failed setup, terminal projection and application-owned Button collaboration. | [Modal](components/modal/index.md). |
+| [Select runtime](../../../../tests/runtime/select.test.mjs) | Both creation routes, captured options, selection authority, request results, change delivery, protocol failures and independent cleanup. | [Select](components/select/index.md). |
 | [Sidebar runtime](../../../../tests/runtime/sidebar.test.mjs) | Shared definition and independent instances, changeable logical presence, internal and external opening authority, and ownership and cleanup boundaries. | [Sidebar](components/sidebar/index.md). |
 | [Type and distribution checks](../../../../tests/distribution/components-package.test.mjs) | Archive inclusion, concrete packed Core dependency, exact public exports, identity across root, family, definition and capability entries, independent creation, private subpaths and declarations under NodeNext and Bundler. | [API](api/index.md) and [package boundary](index.md#boundary). |
 
@@ -26,11 +27,11 @@ owns the separate consumer that installs only Core.
 The [capability fixture](../../../../tests/distribution/capability-consumer.test.ts) checks
 aggregate and individual imports, authority modes, request results, vocabularies and scope ownership.
 The [family fixture](../../../../tests/distribution/family-consumer.test.ts) checks both construction
-routes for Button, Modal, Sidebar and Switch. It checks named subpath imports, inferred options
+routes for Button, Modal, Select, Sidebar and Switch. It checks named subpath imports, inferred options
 and instance methods, definition and lifetime contracts, capability-specific results and the
 public family surfaces.
 
-The [web example](../../../../examples/web/README.md) owns the browser cases for the four family
+The [web example](../../../../examples/web/README.md) owns the browser cases for the five family
 imports and their use with native controls.
 
 The [root tooling commands](../../tooling/index.md#installation-and-commands) run the checks in

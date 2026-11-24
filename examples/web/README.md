@@ -1,7 +1,7 @@
 # Protea Web Example
 
-This unstyled local page connects Button, Modal, Sidebar and Switch to native HTML. Its
-[import map](index.html) maps the four family specifiers to their files under
+This local page connects Button, Modal, Select, Sidebar and Switch to native HTML. Its
+[import map](index.html) maps the five family specifiers to their files under
 `packages/components/dist/api/families/` and `@luscious-garden/protea-components/capabilities`
 to the built capability aggregate. The Core root supplies the page scope.
 
@@ -70,6 +70,29 @@ The [Switch binding](switch.mjs) forwards one native change and restores the eff
 value if the request is refused. A page-owned Checking capability supplies the value. The
 application's authority connects that value to Switch and to the Button's activation action.
 
+## Try theme selection
+
+1. Open the page. **Theme preference** starts at **System**. **Effective theme** shows the
+   resolved light or dark theme. Change the operating system theme while the page stays open,
+   or emulate `prefers-color-scheme` in the browser's developer tools when available. The
+   effective theme changes while the chooser stays at **System**.
+2. Choose **Light** or **Dark** with the pointer, or focus the chooser with Tab and use the
+   native keyboard controls. The effective theme follows that choice. Change the system theme
+   again while the fixed preference is selected. The page keeps the chosen theme.
+3. Activate **Use system theme**. This asks the Theme Manager directly to change the preference.
+   The chooser reflects **System** and the page uses the latest system theme.
+4. Choose **Light** or **Dark**, turn on **Refuse theme changes**, and try a different
+   preference. The chooser returns to its current selection and the page keeps its effective
+   theme. **Use system theme** follows the same policy.
+5. Clear the refusal, choose **System**, then turn the refusal on again. Change the system
+   theme. The chooser stays at **System** and the effective theme follows the system.
+
+The [Select binding](select.mjs) forwards each native change once and reads back the effective
+selection after the request. The page's [Theme Manager](theme-manager.mjs) owns the preference,
+tracks the latest system theme and reports preference and effective theme changes separately.
+The [host connection](theme.mjs) reads the system preference and sets the document root's
+`color-scheme` style from the effective theme.
+
 ## Connection ownership
 
 The example's [Button binding](button.mjs) reflects model availability in a native button's
@@ -87,6 +110,10 @@ invalidates its callbacks and attempts any releases it acquired.
 Both dialogues use the [Modal binding](modal.mjs) for native projection and dismissal. The
 page supplies each opening policy and reconciles completed native closing through that
 dialogue's own authority. It detaches the binding before closing the view during teardown.
+
+The Theme Manager acts as Select's application authority. Detaching the chooser releases its
+DOM listener and model subscription. The page retains the model and manager, and owns their
+disposal, the system preference listener and the effective theme subscription.
 
 The page scope owns the connections and model instances it creates. It releases the connections
 and disposes those instances when setup fails or the page leaves without entering the

@@ -20,6 +20,8 @@ an active scope from the caller. Each family instance receives its own scope fro
 | `ButtonApi` | `Button.create(options?)` | A fresh `ButtonInstance` using that definition. |
 | `ModalApi` | `Modal.definition` | The prepared definition shared by all built-in Modal instances. |
 | `ModalApi` | `Modal.create(options)` | A fresh `ModalInstance` with an explicit opening authority. |
+| `SelectApi` | `Select.definition` | The prepared definition shared by all built-in Select instances. |
+| `SelectApi` | `Select.create(config)` | A fresh `SelectInstance` with fixed options and an application-owned selection authority. |
 | `SidebarApi` | `Sidebar.definition` | The prepared definition shared by all built-in Sidebar instances. |
 | `SidebarApi` | `Sidebar.create(options)` | A fresh `SidebarInstance` with an explicit opening authority. |
 | `SwitchApi` | `Switch.definition` | The prepared definition shared by all built-in Switch instances. |
@@ -45,11 +47,13 @@ The Button API delegates to the same Core construction call with `ButtonDefiniti
 instances retain that definition and have independent state and lifetimes. See
 [Button](../components/button/index.md#construction-and-ownership) for configuration and disposal.
 
-Modal, Sidebar and Switch accept the same two creation entries. Call the family's `create` with the
-required options or pass its prepared definition and the options to `Component.create`.
+Modal, Select, Sidebar and Switch accept the same two creation entries. Call the family's `create`
+with the required options or pass its prepared definition and the options to `Component.create`.
 The [Modal guide](../components/modal/index.md#construction-and-state-authority) and
 [Sidebar guide](../components/sidebar/index.md#construction-and-state-authority) describe their
-opening authority choices. The [Switch guide](../components/switch/index.md#construction-and-ownership)
+opening authority choices. The [Select guide](../components/select/index.md#construction-and-ownership)
+describes fixed options and selection authority. The
+[Switch guide](../components/switch/index.md#construction-and-ownership)
 describes its checked-state authority. The
 [capabilities guide](../capabilities/index.md#construction-and-composition) shows composition with a
 standalone scope.
@@ -63,12 +67,14 @@ The public `"."` entry of `@luscious-garden/protea-components` exposes these run
 - `Checking`
 - `Modal`
 - `Opening`
+- `Select`
 - `Sidebar`
 - `Switch`
 - `activatableResultStatuses`
 - `capabilityRejectionReasons`
 - `checkableResultStatuses`
 - `openableResultStatuses`
+- `selectResultStatuses`
 
 The same root exposes the public feature contracts and types mapped in the
 [package guide](../index.md#documentation).
@@ -84,10 +90,12 @@ API module and `/definitions/<family>` to its prepared definition module. It res
 | --- | --- | --- |
 | `/button` | `Button` | `ButtonApi`, `ButtonInstance`, `ButtonOptionsType`, `ButtonDisabledChangeType` |
 | `/modal` | `Modal` | `ModalApi`, `ModalInstance`, `ModalOptionsType` |
+| `/select` | `Select`, `selectResultStatuses` | `SelectApi`, `SelectInstance`, `SelectOption`, `SelectOptionsType`, `SelectionAuthority`, `SelectChangeType`, `SelectResultStatusType`, `SelectResultType` |
 | `/sidebar` | `Sidebar` | `SidebarApi`, `SidebarInstance`, `SidebarOptionsType` |
 | `/switch` | `Switch` | `SwitchApi`, `SwitchInstance`, `SwitchOptionsType` |
 | `/definitions/button` | `ButtonDefinition` | — |
 | `/definitions/modal` | `ModalDefinition` | — |
+| `/definitions/select` | `SelectDefinition` | — |
 | `/definitions/sidebar` | `SidebarDefinition` | — |
 | `/definitions/switch` | `SwitchDefinition` | — |
 

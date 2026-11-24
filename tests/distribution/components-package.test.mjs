@@ -108,8 +108,9 @@ test("packed Components borrows the installed Core and exposes only the implemen
         fileURLToPath(import.meta.resolve("@luscious-garden/protea-core")),
       );
       assert.deepEqual(Object.keys(components).sort(), [
-        "Activation", "Button", "Checking", "Modal", "Opening", "Sidebar", "Switch",
+        "Activation", "Button", "Checking", "Modal", "Opening", "Select", "Sidebar", "Switch",
         "activatableResultStatuses", "capabilityRejectionReasons", "checkableResultStatuses", "openableResultStatuses",
+        "selectResultStatuses",
       ]);
       assert.equal(typeof components.Activation.create, "function");
       assert.equal(typeof components.Checking.create, "function");
@@ -237,6 +238,45 @@ test("packed Components borrows the installed Core and exposes only the implemen
         assert.equal(direct.lifecycle, "disposed");
       }
 
+      const selectEntry = await import("@luscious-garden/protea-components/select");
+      const selectDefinitions = await import("@luscious-garden/protea-components/definitions/select");
+      assert.deepEqual(Object.keys(selectEntry), ["Select", "selectResultStatuses"]);
+      assert.deepEqual(Object.keys(selectDefinitions), ["SelectDefinition"]);
+      assert.equal(selectEntry.Select, components.Select);
+      assert.equal(selectEntry.selectResultStatuses, components.selectResultStatuses);
+      assert.deepEqual(selectEntry.selectResultStatuses, { changed: "changed", unchanged: "unchanged", rejected: "rejected" });
+      assert.equal(selectDefinitions.SelectDefinition, components.Select.definition);
+      assert.equal(Object.isFrozen(selectDefinitions.SelectDefinition), true);
+      assert.deepEqual(selectDefinitions.SelectDefinition.identity, { namespace: "protea", name: "select" });
+      function selectionAuthority(initial) {
+        let selectedValue = initial;
+        const listeners = new Set();
+        return {
+          get selectedValue() { return selectedValue; },
+          requestSelection(next) {
+            if (selectedValue === next) return true;
+            const change = { previous: selectedValue, current: next };
+            selectedValue = next;
+            for (const listener of listeners) listener(change);
+            return true;
+          },
+          subscribeSelectionChange(listener) { listeners.add(listener); return () => listeners.delete(listener); },
+        };
+      }
+      const selectOptions = [{ value: "light" }, { value: "dark" }, { value: "system" }];
+      const convenientSelect = selectEntry.Select.create({ options: selectOptions, authority: selectionAuthority("system") });
+      const directSelect = Component.create(selectDefinitions.SelectDefinition, { options: selectOptions, authority: selectionAuthority("light") });
+      assert.equal(convenientSelect.definition, selectDefinitions.SelectDefinition);
+      assert.equal(directSelect.definition, convenientSelect.definition);
+      assert.notEqual(convenientSelect, directSelect);
+      assert.deepEqual(convenientSelect.requestSelection("dark"), { status: "changed" });
+      assert.equal(directSelect.selectedValue, "light");
+      convenientSelect.dispose();
+      assert.deepEqual(convenientSelect.requestSelection("light"), { status: "rejected", reason: "disposed" });
+      assert.equal(directSelect.lifecycle, "active");
+      assert.deepEqual(directSelect.requestSelection("system"), { status: "changed" });
+      directSelect.dispose();
+
       await assert.rejects(import("@luscious-garden/protea-components/definitions"), { code: "ERR_PACKAGE_PATH_NOT_EXPORTED" });
       for (const suffix of [
         "api", "capabilities/openable", "components", "components/button", "components/modal",
@@ -254,6 +294,8 @@ test("packed Components borrows the installed Core and exposes only the implemen
         "components/switch/definitions/switch.definition", "definitions/button.definition.js",
         "dist/components/button/definitions/button.definition.js", "dist/components/modal/definitions/modal.definition.js",
         "dist/components/sidebar/definitions/sidebar.definition.js", "dist/components/switch/definitions/switch.definition.js",
+        "components/select", "components/select/definitions/select.definition", "api/families/select.api",
+        "dist/components/select/definitions/select.definition.js", "dist/components/select/runtime/select.component.js",
       ]) {
         await assert.rejects(import("@luscious-garden/protea-components/" + suffix), { code: "ERR_MODULE_NOT_FOUND" });
       }

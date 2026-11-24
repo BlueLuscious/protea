@@ -24,9 +24,11 @@ The [component guide](packages/core/component/index.md) owns logical lifetime an
 authority, outcomes and observations. Its [families](packages/components/components/index.md)
 own the reviewed development workflow and contracts.
 [Button](packages/components/components/button/index.md),
-[Modal](packages/components/components/modal/index.md) and
-[Sidebar](packages/components/components/sidebar/index.md) have incorporated definitions and
-portable runtimes.
+[Modal](packages/components/components/modal/index.md),
+[Select](packages/components/components/select/index.md),
+[Sidebar](packages/components/components/sidebar/index.md) and
+[Switch](packages/components/components/switch/index.md) have incorporated definitions and portable
+runtimes.
 [Component direction](project/component-direction.md) records vocabulary, original-family boundaries
 and independent Sidebar axes.
 [Integration boundaries](project/integration-boundaries.md) own future hosts and optional providers.

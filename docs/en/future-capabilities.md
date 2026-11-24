@@ -23,7 +23,7 @@ current delivery commitment. Importance does not establish implementation order.
 | `P2` | Resolve component definitions by logical identity. | A consumer needs to select a definition by name and optional namespace. Its lookup scope and handling of duplicate identities can be defined. |
 | `P2` | Identify component instances outside their in-memory references. | A consumer needs to correlate the same instance across a boundary where its object reference is unavailable. |
 | `P2` | Inspect shared descriptive metadata on component definitions. | A consumer such as a catalogue or authoring tool needs specific descriptive fields across multiple definitions. |
-| `P2` | General shared-state integration across independent components. | A consumer needs an integration beyond the existing synchronous checked-state authority and demonstrates the required state, timing and ownership. |
+| `P2` | General shared-state integration across independent components. | A consumer needs an integration beyond the existing synchronous checked-state and selection authorities and demonstrates the required state, timing and ownership. |
 | `P2` | Responsive representation or control replacement. | A concrete host needs different controls at different breakpoints while preserving application state and correct interaction semantics. |
 | `P4` | Conversion between component families. | A case cannot reasonably be served by representation changes, composition or replacement. |
 | `P2` | Independent capability distribution. | Consumers need capabilities independently of the family catalogue and an actual dependency, loading, support or release requirement justifies extraction. |
@@ -52,11 +52,13 @@ Button activation to that same authority. Each model retains its own lifetime.
 
 A future responsive host could present a mobile Switch and a desktop Button for one theme
 preference. The host can project the effective preference independently of which control sends the
-request. A generic state engine or binding needs a concrete case beyond checked state. Review
-initial reads, update ordering, feedback loops and cleanup at the owner of that integration.
+request. A generic state engine or binding needs a concrete case beyond the current authority
+contracts. Review initial reads, update ordering, feedback loops and cleanup at the owner of
+that integration.
 
-Start theme coordination with an application-owned example. Consider a reusable Theme Manager API
-when an independent consumer needs the same preference, effective-theme and observation semantics.
+The [theme example](../../examples/web/README.md#try-theme-selection) uses an application-owned
+manager. Consider a reusable Theme Manager API when an independent consumer needs the same
+preference, effective-theme and observation semantics.
 That consumer should help establish which state is portable, who supplies the system preference
 and who owns host projection and connection cleanup.
 
