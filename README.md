@@ -22,8 +22,11 @@ application-owned choice from a fixed set of options.
 a lateral region model with changeable logical presence.
 [`Switch.create(options)`](docs/en/packages/components/components/switch/index.md) constructs
 a two-state model with local checked state or an application-owned authority.
+[`Tabs.create(options)`](docs/en/packages/components/components/tabs/index.md) selects a local tab
+and its associated logical panel from a fixed set.
 The [local web example](examples/web/README.md) connects Button, Modal, Select, Sidebar and Switch
 to native HTML, including a page-owned theme preference.
+Tabs host integration and browser evidence remain pending.
 The [integration guide](docs/en/project/integration-boundaries.md) describes host responsibilities
 and prospective adapters.
 

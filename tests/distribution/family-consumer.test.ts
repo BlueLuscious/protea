@@ -1,6 +1,6 @@
 import * as core from "@luscious-garden/protea-core";
 import { Component, type ComponentInstance, type ComponentLifetime } from "@luscious-garden/protea-core";
-import { Button, Modal, Select, Sidebar, Switch, selectResultStatuses } from "@luscious-garden/protea-components";
+import { Button, Modal, Select, Sidebar, Switch, Tabs, selectResultStatuses, tabsResultStatuses } from "@luscious-garden/protea-components";
 import type {
   Activatable,
   ActivatableResultType,
@@ -33,6 +33,13 @@ import type {
   SwitchApi,
   SwitchInstance,
   SwitchOptionsType,
+  TabOption,
+  TabsApi,
+  TabsChangeType,
+  TabsInstance,
+  TabsOptionsType,
+  TabsResultStatusType,
+  TabsResultType,
 } from "@luscious-garden/protea-components";
 import {
   Button as SubpathButton,
@@ -71,21 +78,35 @@ import {
   type SelectResultType as SubpathSelectResultType,
   type SelectionAuthority as SubpathSelectionAuthority,
 } from "@luscious-garden/protea-components/select";
+import {
+  Tabs as SubpathTabs,
+  tabsResultStatuses as subpathTabsResultStatuses,
+  type TabOption as SubpathTabOption,
+  type TabsApi as SubpathTabsApi,
+  type TabsChangeType as SubpathTabsChangeType,
+  type TabsInstance as SubpathTabsInstance,
+  type TabsOptionsType as SubpathTabsOptionsType,
+  type TabsResultStatusType as SubpathTabsResultStatusType,
+  type TabsResultType as SubpathTabsResultType,
+} from "@luscious-garden/protea-components/tabs";
 import { ButtonDefinition } from "@luscious-garden/protea-components/definitions/button";
 import { ModalDefinition } from "@luscious-garden/protea-components/definitions/modal";
 import { SidebarDefinition } from "@luscious-garden/protea-components/definitions/sidebar";
 import { SwitchDefinition } from "@luscious-garden/protea-components/definitions/switch";
 import { SelectDefinition } from "@luscious-garden/protea-components/definitions/select";
+import { TabsDefinition } from "@luscious-garden/protea-components/definitions/tabs";
 
 // @ts-expect-error Named definitions are available through their explicit routes, not the root.
 import { ButtonDefinition as RootButtonDefinition } from "@luscious-garden/protea-components";
+// @ts-expect-error TabsDefinition is available through its definition route, not the root.
+import { TabsDefinition as RootTabsDefinition } from "@luscious-garden/protea-components";
 // @ts-expect-error A definition route exposes its definition rather than the construction API.
 import { Modal as DefinitionModal } from "@luscious-garden/protea-components/definitions/modal";
 // @ts-expect-error A family route does not expose its definition under a second named export.
 import { SidebarDefinition as FamilySidebarDefinition } from "@luscious-garden/protea-components/sidebar";
 // @ts-expect-error Authored definition source paths remain internal to the package.
 import { SwitchDefinition as InternalSwitchDefinition } from "@luscious-garden/protea-components/components/switch/definitions/switch.definition";
-void [RootButtonDefinition, DefinitionModal, FamilySidebarDefinition, InternalSwitchDefinition];
+void [RootButtonDefinition, RootTabsDefinition, DefinitionModal, FamilySidebarDefinition, InternalSwitchDefinition];
 // @ts-expect-error The reserved definitions aggregate remains unavailable.
 import * as DefinitionsAggregate from "@luscious-garden/protea-components/definitions";
 // @ts-expect-error The family pattern does not expose the opening capability API.
@@ -528,3 +549,69 @@ function consumeSelect(authority: SelectionAuthority): void {
 }
 
 void consumeSelect;
+
+function consumeTabs(): void {
+  const preview: TabOption = { key: "preview", panelKey: "note-preview" };
+  const history: SubpathTabOption = { key: "history", panelKey: "note-history" };
+  const options: TabsOptionsType = { tabs: [preview, history], initialTabKey: preview.key };
+  const subpathOptions: SubpathTabsOptionsType = options;
+  const api: TabsApi = SubpathTabs;
+  const subpathApi: SubpathTabsApi = Tabs;
+  const tabs: TabsInstance = api.create(options);
+  const subpathTabs: SubpathTabsInstance = subpathApi.create(subpathOptions);
+  const direct = Component.create(TabsDefinition, options);
+  const definition: typeof TabsDefinition = direct.definition;
+  const captured: readonly SubpathTabOption[] = direct.tabs;
+  const activePanel: string = direct.activeTab.panelKey;
+  const result: TabsResultType = direct.requestSelection(history.key);
+  const subpathResult: SubpathTabsResultType = result;
+  const status: TabsResultStatusType = subpathTabsResultStatuses.changed;
+  const subpathStatus: SubpathTabsResultStatusType = tabsResultStatuses.unchanged;
+  const release: CapabilityUnsubscribeType = subpathTabs.subscribeSelectionChange((snapshot) => {
+    const rootChange: TabsChangeType = snapshot;
+    const leafChange: SubpathTabsChangeType = rootChange;
+    const previousTab: TabOption = leafChange.previous;
+    const currentPanel: string = leafChange.current.panelKey;
+    void [previousTab, currentPanel];
+  });
+  if (subpathResult.status === tabsResultStatuses.rejected) {
+    const reason: CapabilityRejectionReasonType = subpathResult.reason;
+    void reason;
+  } else {
+    // @ts-expect-error An accepted or unchanged selection does not carry a rejection reason.
+    subpathResult.reason;
+  }
+  void [definition, captured, activePanel, status, subpathStatus];
+
+  // @ts-expect-error Both creation routes require a configuration.
+  Tabs.create();
+  // @ts-expect-error The prepared definition retains required configuration.
+  Component.create(TabsDefinition);
+  // @ts-expect-error The initial tab key is required.
+  SubpathTabs.create({ tabs: [preview, history] });
+  // @ts-expect-error Each tab declares its logical panel key.
+  SubpathTabs.create({ tabs: [{ key: "preview" }], initialTabKey: "preview" });
+  // @ts-expect-error An explicitly supplied disabled flag must be boolean.
+  SubpathTabs.create({ tabs: [{ ...preview, disabled: undefined }], initialTabKey: "preview" });
+  // @ts-expect-error Selection requests take logical string keys.
+  direct.requestSelection(1);
+  // @ts-expect-error The active tab is a readonly projection.
+  tabs.activeTab = history;
+  // @ts-expect-error Captured lists and records are readonly.
+  tabs.tabs.push(history);
+  // @ts-expect-error A captured panel key cannot be replaced.
+  tabs.activeTab.panelKey = "other-panel";
+  // @ts-expect-error The family result vocabulary is readonly.
+  subpathTabsResultStatuses.changed = "changed";
+  // @ts-expect-error Tabs does not provide an external state authority.
+  Tabs.create({ ...options, authority: {} });
+  // @ts-expect-error Tabs does not expose its private cleanup-registration owner.
+  tabs.addCleanup(() => {});
+
+  release();
+  tabs.dispose();
+  direct.dispose();
+  subpathTabs.dispose();
+}
+
+void consumeTabs;
