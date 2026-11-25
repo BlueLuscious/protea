@@ -108,9 +108,9 @@ test("packed Components borrows the installed Core and exposes only the implemen
         fileURLToPath(import.meta.resolve("@luscious-garden/protea-core")),
       );
       assert.deepEqual(Object.keys(components).sort(), [
-        "Activation", "Button", "Checking", "Modal", "Opening", "Select", "Sidebar", "Switch",
+        "Activation", "Button", "Checking", "Modal", "Opening", "Select", "Sidebar", "Switch", "Tabs",
         "activatableResultStatuses", "capabilityRejectionReasons", "checkableResultStatuses", "openableResultStatuses",
-        "selectResultStatuses",
+        "selectResultStatuses", "tabsResultStatuses",
       ]);
       assert.equal(typeof components.Activation.create, "function");
       assert.equal(typeof components.Checking.create, "function");
@@ -277,6 +277,34 @@ test("packed Components borrows the installed Core and exposes only the implemen
       assert.deepEqual(directSelect.requestSelection("system"), { status: "changed" });
       directSelect.dispose();
 
+      const tabsEntry = await import("@luscious-garden/protea-components/tabs");
+      const tabsDefinitions = await import("@luscious-garden/protea-components/definitions/tabs");
+      assert.deepEqual(Object.keys(tabsEntry), ["Tabs", "tabsResultStatuses"]);
+      assert.deepEqual(Object.keys(tabsDefinitions), ["TabsDefinition"]);
+      assert.equal(tabsEntry.Tabs, components.Tabs);
+      assert.equal(tabsEntry.tabsResultStatuses, components.tabsResultStatuses);
+      assert.deepEqual(tabsEntry.tabsResultStatuses, { changed: "changed", unchanged: "unchanged", rejected: "rejected" });
+      const tabsDefinition = tabsDefinitions.TabsDefinition;
+      assert.equal(tabsDefinition, tabsEntry.Tabs.definition);
+      assert.equal(Object.isFrozen(tabsDefinition), true);
+      assert.equal(Object.isFrozen(tabsDefinition.identity), true);
+      assert.deepEqual(tabsDefinition.identity, { namespace: "protea", name: "tabs" });
+      const tabsOptions = {
+        tabs: [{ key: "preview", panelKey: "note-preview" }, { key: "history", panelKey: "note-history" }],
+        initialTabKey: "preview",
+      };
+      const convenientTabs = tabsEntry.Tabs.create(tabsOptions);
+      const directTabs = Component.create(tabsDefinition, tabsOptions);
+      assert.equal(convenientTabs.definition, tabsDefinition);
+      assert.equal(directTabs.definition, tabsDefinition);
+      assert.notEqual(directTabs, convenientTabs);
+      assert.deepEqual(convenientTabs.requestSelection("history"), { status: "changed" });
+      assert.equal(convenientTabs.activeTab.panelKey, "note-history");
+      assert.equal(directTabs.activeTab.panelKey, "note-preview");
+      convenientTabs.dispose();
+      assert.equal(directTabs.lifecycle, "active");
+      directTabs.dispose();
+
       await assert.rejects(import("@luscious-garden/protea-components/definitions"), { code: "ERR_PACKAGE_PATH_NOT_EXPORTED" });
       for (const suffix of [
         "api", "capabilities/openable", "components", "components/button", "components/modal",
@@ -296,6 +324,8 @@ test("packed Components borrows the installed Core and exposes only the implemen
         "dist/components/sidebar/definitions/sidebar.definition.js", "dist/components/switch/definitions/switch.definition.js",
         "components/select", "components/select/definitions/select.definition", "api/families/select.api",
         "dist/components/select/definitions/select.definition.js", "dist/components/select/runtime/select.component.js",
+        "components/tabs", "components/tabs/definitions/tabs.definition", "api/families/tabs.api",
+        "dist/components/tabs/definitions/tabs.definition.js", "dist/components/tabs/runtime/tabs.component.js",
       ]) {
         await assert.rejects(import("@luscious-garden/protea-components/" + suffix), { code: "ERR_MODULE_NOT_FOUND" });
       }

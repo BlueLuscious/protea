@@ -26,8 +26,9 @@ own the reviewed development workflow and contracts.
 [Button](packages/components/components/button/index.md),
 [Modal](packages/components/components/modal/index.md),
 [Select](packages/components/components/select/index.md),
-[Sidebar](packages/components/components/sidebar/index.md) and
-[Switch](packages/components/components/switch/index.md) have incorporated definitions and portable
+[Sidebar](packages/components/components/sidebar/index.md),
+[Switch](packages/components/components/switch/index.md) and
+[Tabs](packages/components/components/tabs/index.md) have incorporated definitions and portable
 runtimes.
 [Component direction](project/component-direction.md) records vocabulary, original-family boundaries
 and independent Sidebar axes.

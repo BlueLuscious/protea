@@ -1,6 +1,6 @@
 # Component Direction
 
-Status: **Portable Button, Modal, Select, Sidebar, Switch and capability runtimes**
+Status: **Portable Button, Modal, Select, Sidebar, Switch, Tabs and capability runtimes**
 
 Protea develops original component families before selecting variants. Its
 [family modules](../packages/components/components/index.md) live in Components. The package
@@ -26,6 +26,10 @@ state would require its own family case and contract.
 [Switch](../packages/components/components/switch/index.md) combines owned lifetime with a
 checked value retained between requests. Its Checking capability uses local state or borrows an
 application-owned authority, so separate instances can act on the same effective preference.
+
+[Tabs](../packages/components/components/tabs/index.md) owns one local choice from fixed captured
+tab records. Each record associates a logical tab key with a logical panel key. The host supplies
+the content and interaction, while application routing retains its own authority.
 
 The initial Sidebar family selects changeable logical presence. Opening and closing work with
 fixed or floating positioning. A host selects rendered visibility, layout and interaction policies

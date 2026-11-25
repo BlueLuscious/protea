@@ -26,6 +26,8 @@ an active scope from the caller. Each family instance receives its own scope fro
 | `SidebarApi` | `Sidebar.create(options)` | A fresh `SidebarInstance` with an explicit opening authority. |
 | `SwitchApi` | `Switch.definition` | The prepared definition shared by all built-in Switch instances. |
 | `SwitchApi` | `Switch.create(options)` | A fresh `SwitchInstance` with an explicit checked-state authority. |
+| `TabsApi` | `Tabs.definition` | The prepared definition shared by all built-in Tabs instances. |
+| `TabsApi` | `Tabs.create(options)` | A fresh `TabsInstance` with fixed tab-to-panel associations and model-owned selection. |
 
 ## Usage
 
@@ -47,14 +49,15 @@ The Button API delegates to the same Core construction call with `ButtonDefiniti
 instances retain that definition and have independent state and lifetimes. See
 [Button](../components/button/index.md#construction-and-ownership) for configuration and disposal.
 
-Modal, Select, Sidebar and Switch accept the same two creation entries. Call the family's `create`
+Modal, Select, Sidebar, Switch and Tabs accept the same two creation entries. Call the family's `create`
 with the required options or pass its prepared definition and the options to `Component.create`.
 The [Modal guide](../components/modal/index.md#construction-and-state-authority) and
 [Sidebar guide](../components/sidebar/index.md#construction-and-state-authority) describe their
 opening authority choices. The [Select guide](../components/select/index.md#construction-and-ownership)
 describes fixed options and selection authority. The
 [Switch guide](../components/switch/index.md#construction-and-ownership)
-describes its checked-state authority. The
+describes its checked-state authority. The [Tabs guide](../components/tabs/index.md#construction-and-ownership)
+describes local selection and fixed panel associations. The
 [capabilities guide](../capabilities/index.md#construction-and-composition) shows composition with a
 standalone scope.
 
@@ -70,11 +73,13 @@ The public `"."` entry of `@luscious-garden/protea-components` exposes these run
 - `Select`
 - `Sidebar`
 - `Switch`
+- `Tabs`
 - `activatableResultStatuses`
 - `capabilityRejectionReasons`
 - `checkableResultStatuses`
 - `openableResultStatuses`
 - `selectResultStatuses`
+- `tabsResultStatuses`
 
 The same root exposes the public feature contracts and types mapped in the
 [package guide](../index.md#documentation).
@@ -93,11 +98,13 @@ API module and `/definitions/<family>` to its prepared definition module. It res
 | `/select` | `Select`, `selectResultStatuses` | `SelectApi`, `SelectInstance`, `SelectOption`, `SelectOptionsType`, `SelectionAuthority`, `SelectChangeType`, `SelectResultStatusType`, `SelectResultType` |
 | `/sidebar` | `Sidebar` | `SidebarApi`, `SidebarInstance`, `SidebarOptionsType` |
 | `/switch` | `Switch` | `SwitchApi`, `SwitchInstance`, `SwitchOptionsType` |
+| `/tabs` | `Tabs`, `tabsResultStatuses` | `TabsApi`, `TabsInstance`, `TabOption`, `TabsOptionsType`, `TabsChangeType`, `TabsResultStatusType`, `TabsResultType` |
 | `/definitions/button` | `ButtonDefinition` | — |
 | `/definitions/modal` | `ModalDefinition` | — |
 | `/definitions/select` | `SelectDefinition` | — |
 | `/definitions/sidebar` | `SidebarDefinition` | — |
 | `/definitions/switch` | `SwitchDefinition` | — |
+| `/definitions/tabs` | `TabsDefinition` | — |
 
 The root and family entries share the same API object. Its `definition` property refers to the
 same prepared value exported by the definition entry. Use `typeof ButtonDefinition` or the

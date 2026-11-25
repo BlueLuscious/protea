@@ -14,7 +14,8 @@
           "@luscious-garden/protea-components/modal": "../../packages/components/dist/api/families/modal.api.js",
           "@luscious-garden/protea-components/select": "../../packages/components/dist/api/families/select.api.js",
           "@luscious-garden/protea-components/sidebar": "../../packages/components/dist/api/families/sidebar.api.js",
-          "@luscious-garden/protea-components/switch": "../../packages/components/dist/api/families/switch.api.js"
+          "@luscious-garden/protea-components/switch": "../../packages/components/dist/api/families/switch.api.js",
+          "@luscious-garden/protea-components/tabs": "../../packages/components/dist/api/families/tabs.api.js"
         }
       }
     </script>
@@ -72,5 +73,21 @@
     </p>
     <p>Effective theme: <output id="effective-theme"></output></p>
     <p><label><input id="refuse-theme" type="checkbox"> Refuse theme changes</label></p>
+
+    <section aria-labelledby="note-title">
+      <h2 id="note-title">Release notes</h2>
+      <div id="note-tablist" role="tablist" aria-label="Note panels">
+        <button id="note-preview-tab" type="button" role="tab"
+          aria-controls="note-preview-panel" aria-selected="true">Preview</button>
+        <button id="note-history-tab" type="button" role="tab"
+          aria-controls="note-history-panel" aria-selected="false" tabindex="-1">History</button>
+      </div>
+      <div id="note-preview-panel" role="tabpanel" aria-labelledby="note-preview-tab" tabindex="0">
+        <p>Review the release notes before sharing them.</p>
+      </div>
+      <div id="note-history-panel" role="tabpanel" aria-labelledby="note-history-tab" tabindex="0" hidden>
+        <p>The draft was created and saved.</p>
+      </div>
+    </section>
   </body>
 </html>

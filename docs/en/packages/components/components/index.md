@@ -1,6 +1,6 @@
 # Component Families
 
-Status: **Portable Button, Modal, Select, Sidebar and Switch runtimes**
+Status: **Portable Button, Modal, Select, Sidebar, Switch and Tabs runtimes**
 
 The built-in families live under `src/components/<family>/` in [Components](../index.md).
 Each family owns its state, operations and composition. Core supplies
@@ -13,6 +13,7 @@ portable lifetime and definition-based construction.
 | [Select](select/index.md) | Incorporated definition, fixed ordered options and application-owned single selection. |
 | [Sidebar](sidebar/index.md) | Incorporated definition, changeable logical presence and explicit opening authority. |
 | [Switch](switch/index.md) | Incorporated definition and retained checked state with internal or external authority. |
+| [Tabs](tabs/index.md) | Incorporated definition, fixed local selection and logical tab-to-panel association. |
 
 ## Module and public boundaries
 
@@ -27,7 +28,8 @@ Concrete family implementation classes use the Component role. `ButtonComponent`
 `runtime/button.component.ts` owns the family behaviour that the Button recipe delegates to.
 The Modal and Sidebar recipes delegate opening to `Opening`. The Switch recipe delegates checked
 state to `Checking`. Select owns its selection requests and observations while the application
-controls the selected value. Core assembles each public instance.
+controls the selected value. Tabs owns local selection and associates the active tab with a
+logical panel. Core assembles each public instance.
 The Button implementation follows
 [Garden's symbol and role naming](https://github.com/BlueLuscious/garden/blob/master/docs/en/project-rules.md#symbols-and-files).
 
@@ -60,7 +62,7 @@ cleanup or accessible host behaviour.
 
 ## Construction contracts and factories
 
-`ButtonApi`, `ModalApi`, `SelectApi`, `SidebarApi` and `SwitchApi` describe each family's creation
+`ButtonApi`, `ModalApi`, `SelectApi`, `SidebarApi`, `SwitchApi` and `TabsApi` describe each family's creation
 operation and its prepared definition. Each `create` operation delegates to Core with that
 definition. Each family guide owns its parameter, result and lifetime relationships.
 
@@ -82,6 +84,7 @@ The reviewed cases and responsibility map are:
 | A user requests one value from a fixed ordered set. | [Select](select/index.md) captures the options and observes the application's effective choice. |
 | A lateral region can be opened and closed independently of its visual positioning. | [Sidebar](sidebar/index.md) combines `ComponentInstance` with `Openable` for changeable presence. Permanently invariant visibility is outside this bounded contract. |
 | A two-state control reads local checked state or uses a shared preference from the application. | [Switch](switch/index.md) combines `ComponentInstance` with `Checkable` and retains an independent lifetime in either mode. |
+| A note detail switches between Preview and History within one destination. | [Tabs](tabs/index.md) owns one local choice and its captured panel association; the host supplies content and interaction. |
 | Each created family has an independent identity and finalisation authority. | Core supplies each built instance's lifetime and definition reference. The family API exposes the instance's disposal operation and keeps cleanup registration private. |
 | Modal/Sidebar choose internal or synchronous external control. | Their feature-owned options aliases reuse OpenableOptionsType without a second authority or state/result vocabulary. Options are required to make that choice explicit. |
 | Button needs observable disabled changes. | Family-owned state, setter and snapshots; one current consumer does not justify a new shared availability capability. |

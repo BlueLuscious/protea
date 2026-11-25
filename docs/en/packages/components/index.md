@@ -1,9 +1,9 @@
 # Components
 
-Status: **Private Button, Modal, Select, Sidebar, Switch and capability runtimes**
+Status: **Private Button, Modal, Select, Sidebar, Switch, Tabs and capability runtimes**
 
 `@luscious-garden/protea-components` owns Protea's portable built-in families and reusable
-capabilities. Button, Modal, Select, Sidebar and Switch have prepared definitions and create live
+capabilities. Button, Modal, Select, Sidebar, Switch and Tabs have prepared definitions and create live
 instances.
 
 ## Boundary
@@ -31,6 +31,6 @@ responsibilities.
 | --- | --- |
 | [API](api/index.md) | Family and capability construction, usage and public package entries. |
 | [Capabilities](capabilities/index.md) | Activation, opening and checking over a borrowed lifetime. |
-| [Component Families](components/index.md) | Button, Modal, Select, Sidebar and Switch behaviour and contracts. |
+| [Component Families](components/index.md) | Button, Modal, Select, Sidebar, Switch and Tabs behaviour and contracts. |
 | [Shared Runtime](shared/index.md) | Listener registration and delivery across families and capabilities. |
 | [Quality](quality.md) | Runtime, declaration and packed-consumer evidence. |
