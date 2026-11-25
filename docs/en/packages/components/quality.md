@@ -32,9 +32,11 @@ routes for Button, Modal, Select, Sidebar, Switch and Tabs. It checks named subp
 and instance methods, definition and lifetime contracts, capability-specific results and the
 public family surfaces.
 
-The [web example](../../../../examples/web/README.md) owns the browser cases for the five family
-imports and their use with native controls.
-Tabs currently has portable model coverage; its host example and browser qualification remain pending.
+The [web example](../../../../examples/web/README.md) owns the browser cases for the six family
+imports and their use with native controls. Its
+[Tabs checks](../../../../examples/web/README.md#try-the-note-panels) cover manual activation,
+focus-only navigation and panel projection. Browser interaction and connection teardown require
+separate host evidence from the portable model gate.
 
 The [root tooling commands](../../tooling/index.md#installation-and-commands) run the checks in
 the pinned contributor environment. Portable model checks establish lifecycle and behaviour

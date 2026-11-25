@@ -26,13 +26,14 @@ instances from their prepared definitions. The [family guides](../packages/compo
 own their state, construction and ownership.
 [Component direction](component-direction.md) owns independent Sidebar axes and wider composition
 questions.
-The [web example](../../../examples/web/README.md) connects Button, Modal, Select, Sidebar and
-Switch to native HTML. Its [theme case](../../../examples/web/README.md#try-theme-selection)
-uses Select with an application-owned preference.
+The [web example](../../../examples/web/README.md) connects Button, Modal, Select, Sidebar,
+Switch and Tabs to native HTML. Its [theme case](../../../examples/web/README.md#try-theme-selection)
+uses Select with an application-owned preference. Its
+[note panels](../../../examples/web/README.md#try-the-note-panels) use local Tabs selection and
+manual host activation.
 The bindings are local to the example. [Integration boundaries](integration-boundaries.md)
 describe the responsibilities of concrete hosts and the direction for optional presentation
-and providers. Tabs currently provides its portable selection model; its native example and
-browser evidence remain pending.
+and providers.
 
 The [tooling guide](../tooling/index.md) owns contributor pins, scripts and checking limits.
 [Workspace tooling](../tooling/workspace/index.md) owns output production. Package evidence

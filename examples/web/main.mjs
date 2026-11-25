@@ -6,10 +6,12 @@ import { Button } from "@luscious-garden/protea-components/button";
 import { Modal } from "@luscious-garden/protea-components/modal";
 import { Sidebar } from "@luscious-garden/protea-components/sidebar";
 import { Switch } from "@luscious-garden/protea-components/switch";
+import { Tabs } from "@luscious-garden/protea-components/tabs";
 import { bindButton } from "./button.mjs";
 import { bindModal } from "./modal.mjs";
 import { bindSidebar } from "./sidebar.mjs";
 import { bindSwitch } from "./switch.mjs";
+import { bindTabs } from "./tabs.mjs";
 import { mountTheme } from "./theme.mjs";
 
 /**
@@ -152,6 +154,37 @@ function mountHelp(lifetime) {
 }
 
 /**
+ * @description Owns the note's Tabs model and connects its native tab and panel pairs.
+ * @param {import("@luscious-garden/protea-core").ComponentScope} lifetime - The page owner.
+ * @returns No value.
+ */
+function mountNotePanels(lifetime) {
+  const tabList = document.getElementById("note-tablist");
+  const bindings = [
+    {
+      key: "preview",
+      panelKey: "note-preview",
+      tab: document.getElementById("note-preview-tab"),
+      panel: document.getElementById("note-preview-panel"),
+    },
+    {
+      key: "history",
+      panelKey: "note-history",
+      tab: document.getElementById("note-history-tab"),
+      panel: document.getElementById("note-history-panel"),
+    },
+  ];
+  const model = Tabs.create({
+    tabs: bindings.map(({ key, panelKey }) => ({ key, panelKey })),
+    initialTabKey: "preview",
+  });
+  lifetime.addCleanup(model.dispose);
+  let detach;
+  lifetime.addCleanup(() => detach?.());
+  detach = bindTabs(tabList, bindings, model);
+}
+
+/**
  * @description Connects the page's native controls to application-owned Protea models.
  * @returns No value.
  */
@@ -186,6 +219,7 @@ function mountExample() {
     mountEditor(lifetime, listenerOptions);
     mountHelp(lifetime);
     mountTheme(lifetime, listenerOptions);
+    mountNotePanels(lifetime);
 
     window.addEventListener("pagehide", ({ persisted }) => {
       if (!persisted) {

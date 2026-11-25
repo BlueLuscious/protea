@@ -7,10 +7,10 @@ This guide owns Protea's optional integration responsibilities. The portable
 cleanup. [Components](../packages/components/index.md) provides the Opening, Activation and
 Checking capabilities and the Button, Modal, Select, Sidebar, Switch and Tabs families.
 [Component direction](component-direction.md) describes family and variant boundaries.
-The [local web example](../../../examples/web/README.md) connects Button, Modal, Select, Sidebar
-and Switch to native HTML through their public contracts. Its behaviour is scoped to the example
-page. Tabs currently provides a portable model; its host integration and browser evidence remain
-pending.
+The [local web example](../../../examples/web/README.md) connects these families to native HTML
+through their public contracts. Its behaviour is scoped to the example page. The
+[Tabs case](../../../examples/web/README.md#try-the-note-panels) uses two enabled horizontal tabs
+with manual activation and an example-owned binding.
 
 ## Models, applications and hosts
 

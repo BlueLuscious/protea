@@ -1,7 +1,7 @@
 # Protea Web Example
 
-This local page connects Button, Modal, Select, Sidebar and Switch to native HTML. Its
-[import map](index.html) maps the five family specifiers to their files under
+This local page connects Button, Modal, Select, Sidebar, Switch and Tabs to native HTML. Its
+[import map](index.html) maps the six family specifiers to their files under
 `packages/components/dist/api/families/` and `@luscious-garden/protea-components/capabilities`
 to the built capability aggregate. The Core root supplies the page scope.
 
@@ -10,6 +10,8 @@ to the built capability aggregate. The Core root supplies the page scope.
 Use the [repository toolchain](../../docs/en/tooling/index.md#selected-contributor-environment).
 From the repository root, install dependencies and build the packages. Rebuild after changes
 to Core or Components so the example loads the current exports from `dist/`.
+Serve the repository root and open `/examples/web/` so the server can also serve the generated
+files under `/packages/`.
 
 ```sh
 pnpm install --frozen-lockfile
@@ -100,6 +102,36 @@ tracks the latest system theme and reports preference and effective theme change
 The [host connection](theme.mjs) reads the system preference and sets the document root's
 `color-scheme` style from the effective theme.
 
+## Try the note panels
+
+The **Release notes** detail uses one Tabs model to associate Preview and History with their content.
+Use these checks for the example's two enabled tabs and manual activation:
+
+1. Reload the page. **Preview** is selected and its text panel is visible. Use Tab to enter
+   the labelled horizontal tablist at the selected tab.
+2. Press Right to focus **History** while Preview stays selected. Press Right again to wrap
+   to Preview, then Left to wrap back to History. Directional keys move focus without
+   changing the selection or visible panel.
+3. Press Enter to select History. Press Left to focus Preview, then Space to select it.
+   Enter and Space use the native button click path, as does a pointer click on either tab.
+   Each activation requests selection once.
+4. Activate History with the pointer, then focus its tab and press Tab. Focus leaves the
+   tablist for the visible text-only panel. Shift+Tab returns to the selected tab. Tab and
+   Shift+Tab can also leave from a focused, unselected tab. Re-entering the tablist focuses
+   the selected tab.
+
+The host projects `aria-selected` and panel visibility from `activeTab`. Each tab's
+`aria-controls` identifies its panel and each panel's `aria-labelledby` identifies its tab.
+Logical tab and panel keys are mapped to the supplied DOM identifiers. The
+[Tabs binding](tabs.mjs) preserves focus during projection unless the update would hide the
+focused panel; it then moves focus to the new selected tab before hiding the old panel.
+
+The [portable Tabs contract](../../docs/en/packages/components/components/tabs/index.md)
+owns selection and panel association. The page owns content and the manual host interaction,
+following the [WAI manual tabs example](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/examples/tabs-manual/).
+The example is limited to enabled horizontal tabs. Other focus policies, representations and
+hosts require their own interaction and accessibility checks.
+
 ## Connection ownership
 
 The example's [Button binding](button.mjs) reflects model availability in a native button's
@@ -121,6 +153,12 @@ dialogue's own authority. It detaches the binding before closing the view during
 The Theme Manager acts as Select's application authority. Detaching the chooser releases its
 DOM listener and model subscription. The page retains the model and manager, and owns their
 disposal, the system preference listener and the effective theme subscription.
+
+The Tabs binding borrows the page-created model and supplied tab and panel elements. It owns
+its DOM listeners and selection subscription. Detach stops event forwarding and
+model projection while preserving the model and the last rendered markup. The caller can still
+request selection on the model and attach another view. Failed setup invalidates acquired
+callbacks before attempting their releases.
 
 The page scope owns the connections and model instances it creates. It releases the connections
 and disposes those instances when setup fails or the page leaves without entering the

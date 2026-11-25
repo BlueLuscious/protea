@@ -102,5 +102,8 @@ borrowed model. See the [integration boundaries](../../../../project/integration
 The [Tabs runtime suite](../../../../../../tests/runtime/tabs.test.mjs) exercises portable
 selection, capture, observations and finalisation through the packed public API.
 [Components quality](../../quality.md#checks) owns runtime, declaration and distribution evidence.
-The current [web example](../../../../../../examples/web/README.md) covers the earlier five
-families. A Tabs host and its browser and accessibility evidence remain pending.
+The [web example](../../../../../../examples/web/README.md#try-the-note-panels) connects two
+enabled horizontal tabs with manual activation. Its local binding supplies DOM relationships,
+focus-only directional navigation and panel projection. The example guide documents pointer,
+keyboard and connection ownership checks. Other hosts and interaction policies require their
+own browser and accessibility evidence.
