@@ -29,7 +29,16 @@ current delivery commitment. Importance does not establish implementation order.
 | `P2` | Independent capability distribution. | Consumers need capabilities independently of the family catalogue and an actual dependency, loading, support or release requirement justifies extraction. |
 | `P2` | Independent capability retirement and replacement. | A family needs to end one capability while retaining its own lifetime. |
 | `P4` | Framework adapters, Icon/Aster and motion integrations. | Stable public contracts and one supported host/provider scenario exist. |
+| `P4` | [Host click input](#host-click-input) (`Clickable` candidate). | A host consumer needs reusable event-origin information or default-action cancellation. |
 | `P2` | Shared development tooling. | Common mechanisms can serve the observed repositories while their product policies remain separate. |
+
+## Host click input
+
+Consider `Clickable` as a host contract if a concrete consumer needs to preserve the origin
+of a click or cancel its default action. The host owns the event and how it maps input to
+`activate()`. The [Activatable contract](packages/components/capabilities/activatable/index.md)
+owns acceptance of the logical request. A future review needs to specify event data and
+cancellation rules, and verify the mapping in the supported host.
 
 ## Component catalogue and loading
 
