@@ -8,6 +8,7 @@ import { Sidebar } from "@luscious-garden/protea-components/sidebar";
 import { Switch } from "@luscious-garden/protea-components/switch";
 import { Tabs } from "@luscious-garden/protea-components/tabs";
 import { bindButton } from "./button.mjs";
+import { bindDisclosure } from "./disclosure.mjs";
 import { bindModal } from "./modal.mjs";
 import { bindSidebar } from "./sidebar.mjs";
 import { bindSwitch } from "./switch.mjs";
@@ -154,6 +155,23 @@ function mountHelp(lifetime) {
 }
 
 /**
+ * @description Owns the Details disclosure models and connects their native view.
+ * @param {import("@luscious-garden/protea-core").ComponentScope} lifetime - The page owner.
+ * @returns No value.
+ */
+function mountDisclosure(lifetime) {
+  const control = document.getElementById("toggle-details");
+  const region = document.getElementById("details-content");
+  const disclosure = Scope.create();
+  lifetime.addCleanup(disclosure.dispose);
+
+  const opening = Opening.create(disclosure, { control: "internal", initialOpen: false });
+  const button = Button.create();
+  disclosure.addCleanup(button.dispose);
+  disclosure.addCleanup(bindDisclosure(control, region, button, opening, disclosure));
+}
+
+/**
  * @description Owns the note's Tabs model and connects its native tab and panel pairs.
  * @param {import("@luscious-garden/protea-core").ComponentScope} lifetime - The page owner.
  * @returns No value.
@@ -218,6 +236,7 @@ function mountExample() {
     connectAction(lifetime, closeElement, modal.close);
     mountEditor(lifetime, listenerOptions);
     mountHelp(lifetime);
+    mountDisclosure(lifetime);
     mountTheme(lifetime, listenerOptions);
     mountNotePanels(lifetime);
 
