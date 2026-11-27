@@ -4,6 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Protea web example</title>
+    <style>
+      #note-tablist [role="tab"][aria-selected="true"] {
+        text-decoration: underline;
+        text-decoration-thickness: 0.15em;
+        text-underline-offset: 0.15em;
+      }
+    </style>
     <script type="importmap">
       {
         "imports": {
@@ -78,7 +85,7 @@
       </select>
       <button id="use-system-theme" type="button">Use system theme</button>
     </p>
-    <p>Effective theme: <output id="effective-theme"></output></p>
+    <p><output id="effective-theme" aria-atomic="true"></output></p>
     <p><label><input id="refuse-theme" type="checkbox"> Refuse theme changes</label></p>
 
     <section aria-labelledby="note-title">

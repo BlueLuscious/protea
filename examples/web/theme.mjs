@@ -26,7 +26,7 @@ export function mountTheme(lifetime, listenerOptions) {
 
   function project(value) {
     document.documentElement.style.colorScheme = value;
-    effective.value = value;
+    effective.value = `Effective theme: ${value}`;
   }
 
   function updateSystem({ matches }) {

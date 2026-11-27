@@ -97,10 +97,10 @@ application's authority connects that value to Switch and to the Button's activa
 
 ## Try theme selection
 
-1. Open the page. **Theme preference** starts at **System**. **Effective theme** shows the
-   resolved light or dark theme. Change the operating system theme while the page stays open,
-   or emulate `prefers-color-scheme` in the browser's developer tools when available. The
-   effective theme changes while the chooser stays at **System**.
+1. Open the page. **Theme preference** starts at **System** and the status shows
+   **Effective theme: light** or **Effective theme: dark**. Change the operating system theme
+   while the page stays open, or emulate `prefers-color-scheme` in the browser's developer
+   tools when available. The whole status updates while the chooser stays at **System**.
 2. Choose **Light** or **Dark** with the pointer, or focus the chooser with Tab and use the
    native keyboard controls. The effective theme follows that choice. Change the system theme
    again while the fixed preference is selected. The page keeps the chosen theme.
@@ -116,7 +116,8 @@ The [Select binding](select.mjs) forwards each native change once and reads back
 selection after the request. The page's [Theme Manager](theme-manager.mjs) owns the preference,
 tracks the latest system theme and reports preference and effective theme changes separately.
 The [host connection](theme.mjs) reads the system preference and sets the document root's
-`color-scheme` style from the effective theme.
+`color-scheme` style from the effective theme. The native output contains the complete
+status message so live updates include its context.
 
 ## Try the note panels
 
@@ -125,16 +126,19 @@ Use these checks for the example's two enabled tabs and manual activation:
 
 1. Reload the page. **Preview** is selected and its text panel is visible. Use Tab to enter
    the labelled horizontal tablist at the selected tab.
-2. Press Right to focus **History** while Preview stays selected. Press Right again to wrap
-   to Preview, then Left to wrap back to History. Directional keys move focus without
-   changing the selection or visible panel.
-3. Press Enter to select History. Press Left to focus Preview, then Space to select it.
+2. Press Right to focus **History**. The focus outline moves to History and the selection
+   underline stays on Preview. Press Right again to wrap to Preview, then Left to wrap
+   back to History. Moving focus leaves the visible panel unchanged.
+3. Press Enter to select History and move the underline to it. Press Left to focus Preview,
+   then Space to select it.
    Enter and Space use the native button click path, as does a pointer click on either tab.
    Each activation requests selection once.
 4. Activate History with the pointer, then focus its tab and press Tab. Focus leaves the
    tablist for the visible text-only panel. Shift+Tab returns to the selected tab. Tab and
    Shift+Tab can also leave from a focused, unselected tab. Re-entering the tablist focuses
    the selected tab.
+5. Repeat the focus and selection checks with forced colours active. The underline and
+   the browser's focus outline should still be distinguishable.
 
 The host projects `aria-selected` and panel visibility from `activeTab`. Each tab's
 `aria-controls` identifies its panel and each panel's `aria-labelledby` identifies its tab.
