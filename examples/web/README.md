@@ -66,6 +66,22 @@ as reported in WebKit. [HTML closing steps](https://html.spec.whatwg.org/multipa
 2. Activate the button again. The region is hidden and the button reports
    `aria-expanded="false"`. Both attributes follow Sidebar's effective open state.
 
+## Try the independent disclosure
+
+1. Reload the page. **Details** reports `aria-expanded="false"` and its content is hidden.
+2. Use Tab to focus Details, then Enter to open it. The content appears, the button reports
+   `aria-expanded="true"` and keyboard focus stays on the control. Press Space to close it.
+3. Use pointer clicks to open and close Details again. Its content and expanded state follow
+   each effective opening change.
+
+The [example composition](main.mjs) connects a Button to an internal
+[Opening capability](../../docs/en/packages/components/capabilities/openable/index.md).
+Enter, Space and pointer activation use the native button's click path through the existing
+[Button binding](button.mjs). An accepted action requests open or close using the current
+`isOpen` value. Button acceptance and the opening outcome remain separate. Setup projects the
+initial state. The opening observer then updates visibility and `aria-expanded` together.
+`aria-controls` identifies the associated text-only content.
+
 ## Try the shared help preference
 
 1. Start with the help text hidden and **Toggle help** reporting `aria-expanded="false"`.
@@ -139,6 +155,12 @@ The example's [Button binding](button.mjs) reflects model availability in a nati
 connects a native disclosure button and a region, keeping `aria-expanded` and `hidden` in sync
 with effective openness. The caller supplies the elements, labels and relationships between them.
 The page's own Button subscriptions decide which Modal actions to request.
+
+The Details case owns its Button and the scope borrowed by Opening. Its separate connection
+owns the Button binding and the activation and opening subscriptions. Detaching that connection
+ends input forwarding and projection while preserving the models and last rendered state.
+Ending the case finalises its models independently of the other examples, without requesting
+a synthetic close. The supplied elements retain their caller ownership.
 
 Each binding borrows a live model and returns an idempotent detach function. Detach attempts
 to release its DOM listeners and model subscription. A detached view stops receiving model
