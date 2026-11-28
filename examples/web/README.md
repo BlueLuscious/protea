@@ -1,6 +1,7 @@
 # Protea Web Example
 
-This local page connects Button, Modal, Select, Sidebar, Switch and Tabs to native HTML. Its
+This local page connects Button, Modal, Select, Sidebar, Switch and Tabs to native HTML.
+Checking also supplies an independent checkbox. The page's
 [import map](index.html) maps the six family specifiers to their files under
 `packages/components/dist/api/families/` and `@luscious-garden/protea-components/capabilities`
 to the built capability aggregate. The Core root supplies the page scope.
@@ -91,9 +92,10 @@ initial state. The opening observer then updates visibility and `aria-expanded` 
    `aria-expanded="false"` and **Show help** becomes unchecked. Both controls reflect the
    same preference regardless of which one changes it.
 
-The [Switch binding](switch.mjs) forwards one native change and restores the effective checked
-value if the request is refused. A page-owned Checking capability supplies the value. The
-application's authority connects that value to Switch and to the Button's activation action.
+The [checked-input binding](checked-input.mjs) forwards one native change and restores the effective
+checked value if the request is refused. **Show help** retains its switch semantics. A page-owned
+Checking capability supplies the value. The application's authority connects that value to Switch
+and to the Button's activation action.
 
 ## Try theme selection
 
@@ -152,6 +154,23 @@ following the [WAI manual tabs example](https://www.w3.org/WAI/ARIA/apg/patterns
 The example is limited to enabled horizontal tabs. Other focus policies, representations and
 hosts require their own interaction and accessibility checks.
 
+## Try the independent checkbox
+
+1. Reload the page. **Mark release notes as reviewed** starts unchecked.
+2. Use Tab to focus the checkbox, then press Space. It becomes checked and focus stays on
+   the control. Press Space again to clear it.
+3. Click the checkbox or its visible label to mark the notes as reviewed. Select the other
+   note panel and change the help or theme preference. The review choice stays checked.
+   Click its label again to clear it.
+
+The page gives this binary option its own scope and an internal
+[Checking capability](../../docs/en/packages/components/capabilities/checkable/index.md).
+The native input supplies checkbox semantics. Its [checked-input binding](checked-input.mjs)
+forwards each native `change` once with `checked` as the requested target. Setup and effective
+change notifications project the checked value. After each request, the connection reads back
+the effective state, including after a refusal or failure. The review choice lasts until the
+page reloads, independently of Tabs, help and theme.
+
 ## Connection ownership
 
 The example's [Button binding](button.mjs) reflects model availability in a native button's
@@ -165,6 +184,13 @@ owns the Button binding and the activation and opening subscriptions. Detaching 
 ends input forwarding and projection while preserving the models and last rendered state.
 Ending the case finalises its models independently of the other examples, without requesting
 a synthetic close. The supplied elements retain their caller ownership.
+
+The checkbox case owns its scope and registers its checked-input connection's detach with
+that scope. The shared binding borrows the checked-state contract and its lifetime separately;
+the help Switch supplies both from its existing instance. Each connection owns one native
+`change` listener and one checked-state subscription. Detaching it preserves the borrowed model
+and scope. Ending the checkbox case releases its connection and finalises its scope independently
+of the other cases.
 
 Each binding borrows a live model and returns an idempotent detach function. Detach attempts
 to release its DOM listeners and model subscription. A detached view stops receiving model
