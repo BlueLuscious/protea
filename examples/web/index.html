@@ -107,5 +107,16 @@
         <label for="review-note">Mark release notes as reviewed</label>
       </p>
     </section>
+
+    <section aria-labelledby="export-title">
+      <h2 id="export-title">Sample export</h2>
+      <p>
+        <label for="export-progress">Records processed</label>
+        <progress id="export-progress" max="3" value="0"></progress>
+        <span id="export-count">0 of 3</span>
+      </p>
+      <p><output id="export-status" aria-atomic="true">Export status: Ready</output></p>
+      <button id="export-action" type="button">Process next record</button>
+    </section>
   </body>
 </html>

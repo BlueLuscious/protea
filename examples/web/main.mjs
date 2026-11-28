@@ -10,6 +10,7 @@ import { Tabs } from "@luscious-garden/protea-components/tabs";
 import { bindButton } from "./button.mjs";
 import { bindCheckedInput } from "./checked-input.mjs";
 import { bindDisclosure } from "./disclosure.mjs";
+import { mountSampleExport } from "./export-progress.mjs";
 import { bindModal } from "./modal.mjs";
 import { bindSidebar } from "./sidebar.mjs";
 import { bindTabs } from "./tabs.mjs";
@@ -254,6 +255,7 @@ function mountExample() {
     mountTheme(lifetime, listenerOptions);
     mountNotePanels(lifetime);
     mountNoteReview(lifetime);
+    mountSampleExport(lifetime);
 
     window.addEventListener("pagehide", ({ persisted }) => {
       if (!persisted) {
