@@ -1,7 +1,8 @@
 # Protea Web Example
 
 This local page connects Button, Modal, Select, Sidebar, Switch and Tabs to native HTML.
-Checking also supplies an independent checkbox. The page's
+Checking also supplies an independent checkbox. A simulated export projects an application-owned
+measurement through native progress and text. The page's
 [import map](index.html) maps the six family specifiers to their files under
 `packages/components/dist/api/families/` and `@luscious-garden/protea-components/capabilities`
 to the built capability aggregate. The Core root supplies the page scope.
@@ -171,6 +172,28 @@ change notifications project the checked value. After each request, the connecti
 the effective state, including after a refusal or failure. The review choice lasts until the
 page reloads, independently of Tabs, help and theme.
 
+## Try the sample export
+
+1. Reload the page. **Records processed** starts at **0 of 3** and the action is
+   **Process next record**.
+2. Activate the action three times with the pointer, or focus it with Tab and use Enter or
+   Space. Each activation processes one record. The count advances through **1 of 3** and
+   **2 of 3** to **3 of 3**, and the native progress bar fills.
+3. At **3 of 3**, the action becomes **Finish export** and the separate status reports
+   **Export status: Ready to finish**. The export is still pending.
+4. Activate **Finish export**. The status becomes **Export complete** and the
+   button becomes disabled. The measurement stays at **3 of 3**. Reload to start another run.
+
+The [sample export operation](sample-export.mjs) owns the fixed total, processed count and
+finalisation result. It commits an increasing integer report in `0..3` and reports no change
+for a repeat. A non-number throws `TypeError`. A non-finite, fractional, out-of-range or
+decreasing count throws `RangeError` before commitment. These are policies for this simulated run.
+
+The [native connection](export-progress.mjs) projects accepted changes into the labelled
+`<progress>` and visible count. Repeated reports skip projection. The host shows application status
+separately. Reaching the total permits finalisation, and the next action reports its result. Measurement
+handling stays private to the example. Components supplies the existing Button for the action.
+
 ## Connection ownership
 
 The example's [Button binding](button.mjs) reflects model availability in a native button's
@@ -191,6 +214,10 @@ the help Switch supplies both from its existing instance. Each connection owns o
 `change` listener and one checked-state subscription. Detaching it preserves the borrowed model
 and scope. Ending the checkbox case releases its connection and finalises its scope independently
 of the other cases.
+
+The Sample export case owns a local scope, its Button and the activation and native
+connections. Ending the case releases those connections and disposes its Button while
+preserving the last rendering and leaving the other examples available.
 
 Each binding borrows a live model and returns an idempotent detach function. Detach attempts
 to release its DOM listeners and model subscription. A detached view stops receiving model
