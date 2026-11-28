@@ -8,10 +8,10 @@ import { Sidebar } from "@luscious-garden/protea-components/sidebar";
 import { Switch } from "@luscious-garden/protea-components/switch";
 import { Tabs } from "@luscious-garden/protea-components/tabs";
 import { bindButton } from "./button.mjs";
+import { bindCheckedInput } from "./checked-input.mjs";
 import { bindDisclosure } from "./disclosure.mjs";
 import { bindModal } from "./modal.mjs";
 import { bindSidebar } from "./sidebar.mjs";
-import { bindSwitch } from "./switch.mjs";
 import { bindTabs } from "./tabs.mjs";
 import { mountTheme } from "./theme.mjs";
 
@@ -145,7 +145,7 @@ function mountHelp(lifetime) {
   };
   const model = Switch.create({ control: "external", authority });
   lifetime.addCleanup(model.dispose);
-  lifetime.addCleanup(bindSwitch(control, model));
+  lifetime.addCleanup(bindCheckedInput(control, model, model));
   lifetime.addCleanup(authority.subscribeCheckedChange(({ current }) => projectHelp(current)));
   projectHelp(authority.isChecked);
 
@@ -203,6 +203,20 @@ function mountNotePanels(lifetime) {
 }
 
 /**
+ * @description Owns the independent review checkbox's checked state and connection.
+ * @param {import("@luscious-garden/protea-core").ComponentScope} lifetime - The page owner.
+ * @returns No value.
+ */
+function mountNoteReview(lifetime) {
+  const control = document.getElementById("review-note");
+  const review = Scope.create();
+  lifetime.addCleanup(review.dispose);
+
+  const checking = Checking.create(review, { control: "internal" });
+  review.addCleanup(bindCheckedInput(control, checking, review));
+}
+
+/**
  * @description Connects the page's native controls to application-owned Protea models.
  * @returns No value.
  */
@@ -239,6 +253,7 @@ function mountExample() {
     mountDisclosure(lifetime);
     mountTheme(lifetime, listenerOptions);
     mountNotePanels(lifetime);
+    mountNoteReview(lifetime);
 
     window.addEventListener("pagehide", ({ persisted }) => {
       if (!persisted) {
